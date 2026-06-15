@@ -47,6 +47,57 @@ export const SEO_SCHEMA = {
   required: ["title", "metaDescription", "primaryKeyword", "keywords", "outline", "intro"],
 } as const;
 
+// SEO denetimi: title/meta uzunluğu, anahtar kelime yerleşimi, outline derinliği.
+export interface SeoCheck {
+  label: string;
+  ok: boolean;
+  detail: string;
+}
+export interface SeoAudit {
+  score: number; // 0-100
+  checks: SeoCheck[];
+}
+
+export function auditSeo(seo: SeoContent): SeoAudit {
+  const kw = seo.primaryKeyword.toLowerCase();
+  const inTitle = seo.title.toLowerCase().includes(kw);
+  const inIntro = seo.intro.toLowerCase().includes(kw);
+  const checks: SeoCheck[] = [
+    {
+      label: "Title uzunluğu (≤60)",
+      ok: seo.title.length > 0 && seo.title.length <= 60,
+      detail: `${seo.title.length} karakter`,
+    },
+    {
+      label: "Meta description (120-160)",
+      ok: seo.metaDescription.length >= 120 && seo.metaDescription.length <= 160,
+      detail: `${seo.metaDescription.length} karakter`,
+    },
+    {
+      label: "Anahtar kelime title'da",
+      ok: inTitle,
+      detail: inTitle ? "var" : "yok",
+    },
+    {
+      label: "Anahtar kelime girişte",
+      ok: inIntro,
+      detail: inIntro ? "var" : "yok",
+    },
+    {
+      label: "Yeterli anahtar kelime (≥4)",
+      ok: seo.keywords.filter(Boolean).length >= 4,
+      detail: `${seo.keywords.filter(Boolean).length} kelime`,
+    },
+    {
+      label: "Outline derinliği (≥4 H2)",
+      ok: seo.outline.length >= 4,
+      detail: `${seo.outline.length} H2`,
+    },
+  ];
+  const score = Math.round((checks.filter((c) => c.ok).length / checks.length) * 100);
+  return { score, checks };
+}
+
 export function buildDemoSeo(req: SeoRequest): SeoContent {
   const sector = getSector(req.brand.sector);
   const kw = req.primaryKeyword?.trim() || req.topic;

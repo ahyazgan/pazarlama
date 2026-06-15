@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { auditSeo } from "@/lib/seo";
 import { loadBrand } from "@/lib/brand-store";
 import type { Brand, SeoContent } from "@/lib/types";
 
@@ -96,6 +97,30 @@ export default function SeoPage() {
           {loading ? "Üretiliyor…" : "SEO iskeleti üret"}
         </button>
       </section>
+
+      {seo && (() => {
+        const audit = auditSeo(seo);
+        return (
+          <div
+            className={`rounded-lg border px-3 py-2 text-sm ${
+              audit.score >= 80
+                ? "border-green-200 bg-green-50"
+                : audit.score >= 50
+                  ? "border-amber-200 bg-amber-50"
+                  : "border-red-200 bg-red-50"
+            }`}
+          >
+            <p className="font-semibold">SEO skoru: {audit.score}/100</p>
+            <ul className="mt-1 space-y-0.5 text-xs">
+              {audit.checks.map((c, i) => (
+                <li key={i} className={c.ok ? "text-neutral-600" : "text-red-700"}>
+                  {c.ok ? "✓" : "✗"} {c.label} — {c.detail}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
 
       {seo && (
         <section className="card space-y-3">

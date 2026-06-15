@@ -21,8 +21,7 @@
 
 ## Now (KREATİF KATMANI DERİNLEŞTİR — denetim/zekâ, sırayla)
 
-- [ ] Reklam limit denetimi (platform karakter sınırları)
-  Done when: lintAds(adCopy) Google ≤30/≤90 + Meta sınırlarını işaretler; /ads'te uyarı; test + build; committed.
+- [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)
 - [ ] SEO audit/skor (title/meta/anahtar kelime yerleşimi)
   Done when: auditSeo(seo) checklist + 0-100 skor; /seo'da gösterim; test + build; committed.
 - [ ] E-posta deliverability lint (spam-kelime + subject uzunluğu)
