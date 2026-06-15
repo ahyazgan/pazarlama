@@ -90,6 +90,48 @@ export function voiceFit(pkg: ContentPackage, brand: Brand): VoiceFit {
   return { score, notes };
 }
 
+// --- Birleşik governance notu (A–D) -----------------------------------------
+export interface GovernanceInput {
+  issues: number; // lint
+  compliance: number; // hukuk riski (bloklayıcı)
+  safety: number; // marka güvenliği (bloklayıcı)
+  readability: number;
+  access: number;
+  voiceScore: number; // 0-100
+  brain: number; // 0-100
+}
+export interface GovernanceGrade {
+  grade: "A" | "B" | "C" | "D";
+  score: number; // 0-100
+  blocking: boolean;
+  label: string;
+}
+
+export function governanceGrade(g: GovernanceInput): GovernanceGrade {
+  const blocking = g.compliance + g.safety > 0;
+  if (blocking) {
+    return {
+      grade: "D",
+      score: Math.min(40, Math.round(g.voiceScore * 0.4)),
+      blocking: true,
+      label: "Yayın öncesi düzelt — hukuk/marka riski",
+    };
+  }
+  const penalty = g.issues * 8 + g.readability * 5 + g.access * 5;
+  const quality = Math.max(0, 100 - penalty);
+  const score = Math.round(g.voiceScore * 0.4 + g.brain * 0.3 + quality * 0.3);
+  const grade = score >= 85 ? "A" : score >= 70 ? "B" : score >= 50 ? "C" : "D";
+  const label =
+    grade === "A"
+      ? "Yayına hazır"
+      : grade === "B"
+        ? "İyi — küçük rötuşlar"
+        : grade === "C"
+          ? "Geliştirilmeli"
+          : "Yayın öncesi elden geçir";
+  return { grade, score, blocking: false, label };
+}
+
 // --- Marka güvenliği (brand safety) -----------------------------------------
 export interface SafetyIssue {
   term: string;

@@ -4,6 +4,7 @@ import {
   brandSafety,
   complianceForPackage,
   complianceForText,
+  governanceGrade,
   readabilityForPackage,
   voiceFit,
 } from "./governance";
@@ -69,6 +70,21 @@ describe("governance — ses uyumu", () => {
       HAMMADDEM_SAMPLE,
     );
     expect(v.score).toBeGreaterThanOrEqual(90);
+  });
+});
+
+describe("governanceGrade", () => {
+  const base = { issues: 0, compliance: 0, safety: 0, readability: 0, access: 0, voiceScore: 100, brain: 90 };
+  it("temiz + yüksek skor → A", () => {
+    expect(governanceGrade(base).grade).toBe("A");
+  });
+  it("uyumluluk/güvenlik ihlali → bloklayıcı D", () => {
+    const g = governanceGrade({ ...base, compliance: 1 });
+    expect(g.grade).toBe("D");
+    expect(g.blocking).toBe(true);
+  });
+  it("çok lint → düşük not", () => {
+    expect(["C", "D"]).toContain(governanceGrade({ ...base, issues: 6, brain: 40, voiceScore: 50 }).grade);
   });
 });
 

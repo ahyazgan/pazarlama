@@ -14,9 +14,11 @@ import {
   accessibilityForPackage,
   brandSafety,
   complianceForPackage,
+  governanceGrade,
   readabilityForPackage,
   voiceFit,
 } from "@/lib/governance";
+import { recordApproval } from "@/lib/approvals";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -125,10 +127,26 @@ export default function OutputPage() {
   const safety = pkg ? brandSafety(pkg) : [];
   const access = pkg ? accessibilityForPackage(pkg) : [];
   const voice = pkg && brand ? voiceFit(pkg, brand) : null;
+  const grade = governanceGrade({
+    issues: issues.length,
+    compliance: compliance.length,
+    safety: safety.length,
+    readability: readability.length,
+    access: access.length,
+    voiceScore: voice?.score ?? 0,
+    brain,
+  });
   const ready = readiness(
     brain,
     issues.length + compliance.length + readability.length + safety.length + access.length,
   );
+  const [approved, setApproved] = useState(false);
+  const approve = () => {
+    if (pkg && brand) {
+      recordApproval({ topic: pkg.topic, brand: brand.name, grade: grade.grade, score: grade.score });
+      setApproved(true);
+    }
+  };
 
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
   useEffect(() => {
@@ -328,6 +346,31 @@ export default function OutputPage() {
               Beyni güçlendir
             </Link>
           )}
+          <span className="ml-auto flex items-center gap-2">
+            <span
+              className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                grade.grade === "A"
+                  ? "bg-green-600 text-white"
+                  : grade.grade === "B"
+                    ? "bg-lime-500 text-white"
+                    : grade.grade === "C"
+                      ? "bg-amber-500 text-white"
+                      : "bg-red-600 text-white"
+              }`}
+              title={grade.label}
+            >
+              Governance: {grade.grade} ({grade.score})
+            </span>
+            <button
+              type="button"
+              className="chip border-neutral-300 text-xs"
+              onClick={approve}
+              disabled={approved || grade.blocking}
+              title={grade.blocking ? "Bloklayıcı uyarı var — önce düzelt" : grade.label}
+            >
+              {approved ? "Onaylandı ✓" : "Onayla (sign-off)"}
+            </button>
+          </span>
         </div>
         {issues.length > 0 && (
           <ul className="mt-1 list-disc pl-5 text-xs text-neutral-700">
