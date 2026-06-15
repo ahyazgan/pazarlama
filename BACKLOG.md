@@ -41,6 +41,7 @@
 - [x] Supabase best-effort kalıcı kayıt (brands + content_packages)  (3fdde81)
 - [x] Sektör zekasını genişlet (kafe/eticaret/hizmet/güzellik terim+hook)  (dd0d106)
 - [x] Demo modu — anahtarsız şablon çıktı + uçtan uca önizleme (smoke test geçti)  (ae67b7c)
+- [x] CI (GitHub Actions) + Constitution spec'i repoya + README demo/CI  (525d38e)
 
 -----
 
