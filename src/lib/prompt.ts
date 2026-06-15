@@ -4,6 +4,7 @@ import {
   CONTENT_TYPE_LABELS,
   PLATFORM_LABELS,
   type GenerateRequest,
+  type ResearchBrief,
 } from "./types";
 import { getSector } from "./sectors";
 import { platformDnaBlock } from "./platform-dna";
@@ -184,9 +185,27 @@ export function buildUserPrompt(req: GenerateRequest): string {
       `[TREND] Guncel olay/trend: "${req.trend.trim()}". Icerigi bu guncel baglama dogal sekilde bagla.`,
     );
   }
+  if (req.research) {
+    lines.push(researchContextBlock(req.research));
+  }
   lines.push("");
   lines.push(
     "Yukaridaki marka beyni + sektor zekasina gore bu gorev icin TAM paketi (4 platform + variants) JSON semasina uygun uret.",
+  );
+  return lines.join("\n");
+}
+
+// Araştırma bulgularını üretime enjekte et (grounding + kaynak disiplini).
+export function researchContextBlock(brief: ResearchBrief): string {
+  const lines: string[] = ["[ARASTIRMA BULGULARI — yalnizca bunlari ve marka kanitini kullan]"];
+  brief.findings.filter(Boolean).forEach((f, i) => lines.push(`Bulgu ${i + 1}: ${f}`));
+  if (brief.competitorGap?.trim()) lines.push(`Rakip bosluğu: ${brief.competitorGap.trim()}`);
+  if (brief.sources.length) {
+    lines.push("Kaynaklar:");
+    brief.sources.forEach((s, i) => lines.push(`[${i + 1}] ${s.title} — ${s.url}`));
+  }
+  lines.push(
+    "Olgusal iddialari yalnizca bu bulgulara/markaya dayandir; kaynaksiz veya uydurma sayi/iddia URETME.",
   );
   return lines.join("\n");
 }

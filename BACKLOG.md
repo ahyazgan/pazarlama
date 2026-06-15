@@ -7,8 +7,7 @@
 
 ## Now (ARAŞTIRMA katmanı — daha kaliteli/doğrulanabilir bilgi)
 
-- [ ] Sektör bilgi korpusunu derinleştir (mevzuat/sezon/hata/benchmark)
-  Done when: SectorIntelligence'a knowledge alanları (regulations/commonMistakes/benchmarks) + insaat dolu; prompt'a enjekte; test + build yeşil; committed.
+- [x] Sektör bilgi korpusunu derinleştir (mevzuat/hata/benchmark)  (c1ca566)
 - [ ] Araştırma brief tipleri + citations şeması (kredensiyelsiz iskelet)
   Done when: ResearchBrief + Source tipleri; çıktı şemasına sources[]; pure builder/parse; test + build yeşil; committed.
 - [ ] Kalite-lint: atıfsız iddia / şüpheli sayı kuralı

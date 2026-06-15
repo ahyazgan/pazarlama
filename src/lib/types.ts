@@ -150,6 +150,21 @@ export interface CritiqueResult {
   issues: CritiqueIssue[];
 }
 
+// Araştırma katmanı: doğrulanabilir dış bilgi + kaynaklar.
+export interface Source {
+  title: string;
+  url: string;
+  note?: string; // bu kaynaktan alınan kilit bilgi
+}
+
+export interface ResearchBrief {
+  topic: string;
+  findings: string[]; // doğrulanmış kilit bulgular
+  sources: Source[]; // atıflar
+  competitorGap?: string; // rakiplerin atladığı açı
+  generatedAt?: string; // ISO
+}
+
 export interface GenerateRequest {
   brand: Brand;
   topic: string;
@@ -158,6 +173,7 @@ export interface GenerateRequest {
   personaIndex: number;
   demo?: boolean; // true ise API anahtari olmadan sablon (demo) cikti uretilir
   trend?: string; // opsiyonel guncel trend/haber — icerik buna baglanir (Trend Enjeksiyonu)
+  research?: ResearchBrief; // opsiyonel araştırma bulguları (grounding)
 }
 
 export interface ContentPackage {
@@ -167,6 +183,7 @@ export interface ContentPackage {
   outputs: ContentOutputs;
   demo?: boolean; // sablon (demo) icerik mi?
   platformEmphasis?: PlatformId[]; // sektore gore onerilen platform sirasi (cikti vurgusu)
+  sources?: Source[]; // araştırma kullanıldıysa atıflar
 }
 
 // Coklu persona uretimi: her persona icin ayri paket (Constitution Katman 3).
