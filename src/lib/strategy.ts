@@ -30,15 +30,6 @@ const ANGLE_SIGNALS: Record<Angle, string[]> = {
   karsitlik: ["vs", "karsi", "karşı", "fark", "rakip", "kiyas", "kıyas", "onlar", "biz"],
 };
 
-// Sektör başına varsayılan (sinyal yoksa) açı eğilimi.
-const SECTOR_DEFAULT_ANGLE: Record<string, Angle> = {
-  insaat: "korku", // B2B: risk/ceza vurgusu güçlü çalışır
-  kafe: "egitici",
-  eticaret: "kazanc",
-  hizmet: "egitici",
-  guzellik: "egitici",
-};
-
 const ALL_ANGLES = Object.keys(ANGLE_LABELS) as Angle[];
 
 function norm(s: string): string {
@@ -53,13 +44,16 @@ function scoreAngles(
 ): Map<Angle, number> {
   const t = norm(topic);
   const recent = history.slice(0, 5).map((h) => h.angle);
+  const affinity = sector.angleAffinity ?? [];
   const scores = new Map<Angle, number>();
   for (const angle of ALL_ANGLES) {
     let score = 0;
     for (const kw of ANGLE_SIGNALS[angle]) {
       if (t.includes(kw)) score += 2;
     }
-    if (angle === SECTOR_DEFAULT_ANGLE[sector.sector]) score += 1;
+    // Sektör afinitesi: sıradaki yer kadar (en güçlü açıya en çok) puan.
+    const rank = affinity.indexOf(angle);
+    if (rank >= 0) score += (affinity.length - rank) * 0.4;
     score -= recent.filter((a) => a === angle).length * 0.5;
     scores.set(angle, score);
   }
@@ -87,9 +81,10 @@ export function recommendAngle(
   const best = topAngle(scores);
 
   const hit = ANGLE_SIGNALS[best].some((kw) => t.includes(kw));
+  const isTopAffinity = (sector.angleAffinity ?? [])[0] === best;
   const reason = hit
     ? `Konudaki ifadeler "${ANGLE_LABELS[best]}" açısını işaret ediyor.`
-    : best === SECTOR_DEFAULT_ANGLE[sector.sector]
+    : isTopAffinity
       ? `${sector.label} için "${ANGLE_LABELS[best]}" açısı genelde en güçlü sonucu verir.`
       : `Çeşitlilik için "${ANGLE_LABELS[best]}" açısı öneriliyor.`;
 

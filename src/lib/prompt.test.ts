@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildSystemPrompt, buildUserPrompt, OUTPUT_SCHEMA } from "./prompt";
+import {
+  buildSystemPrompt,
+  buildUserPrompt,
+  OUTPUT_SCHEMA,
+  toneDirectives,
+} from "./prompt";
 import { HAMMADDEM_SAMPLE } from "./brand-store";
 import type { GenerateRequest } from "./types";
 
@@ -65,6 +70,17 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
 
   it("system prompt AI-klise kaliplarini yasaklar", () => {
     expect(buildSystemPrompt(req)).toMatch(/gunumuz dunyasinda/);
+  });
+
+  it("ton kurallari prompt'a girer (tone=4 -> dengeli)", () => {
+    const p = buildUserPrompt(req);
+    expect(p).toMatch(/Ton kurallari:/);
+  });
+
+  it("toneDirectives uca gore degisir", () => {
+    expect(toneDirectives(1)).toMatch(/Resmi/);
+    expect(toneDirectives(9)).toMatch(/Samimi/);
+    expect(toneDirectives(5)).toMatch(/Dengeli/);
   });
 
   it("OUTPUT_SCHEMA 4 platformu zorunlu kilar", () => {

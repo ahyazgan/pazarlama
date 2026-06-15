@@ -8,8 +8,7 @@
 ## Now (DERİN tur — work top to bottom, don’t pause between items)
 
 - [x] Platform DNA veri katmanı + derin prompt enjeksiyonu  (80ddbb5)
-- [ ] Strateji Brief üreteci (Strateji Engine derinliği)
-  Done when: buildStrategyBrief() birincil+ikincil açı, platform önceliği, persona odağı, hook tohumu üretir; create ekranında zengin panel; pure test + build yeşil; committed.
+- [x] Strateji Brief üreteci (birincil/ikincil açı, persona odağı, hook tohumu)  (0a15806)
 - [ ] Sektör açı afinitesi + ses-ton→somut kural (Sektör + Marka Beyni derinliği)
   Done when: her sektöre angleAffinity (sıralı) eklenir; voice.tone somut yazım kurallarına eşlenir ve prompt'a girer; recommender afiniteyi kullanır; test + build yeşil; committed.
 - [ ] Derin kalite-lint (öz-denetim derinliği)

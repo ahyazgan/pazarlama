@@ -68,6 +68,7 @@ export interface SectorIntelligence {
   hooks: string[]; // hook formulleri
   seasonality: string; // mevsimsellik notu
   platformEmphasis: PlatformId[]; // sektore gore oncelikli platform sirasi (en onemli ilk)
+  angleAffinity: Angle[]; // sektorde en cok donus veren aci sirasi (en guclu ilk)
 }
 
 // --- Uretim cikti paketi -----------------------------------------------------

@@ -54,6 +54,7 @@ export function buildUserPrompt(req: GenerateRequest): string {
       brand.voice.sentenceStyle || "-"
     }`,
   );
+  lines.push(`Ton kurallari: ${toneDirectives(brand.voice.tone)}`);
   if (brand.voice.bannedWords.filter(Boolean).length) {
     lines.push(
       `YASAK kelimeler (asla kullanma): ${brand.voice.bannedWords.filter(Boolean).join(", ")}`,
@@ -137,6 +138,17 @@ export function buildUserPrompt(req: GenerateRequest): string {
   );
 
   return lines.join("\n");
+}
+
+// Ses-ton (0-10) → somut yazım kuralları. Marka Beyni derinliği.
+export function toneDirectives(tone: number): string {
+  if (tone <= 3) {
+    return "Resmi/kurumsal: net, profesyonel, abartısız. Argo ve emoji yok; 'siz' dili. Veriyle konuş.";
+  }
+  if (tone >= 7) {
+    return "Samimi/sıcak: 'sen' dili, kısa ve enerjik cümleler, ölçülü emoji, günlük konuşma tonu.";
+  }
+  return "Dengeli: profesyonel ama insani; teknik doğruluk + erişilebilir dil. Emoji minimal.";
 }
 
 // JSON cikti semasi (structured outputs icin). Constitution Bolum 8: parse edilebilir olmali.

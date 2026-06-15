@@ -44,6 +44,13 @@ describe("sector_intelligence seed", () => {
     expect(SECTORS.kafe.platformEmphasis[0]).toBe("instagram");
   });
 
+  it("her sektorde angleAffinity 5 benzersiz aci icerir", () => {
+    const all = ["korku", "kazanc", "sosyal_kanit", "egitici", "karsitlik"];
+    for (const id of Object.keys(SECTORS) as SectorId[]) {
+      expect([...SECTORS[id].angleAffinity].sort()).toEqual([...all].sort());
+    }
+  });
+
   it("getSector bilinmeyen icin insaat'a duser", () => {
     expect(getSector("yok" as SectorId).sector).toBe("insaat");
   });
