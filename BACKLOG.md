@@ -5,15 +5,20 @@
 
 -----
 
-## Now (BLOKE işlerin kredensiyelsiz MVP versiyonları)
+## Now (BEYNİ ÖĞRET — form değil örnek+konumlandırma ile derinleştir)
 
-- [x] Trend Enjeksiyonu (manuel girdi) — web search olmadan  (b3159bc)
-- [x] Feedback Loop (yerel 👍/👎 → recommender öğrenir)  (25e50f1)
-- [x] İçerik Takvimi (ajanda/planlayıcı)  (34b4c6a)
+- [ ] Altın + negatif örnekler (few-shot voice öğrenme)
+  Done when: Marka Profili'ne "en iyi gönderiler" + "böyle yazma" alanları; prompt'a few-shot/kaçınılacak blokları girer; prompt testi + build yeşil; committed.
+- [ ] Rakip & konumlandırma zekası
+  Done when: kimliğe rakipler + farkımız alanları; prompt'a konumlandırma bloğu (karşıtlık açısını besler); test + build yeşil; committed.
+- [ ] Persona derinliği (jobs-to-be-done)
+  Done when: persona'ya itirazlar + kullandığı kelimeler + tetikleyiciler; prompt'a girer; test + build yeşil; committed.
 
 ### Kalıcı BLOKE (sahtesi yapılmaz):
-- [ ] Otomatik yayın (IG Graph / TikTok API) — OAuth + prod yan etki (§4)
-- [ ] LLM öz-eleştiri turu — ANTHROPIC_API_KEY gerekir (deterministik lint zaten var)
+- [ ] Sektör network etkisi (cross-brand öğrenme) — çoklu-kullanıcı backend + anonim agregasyon gerekir
+- [ ] Outcome-öğrenmesi (gerçek etkileşim verisi) — yayın metrikleri/API gerekir
+- [ ] Otomatik yayın (IG/TikTok API) — OAuth + prod yan etki (§4)
+- [ ] LLM öz-eleştiri turu — ANTHROPIC_API_KEY gerekir
 
 -----
 

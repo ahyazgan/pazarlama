@@ -189,6 +189,30 @@ export default function BrandPage() {
             />
           </div>
         </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="label">
+              En iyi gönderiler{" "}
+              <span className="font-normal text-neutral-400">(few-shot — sesi öğretir)</span>
+            </label>
+            <StringList
+              values={brand.voice.goodExamples ?? [""]}
+              onChange={(goodExamples) => set({ voice: { ...brand.voice, goodExamples } })}
+              placeholder="gerçek bir iyi gönderini yapıştır"
+            />
+          </div>
+          <div>
+            <label className="label">
+              Böyle yazma{" "}
+              <span className="font-normal text-neutral-400">(negatif örnek)</span>
+            </label>
+            <StringList
+              values={brand.voice.badExamples ?? [""]}
+              onChange={(badExamples) => set({ voice: { ...brand.voice, badExamples } })}
+              placeholder="kaçınılacak bir tarz örneği"
+            />
+          </div>
+        </div>
       </section>
 
       {/* Katman 3: Kitle */}

@@ -16,7 +16,14 @@ export function emptyBrand(): Brand {
     name: "",
     sector: "insaat" as SectorId,
     identity: { mission: "", valueProp: "", personality: ["", "", "", "", ""] },
-    voice: { tone: 5, sentenceStyle: "", bannedWords: [""], signaturePhrases: [""] },
+    voice: {
+      tone: 5,
+      sentenceStyle: "",
+      bannedWords: [""],
+      signaturePhrases: [""],
+      goodExamples: [""],
+      badExamples: [""],
+    },
     audience: [{ name: "", pain: "", motivation: "" }],
     proof: { numbers: [""], cases: [""], references: [""] },
   };
@@ -51,6 +58,13 @@ export const HAMMADDEM_SAMPLE: Brand = {
     sentenceStyle: "Kisa, fiil-oncelikli, nokta ile ayrik cumleler.",
     bannedWords: ["ucuz", "bedava"],
     signaturePhrases: ["Santiyeye deger katiyoruz", "Zamaninda, eksiksiz, dogrulanmis"],
+    goodExamples: [
+      "Beton dökümü bekleyen 3 santiye. Bizden 2 günde tedarik. Gecikme sifir.",
+      "Müteahhitin en pahali hatasi: tedarikçiyi son anda aramak. Stok bizde hazir.",
+    ],
+    badExamples: [
+      "Günümüz insaat dünyasinda en uygun fiyatli çözümler için bize ulasin! 🏗️🔥",
+    ],
   },
   audience: [
     {

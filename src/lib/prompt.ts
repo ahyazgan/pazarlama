@@ -67,6 +67,20 @@ export function buildUserPrompt(req: GenerateRequest): string {
         .join(" | ")}`,
     );
   }
+  const goodEx = (brand.voice.goodExamples ?? []).filter(Boolean);
+  if (goodEx.length) {
+    lines.push("");
+    lines.push(
+      "[SES ORNEKLERI — markanin gercek iyi gonderileri] Bunlarin ses/ritim/uzunlugunu TAKLIT et, kelimesi kelimesine KOPYALAMA:",
+    );
+    goodEx.forEach((e, i) => lines.push(`Ornek ${i + 1}: ${e}`));
+  }
+  const badEx = (brand.voice.badExamples ?? []).filter(Boolean);
+  if (badEx.length) {
+    lines.push("");
+    lines.push("[KACINILACAK ORNEKLER] Bu tarza ASLA benzeme:");
+    badEx.forEach((e, i) => lines.push(`Kotu ${i + 1}: ${e}`));
+  }
   if (persona) {
     lines.push(
       `Hedef persona: ${persona.name} — acisi: ${persona.pain || "-"}; motivasyonu: ${

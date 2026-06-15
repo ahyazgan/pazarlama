@@ -90,6 +90,21 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(toneDirectives(5)).toMatch(/Dengeli/);
   });
 
+  it("altin ornekleri (few-shot) ve kacinilacak ornekleri enjekte eder", () => {
+    const p = buildUserPrompt(req);
+    expect(p).toMatch(/SES ORNEKLERI/);
+    expect(p).toMatch(/Beton dökümü bekleyen/); // HAMMADDEM good example
+    expect(p).toMatch(/KACINILACAK ORNEKLER/);
+  });
+
+  it("ornek yoksa ilgili bloklar girmez", () => {
+    const noEx = {
+      ...req,
+      brand: { ...req.brand, voice: { ...req.brand.voice, goodExamples: [], badExamples: [] } },
+    };
+    expect(buildUserPrompt(noEx)).not.toMatch(/SES ORNEKLERI/);
+  });
+
   it("OUTPUT_SCHEMA 4 platformu zorunlu kilar", () => {
     expect(OUTPUT_SCHEMA.required).toEqual(["instagram", "tiktok", "linkedin", "x"]);
   });

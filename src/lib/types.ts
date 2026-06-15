@@ -34,6 +34,8 @@ export interface BrandVoice {
   sentenceStyle: string; // cumle yapisi tercihi
   bannedWords: string[]; // yasak kelimeler
   signaturePhrases: string[]; // imza ifadeler
+  goodExamples?: string[]; // markanin gercek "iyi" gonderileri (few-shot voice ogrenme)
+  badExamples?: string[]; // "boyle yazma" — negatif ornek
 }
 
 export interface Persona {
