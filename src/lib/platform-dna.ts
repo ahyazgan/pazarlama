@@ -26,6 +26,7 @@ export const PLATFORM_DNA: Record<PlatformId, PlatformDNA> = {
     cta: "Kaydet/paylaş veya yoruma yönlendiren tek cümle.",
     rules: [
       "Caption hedefi ~125 karakter (max ~300).",
+      "firstComment alanina SADECE hashtag yaz (8-15 adet, bosluklarla ayrik); cumle/CTA/aciklama YAZMA.",
       "Hashtag ilk yorumda, 8-15 adet, sektör+niş karışık.",
       "Görsel prompt: kare format, marka beynindeki ana rengi kullan, kompozisyon + character-consistency notu.",
       "Alt-text erişilebilirlik için doldurulmalı.",
