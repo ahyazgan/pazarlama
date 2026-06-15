@@ -13,7 +13,7 @@ import {
 } from "@/lib/history";
 import { savePackageRemote } from "@/lib/persist";
 import { getSector } from "@/lib/sectors";
-import { recommendAngle, recommendContentType } from "@/lib/strategy";
+import { recommendAngle, recommendContentType, suggestTopics } from "@/lib/strategy";
 import {
   ANGLE_HINTS,
   ANGLE_LABELS,
@@ -74,6 +74,7 @@ export default function CreatePage() {
   // Strateji Engine — aktif öneri (boş sayfa sendromunu öldürür).
   const angleRec = recommendAngle(sector, topic, history);
   const typeRec = recommendContentType(sector);
+  const topicIdeas = suggestTopics(sector, history);
   const recApplied = angle === angleRec.value && contentType === typeRec.value;
 
   const applyRecommendation = () => {
@@ -165,6 +166,23 @@ export default function CreatePage() {
             onChange={(e) => setTopic(e.target.value)}
             placeholder="or. Cimento stogu tazelendi"
           />
+          {!topic.trim() && topicIdeas.length > 0 && (
+            <div className="mt-2">
+              <p className="hint mb-1">Konu fikri (boş sayfa mı? başla):</p>
+              <div className="flex flex-wrap gap-2">
+                {topicIdeas.map((idea, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setTopic(idea)}
+                    className="chip border-neutral-300 bg-white text-left text-neutral-700 hover:border-brand hover:bg-brand-tint"
+                  >
+                    {idea}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           {sector.hooks.length > 0 && (
             <div className="mt-2">
               <p className="hint mb-1">

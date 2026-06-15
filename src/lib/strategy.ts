@@ -93,6 +93,27 @@ export function recommendContentType(
   return { value, reason };
 }
 
+// Konu önerici — sektör hook'larından, son kullanılan konulara benzemeyen taze fikirler.
+// "Boş sayfa sendromunu" daha da öldürür. Hook'taki "___" yer tutucusu temizlenir.
+export function suggestTopics(
+  sector: SectorIntelligence,
+  history: HistoryEntry[] = [],
+  count = 3,
+): string[] {
+  const recent = new Set(history.slice(0, 8).map((h) => h.topic.trim().toLowerCase()));
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const hook of sector.hooks) {
+    const idea = hook.replace(/_+/g, "").replace(/\s+/g, " ").trim().replace(/[:?]\s*$/, "");
+    const key = idea.toLowerCase();
+    if (!idea || seen.has(key) || recent.has(key)) continue;
+    seen.add(key);
+    out.push(idea);
+    if (out.length >= count) break;
+  }
+  return out;
+}
+
 // Persona'ya göre kısa strateji notu (üretim öncesi yön).
 export function personaStrategyNote(persona: Persona | undefined): string {
   if (!persona) return "";

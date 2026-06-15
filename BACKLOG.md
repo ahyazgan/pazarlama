@@ -7,8 +7,7 @@
 
 ## Now (work top to bottom, don’t pause between items)
 
-- [ ] Sektör platform vurgusu (daha akıllı hedefleme)
-  Done when: SectorIntelligence'a platformEmphasis (öncelik sıralı) eklenir; çıktı sekmeleri önerilen platformu ★ ile başa alır; prompt önceliği belirtir; testler + build yeşil; committed.
+- [x] Sektör platform vurgusu (daha akıllı hedefleme)  (db2d557)
 - [ ] Konu önerici (boş sayfa sendromunu öldür)
   Done when: Kampanya ekranında sektör hook'larından son kullanılmayan 3 taze konu fikri çip olarak gösterilir (hafızadan eler); pure util test + build yeşil; committed.
 - [ ] Çıktı kalite göstergeleri (IG caption uzunluğu)

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { recommendAngle, recommendContentType } from "./strategy";
+import { recommendAngle, recommendContentType, suggestTopics } from "./strategy";
 import { getSector } from "./sectors";
 import type { HistoryEntry } from "./history";
 
@@ -15,6 +15,23 @@ describe("recommendContentType", () => {
 
   it("eticaret -> urun (%40)", () => {
     expect(recommendContentType(eticaret).value).toBe("urun");
+  });
+});
+
+describe("suggestTopics", () => {
+  it("hook'lardan yer tutucusuz taze fikirler üretir", () => {
+    const ideas = suggestTopics(insaat);
+    expect(ideas.length).toBe(3);
+    expect(ideas.every((i) => !i.includes("_"))).toBe(true);
+    expect(ideas[0].length).toBeGreaterThan(5);
+  });
+
+  it("son kullanılan konuları eler", () => {
+    const first = suggestTopics(insaat, [], 1)[0];
+    const filtered = suggestTopics(insaat, [
+      { topic: first, angle: "korku", contentType: "deger", personaIndex: 0, at: 1 },
+    ]);
+    expect(filtered.map((s) => s.toLowerCase())).not.toContain(first.toLowerCase());
   });
 });
 
