@@ -10,8 +10,7 @@
 - [x] Platform DNA veri katmanı + derin prompt enjeksiyonu  (80ddbb5)
 - [x] Strateji Brief üreteci (birincil/ikincil açı, persona odağı, hook tohumu)  (0a15806)
 - [x] Sektör açı afinitesi + ses-ton→somut yazım kuralları  (f378202)
-- [ ] Derin kalite-lint (öz-denetim derinliği)
-  Done when: quality.ts'e kanıt-rakamı-yok, imza-ifade-yok, IG hashtag sayısı, X thread sınırı, emoji aşırılığı kuralları eklenir; her biri test edilir; çıktı panelinde gösterilir; build yeşil; committed.
+- [x] Derin kalite-lint (kanıt/imza/hashtag/thread/emoji/zayıf-hook + marka-bilinçli)  (08597a9)
 
 ### Done bu turda (önceki Now sprinti):
 - [x] Sektör platform vurgusu  (db2d557)
@@ -55,6 +54,10 @@
 - [x] Çıktı kalite göstergesi (IG caption uzunluğu)  (cceeb76)
 - [x] Persona-bazlı açı çeşitliliği (her persona farklı açı)  (c0a078f)
 - [x] Anahtarsız kalite-lint (yasak kelime + AI-klişe denetimi)  (bd0fdc9)
+- [x] DERİN tur: Platform DNA katmanı  (80ddbb5)
+- [x] DERİN tur: Strateji Brief üreteci  (0a15806)
+- [x] DERİN tur: sektör açı afinitesi + ses-ton kuralları  (f378202)
+- [x] DERİN tur: derin kalite-lint (6 yeni kural)  (08597a9)
 
 -----
 
