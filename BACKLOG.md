@@ -13,11 +13,9 @@
 
 ## Now (work top to bottom, don’t pause between items)
 
-- [ ] Supabase kalıcı kayıt (brands + content_packages) — env varsa
-  Done when: env yapılandırılmışsa marka kaydı ve üretilen paket Supabase'e best-effort yazılır, yoksa sessizce localStorage'a düşer; saf yardımcılar test edilir; build temiz; committed.
-
-> "Now" sprinti (tooling+test, içerik hafızası, hook UI, export, çoklu-persona) tamamlandı → Done arşivinde.
-> Sıradaki iş "Later" listesinden Now'a çekildi: Supabase kalıcı kayıt (env varsa).
+> "Now" temiz. Tamamlanan işler Done arşivinde. Kalan işler "Later"da — çoğu
+> dışsal bağımlılık (API anahtarı, web search, IG/TikTok API, gerçek perf verisi)
+> gerektirdiğinden insan girdisi olmadan anlamlı doğrulanamaz; yeni yön bekleniyor.
 
 -----
 
@@ -41,6 +39,7 @@
 - [x] Hook kütüphanesini Kampanya ekranında yüzeye çıkar (Faz 2)  (2194453)
 - [x] Çıktı dışa aktarma (markdown + JSON)  (bd9b44a)
 - [x] Tüm personalar için ayrı üretim + persona sekmeleri  (759c00d)
+- [x] Supabase best-effort kalıcı kayıt (brands + content_packages)  (3fdde81)
 
 -----
 
