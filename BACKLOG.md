@@ -8,8 +8,7 @@
 ## Now (BLOKE işlerin kredensiyelsiz MVP versiyonları)
 
 - [x] Trend Enjeksiyonu (manuel girdi) — web search olmadan  (b3159bc)
-- [ ] Feedback Loop (yerel) — gerçek strateji öğrenmesi
-  Done when: Çıktı ekranında 👍/👎 geri bildirim; yerel saklanır; recommender olumlu açıları öne çeker, olumsuzları kısar; pure scoring testi + build yeşil; committed.
+- [x] Feedback Loop (yerel 👍/👎 → recommender öğrenir)  (25e50f1)
 - [ ] İçerik Takvimi (ajanda/planlayıcı) — drag-drop yerine MVP
   Done when: çıktıdan "Takvime ekle" (tarih); /calendar tarihe göre planlanan paketleri listeler + durum (planlandı/yayınlandı); pure helper testi + build yeşil; committed.
 

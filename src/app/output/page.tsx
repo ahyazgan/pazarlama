@@ -6,6 +6,7 @@ import { CopyButton } from "@/components/CopyButton";
 import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/lib/export";
 import { lintPackage, lintWithBrand } from "@/lib/quality";
 import { recordFeedback } from "@/lib/feedback";
+import { addToPlan, todayISO } from "@/lib/calendar";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -96,6 +97,20 @@ export default function OutputPage() {
   const vote = (v: 1 | -1) => {
     if (pkg && brand) recordFeedback(brand.sector, pkg.angle, v);
     setVoted(v);
+  };
+
+  const [planDate, setPlanDate] = useState(todayISO);
+  const [planned, setPlanned] = useState(false);
+  const addPlan = () => {
+    if (!pkg || !brand) return;
+    addToPlan({
+      topic: pkg.topic,
+      contentType: pkg.contentType,
+      angle: pkg.angle,
+      sector: brand.sector,
+      date: planDate,
+    });
+    setPlanned(true);
   };
 
   if (!pkg) {
@@ -222,6 +237,27 @@ export default function OutputPage() {
           <span className="text-xs text-neutral-500">
             Teşekkürler — strateji önerisi bunu öğrenecek.
           </span>
+        )}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
+        <span className="text-neutral-600">Takvime planla:</span>
+        <input
+          type="date"
+          className="input w-auto py-1"
+          value={planDate}
+          onChange={(e) => {
+            setPlanDate(e.target.value);
+            setPlanned(false);
+          }}
+        />
+        <button type="button" className="chip border-neutral-300" onClick={addPlan} disabled={planned}>
+          {planned ? "Eklendi ✓" : "Takvime ekle"}
+        </button>
+        {planned && (
+          <Link href="/calendar" className="text-xs text-brand-dark underline">
+            Takvimi gör
+          </Link>
         )}
       </div>
 

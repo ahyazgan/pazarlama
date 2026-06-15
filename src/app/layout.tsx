@@ -31,6 +31,9 @@ export default function RootLayout({
               <Link href="/create" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
                 Kampanya Olustur
               </Link>
+              <Link href="/calendar" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
+                Takvim
+              </Link>
             </nav>
           </div>
         </header>
