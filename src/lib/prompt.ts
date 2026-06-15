@@ -6,6 +6,7 @@ import {
   type GenerateRequest,
 } from "./types";
 import { getSector } from "./sectors";
+import { platformDnaBlock } from "./platform-dna";
 
 // ============================================================================
 // Prompt kurulumu — Constitution Bolum 8.
@@ -102,18 +103,11 @@ export function buildUserPrompt(req: GenerateRequest): string {
   lines.push(`Aci: ${ANGLE_LABELS[angle]} — ${ANGLE_HINTS[angle]}`);
   lines.push("");
   lines.push(
-    "Su 4 platform icin TAM paket uret. Her platformun kendi fizigine uy:",
+    "Su 4 platform icin TAM paket uret. Her platformun PLATFORM DNA'sina KESIN uy:",
   );
-  lines.push(
-    "- Instagram: ~125 karakter hook+deger caption; ilk yorumda hashtag; kare gorsel prompt (marka rengi #E8650A, kompozisyon, character consistency notu); alt-text.",
-  );
-  lines.push(
-    "- TikTok/Reels: 0-3sn pattern-interrupt hook; her ~3sn yeni bilgi veren shot-by-shot sahne dokumu (Seedance/Higgsfield uyumlu); trend ses onerisi; comment-bait CTA.",
-  );
-  lines.push(
-    "- LinkedIn: feed'de gorunen guclu ilk satir; beyaz bosluklu okunabilir govde; sektor insight'i; tartisma sorusu (B2B otorite tonu).",
-  );
-  lines.push("- X/Twitter: çengel tweet + deger tweet'leri + CTA seklinde thread (3-5 tweet).");
+  lines.push("");
+  lines.push("[PLATFORM DNA — her platformun kendi fizigi]");
+  lines.push(platformDnaBlock(sector.platformEmphasis));
   lines.push("");
   lines.push(
     `[PLATFORM ONCELIGI] Bu sektorde en cok donus veren platform sirasi: ${sector.platformEmphasis

@@ -5,10 +5,20 @@
 
 -----
 
-## Now (work top to bottom, don’t pause between items)
+## Now (DERİN tur — work top to bottom, don’t pause between items)
 
-- [x] Sektör platform vurgusu (daha akıllı hedefleme)  (db2d557)
-- [x] Konu önerici (boş sayfa sendromunu öldür)  (709b4f2)
+- [ ] Platform DNA veri katmanı + derin prompt enjeksiyonu (Üretim Pipeline derinliği)
+  Done when: src/lib/platform-dna.ts yapısal per-platform kurallar; prompt her platform için somut spec bloğu enjekte eder; test + build yeşil; committed.
+- [ ] Strateji Brief üreteci (Strateji Engine derinliği)
+  Done when: buildStrategyBrief() birincil+ikincil açı, platform önceliği, persona odağı, hook tohumu üretir; create ekranında zengin panel; pure test + build yeşil; committed.
+- [ ] Sektör açı afinitesi + ses-ton→somut kural (Sektör + Marka Beyni derinliği)
+  Done when: her sektöre angleAffinity (sıralı) eklenir; voice.tone somut yazım kurallarına eşlenir ve prompt'a girer; recommender afiniteyi kullanır; test + build yeşil; committed.
+- [ ] Derin kalite-lint (öz-denetim derinliği)
+  Done when: quality.ts'e kanıt-rakamı-yok, imza-ifade-yok, IG hashtag sayısı, X thread sınırı, emoji aşırılığı kuralları eklenir; her biri test edilir; çıktı panelinde gösterilir; build yeşil; committed.
+
+### Done bu turda (önceki Now sprinti):
+- [x] Sektör platform vurgusu  (db2d557)
+- [x] Konu önerici  (709b4f2)
 - [x] Çıktı kalite göstergeleri (IG caption uzunluğu)  (cceeb76)
 
 -----
