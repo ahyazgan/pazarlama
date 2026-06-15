@@ -90,6 +90,13 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(toneDirectives(5)).toMatch(/Dengeli/);
   });
 
+  it("persona derinligini (itiraz/kelime/tetikleyici) enjekte eder", () => {
+    const p = buildUserPrompt(req);
+    expect(p).toMatch(/Persona derinligi/);
+    expect(p).toMatch(/irsaliye/); // Saha Mudur vocabulary
+    expect(p).toMatch(/itirazi onceden karsila/);
+  });
+
   it("konumlandirma (rakip + fark) enjekte eder", () => {
     const p = buildUserPrompt(req);
     expect(p).toMatch(/KONUMLANDIRMA/);

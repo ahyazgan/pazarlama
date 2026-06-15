@@ -96,6 +96,17 @@ export function buildUserPrompt(req: GenerateRequest): string {
         persona.motivation || "-"
       }`,
     );
+    const depth: string[] = [];
+    if (persona.objections?.trim()) depth.push(`itirazlar: ${persona.objections.trim()}`);
+    if (persona.vocabulary?.trim())
+      depth.push(`kullandigi kelimeler: ${persona.vocabulary.trim()}`);
+    if (persona.triggers?.trim()) depth.push(`tetikleyiciler: ${persona.triggers.trim()}`);
+    if (depth.length) {
+      lines.push(`Persona derinligi — ${depth.join("; ")}.`);
+      lines.push(
+        "Personanin kendi kelimeleriyle yaz; bir itirazi onceden karsila; bir tetikleyiciye dokun.",
+      );
+    }
     lines.push("Bu personanin acisina/motivasyonuna dogrudan hitap et.");
   }
   if (brand.proof.numbers.filter(Boolean).length) {

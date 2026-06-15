@@ -30,7 +30,9 @@ export function emptyBrand(): Brand {
       goodExamples: [""],
       badExamples: [""],
     },
-    audience: [{ name: "", pain: "", motivation: "" }],
+    audience: [
+      { name: "", pain: "", motivation: "", objections: "", vocabulary: "", triggers: "" },
+    ],
     proof: { numbers: [""], cases: [""], references: [""] },
   };
 }
@@ -80,11 +82,17 @@ export const HAMMADDEM_SAMPLE: Brand = {
       name: "Saha Mudur (Muteahhit)",
       pain: "Geç gelen malzeme santiyeyi durduruyor, ceza riski doguruyor.",
       motivation: "Teslimati garanti alarak isi zamaninda bitirmek.",
+      objections: "Yeni tedarikçiye güvenmek; teslim sözünün tutulmamasi korkusu.",
+      vocabulary: "döküm, irsaliye, santiye, hakedis, ceza",
+      triggers: "Acil stok ihtiyaci; mevcut tedarikçinin gecikmesi.",
     },
     {
       name: "Satinalma Sorumlusu",
       pain: "Tedarikçi kalitesi ve fiyat seffafligini dogrulamak zor.",
       motivation: "Dogrulanmis tedarikçiyle riski ve evrak yukunu azaltmak.",
+      objections: "Fiyatin gizli olmasi; karsilastirma yapamamak.",
+      vocabulary: "teklif, KDV, vade, mutabakat, tedarikçi onayi",
+      triggers: "Çeyrek bütçe planlama; tek tedarikçi riski.",
     },
   ],
   proof: {

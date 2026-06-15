@@ -8,8 +8,7 @@
 ## Now (BEYNİ ÖĞRET — form değil örnek+konumlandırma ile derinleştir)
 
 - [x] Altın + negatif örnekler (few-shot voice öğrenme)  (d582cde)
-- [ ] Rakip & konumlandırma zekası
-  Done when: kimliğe rakipler + farkımız alanları; prompt'a konumlandırma bloğu (karşıtlık açısını besler); test + build yeşil; committed.
+- [x] Rakip & konumlandırma zekası  (90b155f)
 - [ ] Persona derinliği (jobs-to-be-done)
   Done when: persona'ya itirazlar + kullandığı kelimeler + tetikleyiciler; prompt'a girer; test + build yeşil; committed.
 

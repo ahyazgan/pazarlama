@@ -274,14 +274,21 @@ export default function BrandPage() {
               )}
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
-              {(["name", "pain", "motivation"] as const).map((field) => (
+              {(
+                [
+                  ["name", "Ad"],
+                  ["pain", "Acı"],
+                  ["motivation", "Motivasyon"],
+                  ["objections", "İtirazlar"],
+                  ["vocabulary", "Kullandığı kelimeler"],
+                  ["triggers", "Tetikleyiciler"],
+                ] as const
+              ).map(([field, label]) => (
                 <div key={field}>
-                  <label className="label">
-                    {field === "name" ? "Ad" : field === "pain" ? "Aci" : "Motivasyon"}
-                  </label>
+                  <label className="label">{label}</label>
                   <input
                     className="input"
-                    value={p[field]}
+                    value={p[field] ?? ""}
                     onChange={(e) => {
                       const audience = [...brand.audience];
                       audience[i] = { ...audience[i], [field]: e.target.value };
@@ -291,6 +298,10 @@ export default function BrandPage() {
                 </div>
               ))}
             </div>
+            <p className="hint mt-2">
+              İtiraz/kelime/tetikleyici = persona derinliği (jobs-to-be-done). Beyin personanın
+              diliyle yazar, itirazı önceden karşılar.
+            </p>
           </div>
         ))}
       </section>

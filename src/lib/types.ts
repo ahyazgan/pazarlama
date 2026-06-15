@@ -44,6 +44,9 @@ export interface Persona {
   name: string;
   pain: string; // aci
   motivation: string; // motivasyon
+  objections?: string; // itirazlar / satin almama nedenleri
+  vocabulary?: string; // personanin kendi kullandigi kelimeler
+  triggers?: string; // satin alma tetikleyicileri
 }
 
 export interface BrandProof {
