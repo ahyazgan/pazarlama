@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { EMAIL_SCHEMA, buildEmailUser, buildDemoEmail } from "./email";
-import { REPLY_SCHEMA, buildReplyUser, buildDemoReplies } from "./community";
+import { EMAIL_SCHEMA, buildEmailUser, buildDemoEmail, lintEmail } from "./email";
+import { REPLY_SCHEMA, buildReplyUser, buildDemoReplies, triageComment } from "./community";
 import { HAMMADDEM_SAMPLE } from "./brand-store";
 import type { EmailRequest, ReplyRequest } from "./types";
 
@@ -40,5 +40,32 @@ describe("topluluk yanıt motoru", () => {
   });
   it("demo 2-3 taslak üretir", () => {
     expect(buildDemoReplies(replyReq).drafts.length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe("lintEmail (deliverability)", () => {
+  it("spam kelime + uzun konu işaretler", () => {
+    const kit = buildDemoEmail(emailReq);
+    kit.emails[0].subject = "Bedava müjde! ".repeat(6); // hem spam hem uzun
+    const issues = lintEmail(kit);
+    expect(issues.some((i) => i.type === "spam")).toBe(true);
+    expect(issues.some((i) => i.type === "subject_uzun")).toBe(true);
+  });
+});
+
+describe("triageComment", () => {
+  it("kriz → escalate", () => {
+    const t = triageComment("Avukatıma söyleyeceğim, dava açacağım");
+    expect(t.category).toBe("kriz");
+    expect(t.escalate).toBe(true);
+  });
+  it("şikâyet → empati önerisi", () => {
+    expect(triageComment("Ürün bozuk geldi, çok kötü").category).toBe("sikayet");
+  });
+  it("soru → soru", () => {
+    expect(triageComment("Fiyat ne kadar?").category).toBe("soru");
+  });
+  it("olumlu → düşük aciliyet", () => {
+    expect(triageComment("Harika hizmet, teşekkürler").urgency).toBe("dusuk");
   });
 });

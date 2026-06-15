@@ -56,6 +56,42 @@ export const EMAIL_SCHEMA = {
   required: ["emails", "landingHeadline", "landingSubhead", "landingBullets", "landingCta"],
 } as const;
 
+// Deliverability lint: spam tetikleyici kelimeler + subject uzunluğu.
+const SPAM_WORDS = [
+  "bedava",
+  "ücretsiz kazan",
+  "%100 garanti",
+  "acele et",
+  "şimdi tıkla",
+  "kaçırma",
+  "müjde",
+  "tıkla kazan",
+  "son şans",
+  "indirim indirim",
+];
+
+export interface EmailIssue {
+  where: string;
+  type: "spam" | "subject_uzun" | "subject_bos";
+  detail: string;
+}
+
+export function lintEmail(kit: EmailKit): EmailIssue[] {
+  const out: EmailIssue[] = [];
+  kit.emails.forEach((e, i) => {
+    const subj = e.subject.trim();
+    if (!subj) out.push({ where: `E-posta ${i + 1}`, type: "subject_bos", detail: "konu boş" });
+    else if (subj.length > 60)
+      out.push({ where: `E-posta ${i + 1}`, type: "subject_uzun", detail: `${subj.length} karakter (≤60 önerilir)` });
+    const blob = `${e.subject} ${e.body}`.toLowerCase();
+    for (const w of SPAM_WORDS) {
+      if (blob.includes(w))
+        out.push({ where: `E-posta ${i + 1}`, type: "spam", detail: `spam kelimesi: "${w}"` });
+    }
+  });
+  return out;
+}
+
 export function buildDemoEmail(req: EmailRequest): EmailKit {
   const b = req.brand;
   const sig = b.voice.signaturePhrases?.find(Boolean) ?? b.name;

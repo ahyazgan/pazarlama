@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { lintEmail } from "@/lib/email";
 import { loadBrand } from "@/lib/brand-store";
 import type { Brand, EmailKit, SequenceType } from "@/lib/types";
 
@@ -97,6 +98,26 @@ export default function EmailPage() {
           {loading ? "Üretiliyor…" : "Dizi üret"}
         </button>
       </section>
+
+      {kit && (() => {
+        const issues = lintEmail(kit);
+        return issues.length === 0 ? (
+          <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
+            Deliverability temiz ✓ (spam-kelime / uzun konu yok)
+          </div>
+        ) : (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            <p className="font-semibold">Deliverability uyarıları ({issues.length}):</p>
+            <ul className="mt-1 list-disc pl-5">
+              {issues.map((it, i) => (
+                <li key={i}>
+                  {it.where}: {it.detail}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
 
       {kit && (
         <section className="card space-y-3">

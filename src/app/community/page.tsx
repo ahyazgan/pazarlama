@@ -3,8 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { triageComment } from "@/lib/community";
 import { loadBrand } from "@/lib/brand-store";
 import type { Brand, ReplyDrafts } from "@/lib/types";
+
+const CAT_LABEL: Record<string, string> = {
+  olumlu: "Olumlu/nötr",
+  soru: "Soru",
+  sikayet: "Şikâyet",
+  kriz: "Kriz",
+};
 
 export default function CommunityPage() {
   const [brand, setBrand] = useState<Brand | null>(null);
@@ -72,6 +80,22 @@ export default function CommunityPage() {
           Demo modu (anahtarsız önizleme)
         </label>
         {error && <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+        {comment.trim() && (() => {
+          const tr = triageComment(comment);
+          return (
+            <div
+              className={`rounded-lg border px-3 py-2 text-xs ${
+                tr.escalate
+                  ? "border-red-300 bg-red-50 text-red-700"
+                  : "border-neutral-200 bg-neutral-50 text-neutral-700"
+              }`}
+            >
+              <span className="font-semibold">Triyaj:</span> {CAT_LABEL[tr.category]} · aciliyet:{" "}
+              {tr.urgency}
+              {tr.escalate && " · ⚠ insana yükselt"} — {tr.advice}
+            </div>
+          );
+        })()}
         <button type="button" className="btn-primary" onClick={run} disabled={loading}>
           {loading ? "Üretiliyor…" : "Yanıt taslağı üret"}
         </button>

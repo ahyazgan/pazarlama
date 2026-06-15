@@ -22,12 +22,9 @@
 ## Now (KREATİF KATMANI DERİNLEŞTİR — denetim/zekâ, sırayla)
 
 - [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)
-- [ ] SEO audit/skor (title/meta/anahtar kelime yerleşimi)
-  Done when: auditSeo(seo) checklist + 0-100 skor; /seo'da gösterim; test + build; committed.
-- [ ] E-posta deliverability lint (spam-kelime + subject uzunluğu)
-  Done when: lintEmail(kit) spam-kelime + subject uzunluk uyarıları; /email'de gösterim; test + build; committed.
-- [ ] Topluluk triyaj (duygu/aciliyet + insana yükselt)
-  Done when: triageComment(text) kategori/aciliyet/escalate; /community'de yanıttan önce gösterim; test + build; committed.
+- [x] SEO audit/skor  (c76e5e9)
+- [x] E-posta deliverability lint (lintEmail)  (commit)
+- [x] Topluluk triyaj (triageComment + escalate)  (commit)
 
 ### Done (kreatif katman v1):
 - [x] Reklam metni motoru  (00c53e4)  · SEO  (75ddf13)  · E-posta+Topluluk  (f2baa1e)

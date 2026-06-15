@@ -27,6 +27,54 @@ export const REPLY_SCHEMA = {
   required: ["drafts"],
 } as const;
 
+// Triyaj: gelen yorum/DM'i sınıfla + aciliyet + insana yükselt sinyali.
+export type TriageCategory = "olumlu" | "soru" | "sikayet" | "kriz";
+
+export interface Triage {
+  category: TriageCategory;
+  urgency: "dusuk" | "orta" | "yuksek";
+  escalate: boolean; // insan müdahalesi önerilir mi
+  advice: string;
+}
+
+const CRISIS = ["dava", "avukat", "dolandırıcı", "şikayet edeceğim", "iade etmiyor", "rezalet", "skandal", "zehir"];
+const COMPLAINT = ["kötü", "berbat", "gecikti", "bozuk", "memnun değil", "sorun", "çözmüyor", "kandır", "pahalı"];
+const QUESTION = ["?", "nasıl", "ne kadar", "mı", "mu", "fiyat", "bilgi"];
+
+export function triageComment(text: string): Triage {
+  const t = text.toLowerCase();
+  if (CRISIS.some((w) => t.includes(w))) {
+    return {
+      category: "kriz",
+      urgency: "yuksek",
+      escalate: true,
+      advice: "Kriz sinyali: hemen bir insana yükselt; kamuya savunmacı yanıt verme, özelden çöz.",
+    };
+  }
+  if (COMPLAINT.some((w) => t.includes(w))) {
+    return {
+      category: "sikayet",
+      urgency: "orta",
+      escalate: false,
+      advice: "Şikâyet: önce empati, sonra somut çözüm/yönlendirme. Hızlı yanıt ver.",
+    };
+  }
+  if (QUESTION.some((w) => t.includes(w))) {
+    return {
+      category: "soru",
+      urgency: "orta",
+      escalate: false,
+      advice: "Soru: net cevap + bir sonraki adım (CTA hedefine yönlendir).",
+    };
+  }
+  return {
+    category: "olumlu",
+    urgency: "dusuk",
+    escalate: false,
+    advice: "Olumlu/nötr: sıcak teşekkür + ilişkiyi derinleştiren kısa dokunuş.",
+  };
+}
+
 export function buildDemoReplies(req: ReplyRequest): ReplyDrafts {
   const b = req.brand;
   const cta = b.identity.ctaGoal?.trim() || "bize ulaşın";
