@@ -1,13 +1,23 @@
 "use client";
 
 // Onay / sign-off kaydı (governance denetim izi). Yerel saklama (MVP).
+export type ApproverRole = "icerik" | "marka" | "hukuk";
+
 export interface Approval {
   topic: string;
   brand: string;
   grade: string;
   score: number;
+  approver?: string; // onaylayan kişi
+  role?: ApproverRole; // onaylayan rolü
   at: number;
 }
+
+export const ROLE_LABEL: Record<ApproverRole, string> = {
+  icerik: "İçerik",
+  marka: "Marka",
+  hukuk: "Hukuk",
+};
 
 const KEY = "content-os.approvals";
 

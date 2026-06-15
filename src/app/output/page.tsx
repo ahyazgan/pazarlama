@@ -19,7 +19,7 @@ import {
   readabilityForPackage,
   voiceFit,
 } from "@/lib/governance";
-import { recordApproval } from "@/lib/approvals";
+import { recordApproval, ROLE_LABEL, type ApproverRole } from "@/lib/approvals";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -148,9 +148,18 @@ export default function OutputPage() {
     issues.length + compliance.length + readability.length + safety.length + access.length,
   );
   const [approved, setApproved] = useState(false);
+  const [approver, setApprover] = useState("");
+  const [role, setRole] = useState<ApproverRole>("icerik");
   const approve = () => {
     if (pkg && brand) {
-      recordApproval({ topic: pkg.topic, brand: brand.name, grade: grade.grade, score: grade.score });
+      recordApproval({
+        topic: pkg.topic,
+        brand: brand.name,
+        grade: grade.grade,
+        score: grade.score,
+        approver: approver.trim() || undefined,
+        role,
+      });
       setApproved(true);
     }
   };
@@ -368,6 +377,27 @@ export default function OutputPage() {
             >
               Governance: {grade.grade} ({grade.score})
             </span>
+            {!approved && !grade.blocking && (
+              <>
+                <input
+                  className="input w-28 py-0.5 text-xs"
+                  placeholder="Onaylayan"
+                  value={approver}
+                  onChange={(e) => setApprover(e.target.value)}
+                />
+                <select
+                  className="input w-auto py-0.5 text-xs"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as ApproverRole)}
+                >
+                  {(Object.keys(ROLE_LABEL) as ApproverRole[]).map((r) => (
+                    <option key={r} value={r}>
+                      {ROLE_LABEL[r]}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
             <button
               type="button"
               className="chip border-neutral-300 text-xs"

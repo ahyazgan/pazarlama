@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { approvalSummary, clearApprovals, loadApprovals, type Approval } from "@/lib/approvals";
+import {
+  approvalSummary,
+  clearApprovals,
+  loadApprovals,
+  ROLE_LABEL,
+  type Approval,
+} from "@/lib/approvals";
 
 function fmt(at: number): string {
   try {
@@ -62,6 +68,8 @@ export default function ApprovalsPage() {
                   <div className="font-medium">{a.topic}</div>
                   <div className="text-xs text-neutral-500">
                     {a.brand} · {fmt(a.at)}
+                    {a.approver && ` · ${a.approver}`}
+                    {a.role && ` (${ROLE_LABEL[a.role]})`}
                   </div>
                 </div>
                 <span
