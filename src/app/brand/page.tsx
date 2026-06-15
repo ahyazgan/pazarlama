@@ -16,6 +16,8 @@ import {
   setActiveBrand,
 } from "@/lib/brand-store";
 import { saveBrandRemote } from "@/lib/persist";
+import { serializeBrand, parseBrand } from "@/lib/brand-io";
+import { downloadText, slugify } from "@/lib/export";
 import type { Brand, SectorId } from "@/lib/types";
 
 export default function BrandPage() {
@@ -23,6 +25,7 @@ export default function BrandPage() {
   const [brand, setBrand] = useState<Brand>(emptyBrand());
   const [brands, setBrands] = useState<Brand[]>([]);
   const [saved, setSaved] = useState(false);
+  const [importError, setImportError] = useState<string | null>(null);
 
   useEffect(() => {
     const existing = loadBrand();
@@ -517,6 +520,38 @@ export default function BrandPage() {
         {!brand.name && (
           <span className="text-sm text-neutral-500">Once marka adi gir.</span>
         )}
+        <span className="flex-1" />
+        <button
+          type="button"
+          className="btn-ghost px-3 py-1 text-xs"
+          onClick={() =>
+            downloadText(`${slugify(brand.name || "marka")}-beyin.json`, serializeBrand(brand), "application/json")
+          }
+          disabled={!brand.name}
+        >
+          Beyni indir (JSON)
+        </button>
+        <label className="btn-ghost cursor-pointer px-3 py-1 text-xs">
+          JSON yükle
+          <input
+            type="file"
+            accept="application/json"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const parsed = parseBrand(await file.text());
+              if (parsed) {
+                setBrand(parsed);
+                setSaved(false);
+              } else {
+                setImportError("Geçersiz marka JSON'u.");
+              }
+              e.target.value = "";
+            }}
+          />
+        </label>
+        {importError && <span className="text-xs text-red-600">{importError}</span>}
       </div>
     </div>
   );

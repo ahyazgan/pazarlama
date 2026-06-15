@@ -7,8 +7,7 @@
 
 ## Now (çok-marka + portabilite + haftalık plan — teker teker)
 
-- [ ] Çok marka desteği (her kullanıcı 1+ marka — Constitution §7)
-  Done when: birden çok marka saklanır, aktif marka seçilebilir; eski tek-marka kaydı migrate edilir; pure seçim/migrasyon testi; build yeşil; committed.
+- [x] Çok marka desteği (1+ marka, seç/sil, migrasyon)  (74a27e2)
 - [ ] Beyin export / import (JSON portabilite + yedek)
   Done when: Marka Profili'nden beyni JSON indir + JSON'dan yükle; pure serialize/parse + doğrulama testi; build yeşil; committed.
 - [ ] Haftalık içerik planı üreteci (Strateji Engine derinliği)
