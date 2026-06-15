@@ -9,8 +9,7 @@
 
 - [x] Beyin Doluluk Skoru + rehberli iyileştirme  (10b6c12)
 - [x] Varyant üretimi (A/B) — derin  (faf960c)
-- [ ] Beyin/prompt şeffaflık önizlemesi
-  Done when: Kampanya'da "Beyne ne enjekte ediliyor" okunabilir özet paneli; pure özetleyici + test; build yeşil; committed.
+- [x] Beyin/prompt şeffaflık önizlemesi  (9fcafc4)
 - [ ] Yayın hazırlığı paketi
   Done when: platform başına kopyala checklist + .ics takvim hatırlatıcı dışa aktarımı; pure ics üreteci + test; build yeşil; committed.
 

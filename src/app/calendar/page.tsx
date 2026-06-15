@@ -10,6 +10,8 @@ import {
   type CalendarEntry,
 } from "@/lib/calendar";
 import { ANGLE_LABELS, CONTENT_TYPE_LABELS } from "@/lib/types";
+import { buildICS } from "@/lib/publish";
+import { downloadText } from "@/lib/export";
 
 export default function CalendarPage() {
   const [entries, setEntries] = useState<CalendarEntry[]>([]);
@@ -33,9 +35,22 @@ export default function CalendarPage() {
             Planlanan içerik paketleri. Yayın manuel (MVP) — yayınladıkça işaretle.
           </p>
         </div>
-        <Link href="/create" className="btn-ghost">
-          Yeni kampanya
-        </Link>
+        <div className="flex gap-2">
+          {entries.length > 0 && (
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={() =>
+                downloadText("content-os-takvim.ics", buildICS(entries), "text/calendar")
+              }
+            >
+              .ics indir
+            </button>
+          )}
+          <Link href="/create" className="btn-ghost">
+            Yeni kampanya
+          </Link>
+        </div>
       </div>
 
       {groups.length === 0 ? (

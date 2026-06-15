@@ -7,6 +7,7 @@ import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/l
 import { lintPackage, lintWithBrand } from "@/lib/quality";
 import { recordFeedback } from "@/lib/feedback";
 import { addToPlan, todayISO } from "@/lib/calendar";
+import { publishChecklist } from "@/lib/publish";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -413,6 +414,17 @@ export default function OutputPage() {
           </>
         )}
       </section>
+
+      <details className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
+        <summary className="cursor-pointer text-sm font-medium text-neutral-700">
+          Yayın hazırlığı — {PLATFORM_LABELS[tab]} manuel adımlar
+        </summary>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-neutral-600">
+          {publishChecklist(tab).map((step, i) => (
+            <li key={i}>{step}</li>
+          ))}
+        </ul>
+      </details>
     </div>
   );
 }
