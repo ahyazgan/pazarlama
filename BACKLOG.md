@@ -23,8 +23,8 @@
 
 - [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)
 - [x] SEO audit/skor  (c76e5e9)
-- [x] E-posta deliverability lint (lintEmail)  (commit)
-- [x] Topluluk triyaj (triageComment + escalate)  (commit)
+- [x] E-posta deliverability lint (lintEmail)  (6aaf38b)
+- [x] Topluluk triyaj (triageComment + escalate)  (6aaf38b)
 
 ### Done (kreatif katman v1):
 - [x] Reklam metni motoru  (00c53e4)  · SEO  (75ddf13)  · E-posta+Topluluk  (f2baa1e)
