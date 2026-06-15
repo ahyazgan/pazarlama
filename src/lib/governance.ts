@@ -78,3 +78,33 @@ export function complianceForPackage(pkg: ContentPackage, sector: SectorId): Com
 export function complianceForText(text: string, sector: SectorId): ComplianceIssue[] {
   return scanText(text, sector);
 }
+
+// --- Okunabilirlik ----------------------------------------------------------
+export interface ReadabilityIssue {
+  where: string;
+  detail: string;
+}
+
+function sentences(text: string): string[] {
+  return text
+    .split(/(?<=[.!?])\s+|\n+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+// Çok uzun cümle / duvar metin uyarıları (kısa-net marka dili için).
+export function readabilityForPackage(pkg: ContentPackage): ReadabilityIssue[] {
+  const fields: [string, string][] = [
+    ["Instagram caption", pkg.outputs.instagram.caption],
+    ["LinkedIn gövde", pkg.outputs.linkedin.body],
+  ];
+  const out: ReadabilityIssue[] = [];
+  for (const [where, text] of fields) {
+    const ss = sentences(text);
+    const longCount = ss.filter((s) => s.split(/\s+/).length > 25).length;
+    if (longCount > 0) {
+      out.push({ where, detail: `${longCount} çok uzun cümle (>25 kelime) — böl/kısalt` });
+    }
+  }
+  return out;
+}

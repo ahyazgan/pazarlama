@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { complianceForPackage, complianceForText } from "./governance";
+import { complianceForPackage, complianceForText, readabilityForPackage } from "./governance";
 import type { ContentPackage } from "./types";
 
 function pkg(caption: string): ContentPackage {
@@ -35,5 +35,15 @@ describe("governance — uyumluluk", () => {
 
   it("temiz metin → sorun yok", () => {
     expect(complianceForText("Garantili teslim süresiyle şantiyeye değer katıyoruz.", "insaat")).toEqual([]);
+  });
+});
+
+describe("governance — okunabilirlik", () => {
+  it("çok uzun cümleyi işaretler", () => {
+    const long = "kelime ".repeat(30) + "son.";
+    expect(readabilityForPackage(pkg(long)).length).toBeGreaterThan(0);
+  });
+  it("kısa metin temiz", () => {
+    expect(readabilityForPackage(pkg("Kısa ve net. İki cümle."))).toEqual([]);
   });
 });

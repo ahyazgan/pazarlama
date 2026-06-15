@@ -10,7 +10,7 @@ import { addToPlan, todayISO } from "@/lib/calendar";
 import { publishChecklist } from "@/lib/publish";
 import { brainScore } from "@/lib/brain-score";
 import { readiness } from "@/lib/readiness";
-import { complianceForPackage } from "@/lib/governance";
+import { complianceForPackage, readabilityForPackage } from "@/lib/governance";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -115,7 +115,8 @@ export default function OutputPage() {
     : [];
   const brain = brand ? brainScore(brand).score : 0;
   const compliance = pkg && brand ? complianceForPackage(pkg, brand.sector) : [];
-  const ready = readiness(brain, issues.length + compliance.length);
+  const readability = pkg ? readabilityForPackage(pkg) : [];
+  const ready = readiness(brain, issues.length + compliance.length + readability.length);
 
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
   useEffect(() => {
@@ -299,6 +300,9 @@ export default function OutputPage() {
           <span className="text-neutral-500">
             {issues.length === 0 ? "Lint temiz" : `${issues.length} lint uyarısı`}
           </span>
+          {readability.length > 0 && (
+            <span className="text-neutral-500">{readability.length} okunabilirlik</span>
+          )}
           {brain < 60 && (
             <Link href="/brand" className="text-xs text-brand-dark underline">
               Beyni güçlendir
