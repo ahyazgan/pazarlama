@@ -19,13 +19,12 @@
 
 -----
 
-## Later (lower priority — only if Now + Next clear)
+## Later (lower priority — hepsi insan girdisi / dış bağımlılık bekliyor)
 
-- [ ] Trend Enjeksiyonu (web search ile sektörel güncel haber bağlama)
-- [ ] Feedback Loop (performans verisi → strateji öğrenir)
-- [ ] Otomatik yayın (IG Graph API / TikTok API)
-- [ ] İçerik takvimi (drag-drop planlama)
-- [ ] Sektör terminoloji sözlüklerini genişlet (kafe/eticaret/hizmet/güzellik tam doldur)
+- [ ] Trend Enjeksiyonu (web search ile sektörel güncel haber bağlama) — BLOKE: web search altyapısı/anahtarı gerekir
+- [ ] Feedback Loop (performans verisi → strateji öğrenir) — BLOKE: gerçek yayın performans verisi gerekir
+- [ ] Otomatik yayın (IG Graph API / TikTok API) — BLOKE: platform API erişimi + OAuth (prod yan etki)
+- [ ] İçerik takvimi (drag-drop planlama) — DÜŞÜK ÖNCELİK: constitution "manuel yayın yeterli (MVP)" diyor; doğrulanmış ihtiyaç olunca yapılır
 
 -----
 
@@ -40,6 +39,7 @@
 - [x] Çıktı dışa aktarma (markdown + JSON)  (bd9b44a)
 - [x] Tüm personalar için ayrı üretim + persona sekmeleri  (759c00d)
 - [x] Supabase best-effort kalıcı kayıt (brands + content_packages)  (3fdde81)
+- [x] Sektör zekasını genişlet (kafe/eticaret/hizmet/güzellik terim+hook)  (dd0d106)
 
 -----
 
