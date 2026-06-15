@@ -28,6 +28,9 @@
 - [x] Birleşik governance notu (A–D) + onay/sign-off  (16f2c3b)
 - [x] Onay panosu / denetim izi (/approvals)  (35fd643)
 - [x] Marka-bazlı governance kuralları (özel yasak + zorunlu ibare)  (d706146)
+- [x] Sektör varsayılan disclaimer şablonları  (afaed51)
+- [x] Çoklu-onaycı/rol (sign-off: onaylayan + rol)  (e3f4e05)
+- [x] Dışa aktarılabilir QA/governance raporu (markdown)  (884764b)
 
 ### Done (kreatif denetim v1):
 - [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)
