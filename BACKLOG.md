@@ -9,8 +9,7 @@
 
 - [x] Altın + negatif örnekler (few-shot voice öğrenme)  (d582cde)
 - [x] Rakip & konumlandırma zekası  (90b155f)
-- [ ] Persona derinliği (jobs-to-be-done)
-  Done when: persona'ya itirazlar + kullandığı kelimeler + tetikleyiciler; prompt'a girer; test + build yeşil; committed.
+- [x] Persona derinliği (jobs-to-be-done)  (f230805)
 
 ### Kalıcı BLOKE (sahtesi yapılmaz):
 - [ ] Sektör network etkisi (cross-brand öğrenme) — çoklu-kullanıcı backend + anonim agregasyon gerekir
@@ -62,6 +61,9 @@
 - [x] Trend enjeksiyonu (manuel girdi)  (b3159bc)
 - [x] Feedback loop (yerel 👍/👎 → öğrenen recommender)  (25e50f1)
 - [x] İçerik takvimi (ajanda/planlayıcı + /calendar)  (34b4c6a)
+- [x] BEYNİ ÖĞRET: few-shot altın/negatif örnekler  (d582cde)
+- [x] BEYNİ ÖĞRET: rakip & konumlandırma  (90b155f)
+- [x] BEYNİ ÖĞRET: persona derinliği (jobs-to-be-done)  (f230805)
 
 -----
 
