@@ -9,8 +9,7 @@
 
 - [x] Sektör bilgi korpusunu derinleştir (mevzuat/hata/benchmark)  (c1ca566)
 - [x] Araştırma brief tipleri + citations + grounding enjeksiyonu  (88fe709)
-- [ ] Kalite-lint: atıfsız iddia / şüpheli sayı kuralı
-  Done when: metinde marka kanıtında olmayan sayı + kaynaksız iddia işaretlenir; test + build yeşil; committed.
+- [x] Kalite-lint: şüpheli/kaynaksız sayı kuralı  (1f62ac8)
 - [ ] /api/research web_search iskeleti (anahtarsız 503)
   Done when: /api/research endpoint (web_search_20260209 + citations) kod olarak hazır; anahtarsız 503; build yeşil; committed.
 
