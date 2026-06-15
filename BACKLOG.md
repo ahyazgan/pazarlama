@@ -40,10 +40,11 @@
 - [x] Tüm personalar için ayrı üretim + persona sekmeleri  (759c00d)
 - [x] Supabase best-effort kalıcı kayıt (brands + content_packages)  (3fdde81)
 - [x] Sektör zekasını genişlet (kafe/eticaret/hizmet/güzellik terim+hook)  (dd0d106)
+- [x] Demo modu — anahtarsız şablon çıktı + uçtan uca önizleme (smoke test geçti)  (ae67b7c)
 
 -----
 
 ## Notes / blockers (anything needing human eyes)
 
 - Önceki BACKLOG içeriği (futbol karar-uygulaması: La Liga, return_to_play/minutes_management motorları, /decisions, sidebar) bu repoya ait DEĞİL; ayrı "manager2" projesinin backlog'uydu. Bu repo Content OS. Düzeltildi.
-- Üretim endpoint'i ANTHROPIC_API_KEY gerektirir; uçtan uca içerik üretimi yalnızca anahtar varken doğrulanabilir.
+- Gerçek (Claude) üretimi ANTHROPIC_API_KEY gerektirir. Anahtarsız tam akış için Kampanya ekranında "Demo modu" kullanılabilir — şablon çıktı, Claude çağrılmaz (smoke test geçti, ae67b7c).
