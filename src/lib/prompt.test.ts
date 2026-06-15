@@ -77,6 +77,13 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(p).toMatch(/Ton kurallari:/);
   });
 
+  it("trend verilince enjekte eder, verilmeyince etmez", () => {
+    expect(buildUserPrompt({ ...req, trend: "Deprem yonetmeligi guncellendi" })).toMatch(
+      /TREND ENJEKSIYONU/,
+    );
+    expect(buildUserPrompt(req)).not.toMatch(/TREND ENJEKSIYONU/);
+  });
+
   it("toneDirectives uca gore degisir", () => {
     expect(toneDirectives(1)).toMatch(/Resmi/);
     expect(toneDirectives(9)).toMatch(/Samimi/);

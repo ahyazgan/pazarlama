@@ -118,6 +118,7 @@ export interface GenerateRequest {
   angle: Angle;
   personaIndex: number;
   demo?: boolean; // true ise API anahtari olmadan sablon (demo) cikti uretilir
+  trend?: string; // opsiyonel guncel trend/haber — icerik buna baglanir (Trend Enjeksiyonu)
 }
 
 export interface ContentPackage {

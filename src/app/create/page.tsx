@@ -43,6 +43,7 @@ export default function CreatePage() {
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [demo, setDemo] = useState(false);
+  const [trend, setTrend] = useState("");
 
   useEffect(() => {
     const b = loadBrand();
@@ -100,6 +101,7 @@ export default function CreatePage() {
         angle: angleArg,
         personaIndex: idx,
         demo,
+        trend: trend.trim() || undefined,
       }),
     });
     const data = await res.json();
@@ -336,6 +338,20 @@ export default function CreatePage() {
               </option>
             ))}
           </select>
+        </div>
+
+        <div>
+          <label className="label">
+            Güncel trend / haber{" "}
+            <span className="font-normal text-neutral-400">(opsiyonel — trend enjeksiyonu)</span>
+          </label>
+          <input
+            className="input"
+            value={trend}
+            onChange={(e) => setTrend(e.target.value)}
+            placeholder="or. Yeni deprem yönetmeliği yürürlüğe girdi"
+          />
+          <p className="hint">Doldurulursa içerik bu güncel olaya bağlanır.</p>
         </div>
 
         {duplicate && (

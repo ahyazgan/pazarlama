@@ -21,6 +21,7 @@ export function buildDemoPackage(req: GenerateRequest): ContentPackage {
   const personaName = persona?.name || "hedef kitle";
   const personaPain = persona?.pain || "öncelikli sorun";
   const angleLabel = ANGLE_LABELS[angle];
+  const trendNote = req.trend?.trim() ? ` Güncel bağlam: ${req.trend.trim()}.` : "";
 
   return {
     topic,
@@ -30,7 +31,7 @@ export function buildDemoPackage(req: GenerateRequest): ContentPackage {
     platformEmphasis: sector.platformEmphasis,
     outputs: {
       instagram: {
-        caption: `${topic} — ${personaName} için fark yaratan nokta. ${sig}. ${angleLabel} açısıyla: ${personaPain} çözülür. (${num})`,
+        caption: `${topic} — ${personaName} için fark yaratan nokta. ${sig}. ${angleLabel} açısıyla: ${personaPain} çözülür. (${num})${trendNote}`,
         firstComment: `#${slug(brand.name)} #${slug(t0)} #${slug(t1)} #${slug(sector.sector)} #içerik`,
         imagePrompt: `Kare format, marka rengi #E8650A vurgulu. Sahne: "${topic}" temasını ${t0} ve ${t1} öğeleriyle anlatan temiz, profesyonel kompozisyon. ${brand.name} kimliğiyle tutarlı; metin alanı sol üstte. (demo görsel prompt)`,
         altText: `${brand.name} için ${topic} konulu, ${t0} öğesini öne çıkaran görsel.`,

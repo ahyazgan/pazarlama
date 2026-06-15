@@ -5,17 +5,18 @@
 
 -----
 
-## Now (DERİN tur — work top to bottom, don’t pause between items)
+## Now (BLOKE işlerin kredensiyelsiz MVP versiyonları)
 
-- [x] Platform DNA veri katmanı + derin prompt enjeksiyonu  (80ddbb5)
-- [x] Strateji Brief üreteci (birincil/ikincil açı, persona odağı, hook tohumu)  (0a15806)
-- [x] Sektör açı afinitesi + ses-ton→somut yazım kuralları  (f378202)
-- [x] Derin kalite-lint (kanıt/imza/hashtag/thread/emoji/zayıf-hook + marka-bilinçli)  (08597a9)
+- [ ] Trend Enjeksiyonu (manuel girdi) — web search olmadan
+  Done when: Kampanya ekranında opsiyonel "güncel trend/haber" alanı; doluysa prompt'a "içeriği bu güncel olaya bağla" direktifi girer; prompt testi + build yeşil; committed.
+- [ ] Feedback Loop (yerel) — gerçek strateji öğrenmesi
+  Done when: Çıktı ekranında 👍/👎 geri bildirim; yerel saklanır; recommender olumlu açıları öne çeker, olumsuzları kısar; pure scoring testi + build yeşil; committed.
+- [ ] İçerik Takvimi (ajanda/planlayıcı) — drag-drop yerine MVP
+  Done when: çıktıdan "Takvime ekle" (tarih); /calendar tarihe göre planlanan paketleri listeler + durum (planlandı/yayınlandı); pure helper testi + build yeşil; committed.
 
-### Done bu turda (önceki Now sprinti):
-- [x] Sektör platform vurgusu  (db2d557)
-- [x] Konu önerici  (709b4f2)
-- [x] Çıktı kalite göstergeleri (IG caption uzunluğu)  (cceeb76)
+### Kalıcı BLOKE (sahtesi yapılmaz):
+- [ ] Otomatik yayın (IG Graph / TikTok API) — OAuth + prod yan etki (§4)
+- [ ] LLM öz-eleştiri turu — ANTHROPIC_API_KEY gerekir (deterministik lint zaten var)
 
 -----
 

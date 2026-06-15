@@ -102,6 +102,11 @@ export function buildUserPrompt(req: GenerateRequest): string {
   lines.push(`Konu: ${topic}`);
   lines.push(`Icerik tipi: ${CONTENT_TYPE_LABELS[contentType]}`);
   lines.push(`Aci: ${ANGLE_LABELS[angle]} — ${ANGLE_HINTS[angle]}`);
+  if (req.trend && req.trend.trim()) {
+    lines.push(
+      `[TREND ENJEKSIYONU] Guncel olay/trend: "${req.trend.trim()}". Icerigi bu guncel baglama dogal sekilde bagla; zorlamadan, marka mesajiyla ortustur.`,
+    );
+  }
   lines.push("");
   lines.push(
     "Su 4 platform icin TAM paket uret. Her platformun PLATFORM DNA'sina KESIN uy:",
