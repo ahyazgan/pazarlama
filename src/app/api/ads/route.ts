@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
+import { rateLimited } from "@/lib/rate-limit";
 import { buildSystemPrompt } from "@/lib/prompt";
 import { AD_SCHEMA, buildAdsUser, buildDemoAds } from "@/lib/ads";
 import type { AdsRequest } from "@/lib/types";
@@ -17,6 +18,9 @@ function validate(req: Partial<AdsRequest>): string | null {
 }
 
 export async function POST(request: Request) {
+  const limited = rateLimited(request);
+  if (limited) return limited;
+
   let body: AdsRequest;
   try {
     body = (await request.json()) as AdsRequest;

@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
+import { rateLimited } from "@/lib/rate-limit";
 import {
   buildCritiqueSystem,
   buildCritiqueUser,
@@ -13,6 +14,9 @@ export const maxDuration = 60;
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
 
 export async function POST(request: Request) {
+  const limited = rateLimited(request);
+  if (limited) return limited;
+
   let body: { brand?: Brand; pkg?: ContentPackage };
   try {
     body = (await request.json()) as { brand?: Brand; pkg?: ContentPackage };

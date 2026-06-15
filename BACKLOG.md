@@ -19,18 +19,17 @@
 > research→generate (bulgu içeriğe + kaynak çıktıya). Constitution §11/6 ✓
 > Güvenlik: anahtar yalnızca git-ignore'lı .env.local'da; test sonrası revoke öneril(d)i.
 
-## Now (DENETİM/GOVERNANCE DERİNLEŞTİR — hukuk/kalite, sırayla)
+## Now (ÜRÜNLEŞME — API güvenliği + auth + kalıcılık)
 
-- [x] Sektörel uyumluluk denetimi (governance)  (e9459e9)
-- [x] Okunabilirlik denetimi  (35719f8)
-- [x] Marka ses-uyum skoru (voiceFit)  (a4f5195)
-- [x] Marka güvenliği + erişilebilirlik denetimi  (be1e2c1)
-- [x] Birleşik governance notu (A–D) + onay/sign-off  (16f2c3b)
-- [x] Onay panosu / denetim izi (/approvals)  (35fd643)
-- [x] Marka-bazlı governance kuralları (özel yasak + zorunlu ibare)  (d706146)
-- [x] Sektör varsayılan disclaimer şablonları  (afaed51)
-- [x] Çoklu-onaycı/rol (sign-off: onaylayan + rol)  (e3f4e05)
-- [x] Dışa aktarılabilir QA/governance raporu (markdown)  (884764b)
+- [ ] API rate-limit (açık maliyet deliğini kapat)
+  Done when: AI endpoint'lerinde IP-bazlı kayan pencere limiti → 429; pure limiter + test; build; committed.
+- [ ] Supabase Auth iskeleti (creds ile aktif)
+  Done when: auth client + giriş/çıkış + session hook; creds yoksa nazik no-op; build; committed. (Gerçek login Supabase projesi ister.)
+- [ ] Auth-aware kalıcılık (brands + content_packages user_id ile)
+  Done when: girişliyse Supabase'e, değilse localStorage; build; committed. (Doğrulama Supabase creds ister.)
+
+### Done (governance derinliği v1-v4):
+- [x] Compliance/okunabilirlik/voiceFit/safety/erişilebilirlik + A-D not + sign-off + /approvals + marka-kuralları + sektör disclaimer + çoklu-onaycı + QA rapor
 
 ### Done (kreatif denetim v1):
 - [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)

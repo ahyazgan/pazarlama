@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
+import { rateLimited } from "@/lib/rate-limit";
 import {
   buildSystemPrompt,
   buildUserPrompt,
@@ -25,6 +26,9 @@ function validate(req: Partial<GenerateRequest>): string | null {
 }
 
 export async function POST(request: Request) {
+  const limited = rateLimited(request);
+  if (limited) return limited;
+
   let body: GenerateRequest;
   try {
     body = (await request.json()) as GenerateRequest;
