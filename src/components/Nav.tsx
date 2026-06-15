@@ -8,6 +8,8 @@ const LINKS: [string, string][] = [
   ["/create", "Kampanya"],
   ["/ads", "Reklam"],
   ["/seo", "SEO"],
+  ["/email", "E-posta"],
+  ["/community", "Topluluk"],
   ["/plan", "Plan"],
   ["/calendar", "Takvim"],
   ["/integrations", "Entegrasyonlar"],

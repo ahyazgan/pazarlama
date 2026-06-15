@@ -212,6 +212,44 @@ export interface SeoRequest {
   demo?: boolean;
 }
 
+// E-posta / funnel metni.
+export type SequenceType = "hosgeldin" | "nurture" | "kampanya";
+
+export interface EmailMessage {
+  subject: string;
+  preview: string; // preheader
+  body: string;
+  cta: string;
+}
+
+export interface EmailKit {
+  emails: EmailMessage[];
+  landingHeadline: string;
+  landingSubhead: string;
+  landingBullets: string[];
+  landingCta: string;
+}
+
+export interface EmailRequest {
+  brand: Brand;
+  topic: string;
+  sequenceType: SequenceType;
+  personaIndex: number;
+  demo?: boolean;
+}
+
+// Topluluk yönetimi: yorum/DM yanıt taslakları.
+export interface ReplyDrafts {
+  drafts: string[];
+}
+
+export interface ReplyRequest {
+  brand: Brand;
+  comment: string;
+  personaIndex: number;
+  demo?: boolean;
+}
+
 export interface GenerateRequest {
   brand: Brand;
   topic: string;

@@ -22,12 +22,9 @@
 ## Now (AJANS KREATİF KATMANI — yazı/kreatif kısmı, sırayla)
 
 - [x] Reklam metni motoru (paid media creative)  (00c53e4)  — gerçek Sonnet ile doğrulandı
-- [ ] SEO içerik motoru (blog/uzun-form + meta)
-  Done when: /api/seo + şema (başlık, meta description, H2 outline, anahtar kelimeler, giriş paragrafı); demo; /seo UI; test + build yeşil; committed.
-- [ ] E-posta/funnel metni
-  Done when: e-posta dizisi (hoşgeldin/nurture) + landing kopya üreteci; demo; UI; test + build; committed.
-- [ ] Topluluk yönetimi: yorum/DM yanıt taslağı
-  Done when: marka sesiyle yorum/DM yanıt taslakları üreteci; demo; UI; test + build; committed.
+- [x] SEO içerik motoru (blog/uzun-form + meta)  (75ddf13)
+- [x] E-posta/funnel metni (dizi + landing)  (commit)
+- [x] Topluluk yönetimi: yorum/DM yanıt taslağı  (commit)
 
 ### Yazılım-dışı / bloke (dürüst):
 - Reklam BÜTÇE yönetimi/optimizasyonu, gerçek yayın (OAuth), metrik çekme/attribution → API/harcama/§4
