@@ -15,8 +15,7 @@
 
 ## Next (pull once Now is clear)
 
-- [ ] Persona-bazlı otomatik açı çeşitliliği (her persona farklı açı önerisi)
-  Done when: çoklu-persona üretiminde her persona için strateji önerisi farklılaşır; test + build yeşil; committed.
+- [x] Persona-bazlı otomatik açı çeşitliliği (her persona farklı açı)  (c0a078f)
 - [ ] Üretilen paketi otomatik öz-eleştiri turundan geçir (kalite artışı)
   Done when: opsiyonel ikinci tur — anahtar varsa çıktı "yasak kelime/klişe" kontrolünden geçer; (ANTHROPIC_API_KEY gerekir).
 
@@ -47,6 +46,7 @@
 - [x] Sektör platform vurgusu (prompt önceliği + çıktı sekme sırası/★)  (db2d557)
 - [x] Konu önerici (taze konu fikirleri, boş sayfa sendromu)  (709b4f2)
 - [x] Çıktı kalite göstergesi (IG caption uzunluğu)  (cceeb76)
+- [x] Persona-bazlı açı çeşitliliği (her persona farklı açı)  (c0a078f)
 
 -----
 

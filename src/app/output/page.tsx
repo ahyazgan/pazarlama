@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
 import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/lib/export";
+import { lintPackage } from "@/lib/quality";
+import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
   CONTENT_TYPE_LABELS,
@@ -63,6 +65,8 @@ export default function OutputPage() {
     : single;
 
   const tabs = orderTabs(pkg?.platformEmphasis);
+  const bannedWords = loadBrand()?.voice.bannedWords ?? [];
+  const issues = pkg ? lintPackage(pkg, bannedWords) : [];
 
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
   useEffect(() => {
@@ -151,6 +155,23 @@ export default function OutputPage() {
               </button>
             ))}
           </div>
+        </div>
+      )}
+
+      {issues.length === 0 ? (
+        <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
+          Kalite kontrolü temiz ✓ (yasak kelime / AI-klişe bulunamadı)
+        </div>
+      ) : (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          <p className="font-semibold">Kalite uyarıları ({issues.length}):</p>
+          <ul className="mt-1 list-disc pl-5">
+            {issues.slice(0, 8).map((it, i) => (
+              <li key={i}>
+                {it.where}: {it.type === "yasak" ? "yasak kelime" : "AI-klişe"} "{it.term}"
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
