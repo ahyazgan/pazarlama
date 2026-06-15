@@ -9,14 +9,29 @@ import type { Brand, ContentPackage } from "./types";
 // kalicilik icin Supabase Auth gerekir (Faz 2). Bkz. supabase/schema.sql.
 // ============================================================================
 
+// Aktif oturum kullanıcı id'si (RLS için zorunlu); yoksa null.
+async function userId(): Promise<string | null> {
+  const sb = getSupabase();
+  if (!sb) return null;
+  try {
+    const { data } = await sb.auth.getUser();
+    return data.user?.id ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function saveBrandRemote(brand: Brand): Promise<string | null> {
   if (!isSupabaseConfigured()) return null;
   const sb = getSupabase();
   if (!sb) return null;
+  const uid = await userId();
+  if (!uid) return null; // RLS auth.uid() bekler — girişsiz yazma denenmez
   try {
     const { data, error } = await sb
       .from("brands")
       .insert({
+        user_id: uid,
         name: brand.name,
         sector: brand.sector,
         identity: brand.identity,
@@ -30,6 +45,24 @@ export async function saveBrandRemote(brand: Brand): Promise<string | null> {
     return (data?.id as string) ?? null;
   } catch {
     return null;
+  }
+}
+
+// Kullanıcının Supabase'deki markaları (RLS otomatik filtreler). Girişsiz → [].
+export async function loadBrandsRemote(): Promise<Brand[]> {
+  if (!isSupabaseConfigured()) return [];
+  const sb = getSupabase();
+  if (!sb) return [];
+  if (!(await userId())) return [];
+  try {
+    const { data, error } = await sb
+      .from("brands")
+      .select("id,name,sector,identity,voice,audience,proof")
+      .order("created_at", { ascending: false });
+    if (error || !data) return [];
+    return data as unknown as Brand[];
+  } catch {
+    return [];
   }
 }
 

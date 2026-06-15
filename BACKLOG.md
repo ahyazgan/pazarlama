@@ -21,8 +21,7 @@
 
 ## Now (ÜRÜNLEŞME — API güvenliği + auth + kalıcılık)
 
-- [ ] API rate-limit (açık maliyet deliğini kapat)
-  Done when: AI endpoint'lerinde IP-bazlı kayan pencere limiti → 429; pure limiter + test; build; committed.
+- [x] API rate-limit (IP-bazlı, 20/dk → 429)  (3ecc17a)
 - [ ] Supabase Auth iskeleti (creds ile aktif)
   Done when: auth client + giriş/çıkış + session hook; creds yoksa nazik no-op; build; committed. (Gerçek login Supabase projesi ister.)
 - [ ] Auth-aware kalıcılık (brands + content_packages user_id ile)

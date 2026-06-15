@@ -14,6 +14,7 @@ const LINKS: [string, string][] = [
   ["/calendar", "Takvim"],
   ["/approvals", "Onaylar"],
   ["/integrations", "Entegrasyonlar"],
+  ["/login", "Hesap"],
 ];
 
 export function Nav() {
