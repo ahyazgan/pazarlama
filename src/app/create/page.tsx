@@ -36,6 +36,7 @@ export default function CreatePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [demo, setDemo] = useState(false);
 
   useEffect(() => {
     const b = loadBrand();
@@ -73,7 +74,7 @@ export default function CreatePage() {
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ brand, topic, contentType, angle, personaIndex: idx }),
+      body: JSON.stringify({ brand, topic, contentType, angle, personaIndex: idx, demo }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Uretim basarisiz.");
@@ -258,9 +259,19 @@ export default function CreatePage() {
           </div>
         )}
 
+        <label className="flex items-center gap-2 text-sm text-neutral-700">
+          <input
+            type="checkbox"
+            className="h-4 w-4 accent-brand"
+            checked={demo}
+            onChange={(e) => setDemo(e.target.checked)}
+          />
+          Demo modu (API anahtarı olmadan şablon önizleme)
+        </label>
+
         <div className="flex flex-wrap gap-3">
           <button type="button" className="btn-primary" onClick={submit} disabled={loading}>
-            {loading ? "Uretiliyor…" : "Icerik paketi uret"}
+            {loading ? "Uretiliyor…" : demo ? "Demo paketi uret" : "Icerik paketi uret"}
           </button>
           {brand.audience.length > 1 && (
             <button

@@ -115,6 +115,7 @@ export interface GenerateRequest {
   contentType: ContentType;
   angle: Angle;
   personaIndex: number;
+  demo?: boolean; // true ise API anahtari olmadan sablon (demo) cikti uretilir
 }
 
 export interface ContentPackage {
@@ -122,6 +123,7 @@ export interface ContentPackage {
   contentType: ContentType;
   angle: Angle;
   outputs: ContentOutputs;
+  demo?: boolean; // sablon (demo) icerik mi?
 }
 
 // Coklu persona uretimi: her persona icin ayri paket (Constitution Katman 3).

@@ -5,6 +5,7 @@ import {
   buildUserPrompt,
   OUTPUT_SCHEMA,
 } from "@/lib/prompt";
+import { buildDemoPackage } from "@/lib/demo";
 import type { ContentOutputs, GenerateRequest } from "@/lib/types";
 
 // Uretim sunucu tarafinda; Node runtime gerekir (Anthropic SDK).
@@ -23,17 +24,6 @@ function validate(req: Partial<GenerateRequest>): string | null {
 }
 
 export async function POST(request: Request) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return NextResponse.json(
-      {
-        error:
-          "ANTHROPIC_API_KEY tanimli degil. Sunucu ortam degiskenlerine ekleyip yeniden deneyin.",
-      },
-      { status: 503 },
-    );
-  }
-
   let body: GenerateRequest;
   try {
     body = (await request.json()) as GenerateRequest;
@@ -43,6 +33,22 @@ export async function POST(request: Request) {
 
   const problem = validate(body);
   if (problem) return NextResponse.json({ error: problem }, { status: 400 });
+
+  // Demo modu: anahtarsiz sablon cikti (Claude cagrilmaz).
+  if (body.demo) {
+    return NextResponse.json(buildDemoPackage(body));
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json(
+      {
+        error:
+          "ANTHROPIC_API_KEY tanimli degil. Demo modunu kullanin veya sunucu ortam degiskenlerine anahtari ekleyin.",
+      },
+      { status: 503 },
+    );
+  }
 
   const client = new Anthropic({ apiKey });
 

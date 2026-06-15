@@ -76,6 +76,11 @@ export default function OutputPage() {
           <h1 className="text-2xl font-bold">{pkg.topic}</h1>
           <p className="text-sm text-neutral-600">
             {CONTENT_TYPE_LABELS[pkg.contentType]} · {ANGLE_LABELS[pkg.angle]} acisi
+            {pkg.demo && (
+              <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                DEMO — API anahtarı olmadan şablon çıktı
+              </span>
+            )}
           </p>
         </div>
         <div className="flex gap-2">
