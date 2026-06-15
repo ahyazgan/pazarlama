@@ -21,6 +21,8 @@ export function emptyBrand(): Brand {
       personality: ["", "", "", "", ""],
       competitors: [""],
       differentiation: "",
+      primaryColor: "#E8650A",
+      visualStyle: "",
     },
     voice: {
       tone: 5,
@@ -63,6 +65,8 @@ export const HAMMADDEM_SAMPLE: Brand = {
     competitors: ["yerel hirdavatçi", "tek tedarikçiyle çalismak"],
     differentiation:
       "Tek pazaryerinde dogrulanmis çok tedarikçi + garantili teslim suresi; tek bir bayiye baglilik yok.",
+    primaryColor: "#E8650A",
+    visualStyle: "Net, teknik, saha-gerçekçi; turuncu vurgu, beyaz alan.",
   },
   voice: {
     tone: 4,

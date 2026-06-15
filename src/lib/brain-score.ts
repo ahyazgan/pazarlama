@@ -88,6 +88,12 @@ export function brainScore(brand: Brand): BrainScore {
       hint: "Rakipleri ve 'neden farklıyız'ı yaz — karşıtlık açısını besler.",
     },
     {
+      label: "Görsel kimlik",
+      points: 5,
+      filled: has(id.primaryColor) && has(id.visualStyle),
+      hint: "Markanın ana rengini ve görsel stil notunu gir.",
+    },
+    {
       label: "Persona (acı + motivasyon)",
       points: 10,
       filled: !!firstPersona && has(firstPersona.pain) && has(firstPersona.motivation),
@@ -117,7 +123,9 @@ export function brainScore(brand: Brand): BrainScore {
     },
   ];
 
-  const score = checks.reduce((s, c) => s + (c.filled ? c.points : 0), 0);
+  const got = checks.reduce((s, c) => s + (c.filled ? c.points : 0), 0);
+  const total = checks.reduce((s, c) => s + c.points, 0);
+  const score = Math.round((got / total) * 100);
   const level: BrainScore["level"] =
     score >= 80 ? "guclu" : score >= 60 ? "iyi" : score >= 35 ? "orta" : "zayif";
   const missing = checks

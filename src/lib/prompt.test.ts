@@ -97,6 +97,22 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(p).toMatch(/itirazi onceden karsila/);
   });
 
+  it("gorsel kimligi (marka rengi + stil) enjekte eder", () => {
+    const p = buildUserPrompt(req);
+    expect(p).toMatch(/Gorsel kimlik: marka ana rengi #E8650A/);
+  });
+
+  it("farkli marka rengi prompt'a yansir (sabit degil)", () => {
+    const custom = {
+      ...req,
+      brand: {
+        ...req.brand,
+        identity: { ...req.brand.identity, primaryColor: "#0A66C2" },
+      },
+    };
+    expect(buildUserPrompt(custom)).toMatch(/#0A66C2/);
+  });
+
   it("konumlandirma (rakip + fark) enjekte eder", () => {
     const p = buildUserPrompt(req);
     expect(p).toMatch(/KONUMLANDIRMA/);

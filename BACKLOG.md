@@ -5,12 +5,16 @@
 
 -----
 
-## Now (teker teker DERİN — work top to bottom)
+## Now (BEYNİ DAHA DERİN — teker teker)
 
-- [x] Beyin Doluluk Skoru + rehberli iyileştirme  (10b6c12)
-- [x] Varyant üretimi (A/B) — derin  (faf960c)
-- [x] Beyin/prompt şeffaflık önizlemesi  (9fcafc4)
-- [x] Yayın hazırlığı paketi (.ics + checklist)  (9dba81c)
+- [ ] Görsel kimlik (marka rengi + görsel stil)
+  Done when: identity.primaryColor + visualStyle; görsel prompt sabit #E8650A yerine markanın rengini kullanır; demo + prompt güncel; skora katılır; test + build yeşil; committed.
+- [ ] İçerik sütunları (content pillars)
+  Done when: brand.pillars; strateji konuya/rotasyona göre sütun önerir, prompt'a "bu sütuna hizmet et" girer; form + skor + test; build yeşil; committed.
+- [ ] Marka hikayesi (origin / neden)
+  Done when: identity.story; prompt'a (özellikle hikaye tipinde) enjekte; form + skor + test; build yeşil; committed.
+- [ ] CTA / dönüşüm hedefi
+  Done when: identity.ctaGoal; prompt CTA'ları bu hedefe yöneltir; form + skor + test; build yeşil; committed.
 
 ### Kalıcı BLOKE: network etkisi (backend) · outcome metrik (API) · otomatik yayın (OAuth) · LLM öz-eleştiri (anahtar)
 

@@ -29,6 +29,8 @@ export interface BrandIdentity {
   personality: string[]; // 5 sifat
   competitors?: string[]; // rakipler
   differentiation?: string; // neden onlardan farkliyiz (karsitlik acisini besler)
+  primaryColor?: string; // marka ana rengi (hex) — gorsel prompt'ta kullanilir
+  visualStyle?: string; // gorsel stil notu (ör. minimal, sicak, teknik)
 }
 
 export interface BrandVoice {

@@ -27,7 +27,7 @@ export const PLATFORM_DNA: Record<PlatformId, PlatformDNA> = {
     rules: [
       "Caption hedefi ~125 karakter (max ~300).",
       "Hashtag ilk yorumda, 8-15 adet, sektör+niş karışık.",
-      "Görsel prompt: kare format, marka rengi #E8650A, kompozisyon + character-consistency notu.",
+      "Görsel prompt: kare format, marka beynindeki ana rengi kullan, kompozisyon + character-consistency notu.",
       "Alt-text erişilebilirlik için doldurulmalı.",
     ],
   },

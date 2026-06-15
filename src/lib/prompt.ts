@@ -64,6 +64,11 @@ export function buildUserPrompt(req: GenerateRequest): string {
     }`,
   );
   lines.push(`Ton kurallari: ${toneDirectives(brand.voice.tone)}`);
+  const color = brand.identity.primaryColor?.trim() || "#E8650A";
+  const vstyle = brand.identity.visualStyle?.trim();
+  lines.push(
+    `Gorsel kimlik: marka ana rengi ${color}${vstyle ? `; gorsel stil: ${vstyle}` : ""}. Gorsel prompt'ta bu rengi ve stili kullan.`,
+  );
   if (brand.voice.bannedWords.filter(Boolean).length) {
     lines.push(
       `YASAK kelimeler (asla kullanma): ${brand.voice.bannedWords.filter(Boolean).join(", ")}`,

@@ -22,6 +22,8 @@ export function buildDemoPackage(req: GenerateRequest): ContentPackage {
   const personaPain = persona?.pain || "öncelikli sorun";
   const angleLabel = ANGLE_LABELS[angle];
   const trendNote = req.trend?.trim() ? ` Güncel bağlam: ${req.trend.trim()}.` : "";
+  const color = brand.identity.primaryColor?.trim() || "#E8650A";
+  const vstyle = brand.identity.visualStyle?.trim();
 
   return {
     topic,
@@ -33,7 +35,7 @@ export function buildDemoPackage(req: GenerateRequest): ContentPackage {
       instagram: {
         caption: `${topic} — ${personaName} için fark yaratan nokta. ${sig}. ${angleLabel} açısıyla: ${personaPain} çözülür. (${num})${trendNote}`,
         firstComment: `#${slug(brand.name)} #${slug(t0)} #${slug(t1)} #${slug(sector.sector)} #içerik`,
-        imagePrompt: `Kare format, marka rengi #E8650A vurgulu. Sahne: "${topic}" temasını ${t0} ve ${t1} öğeleriyle anlatan temiz, profesyonel kompozisyon. ${brand.name} kimliğiyle tutarlı; metin alanı sol üstte. (demo görsel prompt)`,
+        imagePrompt: `Kare format, marka rengi ${color} vurgulu${vstyle ? `, stil: ${vstyle}` : ""}. Sahne: "${topic}" temasını ${t0} ve ${t1} öğeleriyle anlatan temiz, profesyonel kompozisyon. ${brand.name} kimliğiyle tutarlı; metin alanı sol üstte. (demo görsel prompt)`,
         altText: `${brand.name} için ${topic} konulu, ${t0} öğesini öne çıkaran görsel.`,
       },
       tiktok: {

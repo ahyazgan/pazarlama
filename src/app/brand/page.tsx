@@ -167,6 +167,41 @@ export default function BrandPage() {
             />
           </div>
         </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="label">Marka ana rengi</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                className="h-10 w-14 rounded border border-neutral-300"
+                value={brand.identity.primaryColor || "#E8650A"}
+                onChange={(e) =>
+                  set({ identity: { ...brand.identity, primaryColor: e.target.value } })
+                }
+              />
+              <input
+                className="input"
+                value={brand.identity.primaryColor ?? ""}
+                onChange={(e) =>
+                  set({ identity: { ...brand.identity, primaryColor: e.target.value } })
+                }
+                placeholder="#E8650A"
+              />
+            </div>
+            <p className="hint">Görsel prompt bu rengi kullanır.</p>
+          </div>
+          <div>
+            <label className="label">Görsel stil</label>
+            <input
+              className="input"
+              value={brand.identity.visualStyle ?? ""}
+              onChange={(e) =>
+                set({ identity: { ...brand.identity, visualStyle: e.target.value } })
+              }
+              placeholder="or. minimal, sıcak, teknik, saha-gerçekçi"
+            />
+          </div>
+        </div>
       </section>
 
       {/* Katman 2: Ses */}
