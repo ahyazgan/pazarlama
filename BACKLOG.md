@@ -9,8 +9,7 @@
 
 - [x] Görsel kimlik (marka rengi + görsel stil)  (767d453)
 - [x] İçerik sütunları (content pillars)  (853b500)
-- [ ] Marka hikayesi (origin / neden)
-  Done when: identity.story; prompt'a (özellikle hikaye tipinde) enjekte; form + skor + test; build yeşil; committed.
+- [x] Marka hikayesi (origin / neden)  (6163e98)
 - [ ] CTA / dönüşüm hedefi
   Done when: identity.ctaGoal; prompt CTA'ları bu hedefe yöneltir; form + skor + test; build yeşil; committed.
 

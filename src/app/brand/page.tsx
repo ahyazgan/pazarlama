@@ -214,6 +214,19 @@ export default function BrandPage() {
             />
           </div>
         </div>
+        <div>
+          <label className="label">
+            Dönüşüm hedefi (CTA){" "}
+            <span className="font-normal text-neutral-400">(istenen aksiyon)</span>
+          </label>
+          <input
+            className="input"
+            value={brand.identity.ctaGoal ?? ""}
+            onChange={(e) => set({ identity: { ...brand.identity, ctaGoal: e.target.value } })}
+            placeholder="or. Teklif al / WhatsApp'tan sor / siteyi ziyaret et"
+          />
+          <p className="hint">Tüm CTA'lar bu aksiyona yönlendirilir.</p>
+        </div>
       </section>
 
       {/* İçerik sütunları */}

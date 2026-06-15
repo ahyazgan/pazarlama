@@ -24,6 +24,7 @@ export function emptyBrand(): Brand {
       primaryColor: "#E8650A",
       visualStyle: "",
       story: "",
+      ctaGoal: "",
     },
     voice: {
       tone: 5,
@@ -71,6 +72,7 @@ export const HAMMADDEM_SAMPLE: Brand = {
     visualStyle: "Net, teknik, saha-gerçekçi; turuncu vurgu, beyaz alan.",
     story:
       "Kurucular, santiyede malzeme gecikmesinin projeleri nasil durdurdugunu bizzat yasadi; tedariki seffaf ve garantili hale getirmek icin Hammaddem'i kurdu.",
+    ctaGoal: "Teklif al / WhatsApp'tan tedarik sorusu sor",
   },
   voice: {
     tone: 4,

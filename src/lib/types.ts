@@ -32,6 +32,7 @@ export interface BrandIdentity {
   primaryColor?: string; // marka ana rengi (hex) — gorsel prompt'ta kullanilir
   visualStyle?: string; // gorsel stil notu (ör. minimal, sicak, teknik)
   story?: string; // marka hikayesi / kurulus "neden"i — ozgunluk katar
+  ctaGoal?: string; // donusum hedefi (ör. "DM at", "teklif al", "siteyi ziyaret et")
 }
 
 export interface BrandVoice {

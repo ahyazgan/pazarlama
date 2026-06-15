@@ -107,6 +107,10 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(buildUserPrompt(req)).toMatch(/Marka hikayesi:/);
   });
 
+  it("donusum hedefini (CTA) enjekte eder", () => {
+    expect(buildUserPrompt(req)).toMatch(/Donusum hedefi:/);
+  });
+
   it("gorsel kimligi (marka rengi + stil) enjekte eder", () => {
     const p = buildUserPrompt(req);
     expect(p).toMatch(/Gorsel kimlik: marka ana rengi #E8650A/);

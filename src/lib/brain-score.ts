@@ -128,6 +128,12 @@ export function brainScore(brand: Brand): BrainScore {
       hint: "Gerçek rakamlar ekle (ör. '10.000+ ton') — somut kanıt güven verir.",
     },
     {
+      label: "Dönüşüm hedefi (CTA)",
+      points: 5,
+      filled: has(id.ctaGoal),
+      hint: "İçeriklerin yönlendireceği aksiyonu tanımla (DM, teklif, ziyaret).",
+    },
+    {
       label: "Vaka / referans",
       points: 6,
       filled: hasList(p.cases) || hasList(p.references),

@@ -149,6 +149,11 @@ export function buildUserPrompt(req: GenerateRequest): string {
       `Icerik sutunlari: ${pillars.join(", ")}. Bu icerik, en uygun sutuna acikca hizmet etsin (markanin sahip oldugu temayi guclendir).`,
     );
   }
+  if (brand.identity.ctaGoal?.trim()) {
+    lines.push(
+      `Donusum hedefi: ${brand.identity.ctaGoal.trim()}. Tum CTA'lar bu eyleme yonlendirsin (generic "bizi takip et" deme).`,
+    );
+  }
   lines.push(`Konu: ${topic}`);
   lines.push(`Icerik tipi: ${CONTENT_TYPE_LABELS[contentType]}`);
   lines.push(`Aci: ${ANGLE_LABELS[angle]} — ${ANGLE_HINTS[angle]}`);
