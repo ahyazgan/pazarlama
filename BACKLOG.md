@@ -9,8 +9,7 @@
 
 - [x] Platform DNA veri katmanı + derin prompt enjeksiyonu  (80ddbb5)
 - [x] Strateji Brief üreteci (birincil/ikincil açı, persona odağı, hook tohumu)  (0a15806)
-- [ ] Sektör açı afinitesi + ses-ton→somut kural (Sektör + Marka Beyni derinliği)
-  Done when: her sektöre angleAffinity (sıralı) eklenir; voice.tone somut yazım kurallarına eşlenir ve prompt'a girer; recommender afiniteyi kullanır; test + build yeşil; committed.
+- [x] Sektör açı afinitesi + ses-ton→somut yazım kuralları  (f378202)
 - [ ] Derin kalite-lint (öz-denetim derinliği)
   Done when: quality.ts'e kanıt-rakamı-yok, imza-ifade-yok, IG hashtag sayısı, X thread sınırı, emoji aşırılığı kuralları eklenir; her biri test edilir; çıktı panelinde gösterilir; build yeşil; committed.
 

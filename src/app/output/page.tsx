@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
 import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/lib/export";
-import { lintPackage } from "@/lib/quality";
+import { lintPackage, lintWithBrand } from "@/lib/quality";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -16,6 +16,17 @@ import {
 } from "@/lib/types";
 
 const DEFAULT_TABS: PlatformId[] = ["instagram", "tiktok", "linkedin", "x"];
+
+const ISSUE_LABELS: Record<string, string> = {
+  yasak: "yasak kelime",
+  klise: "AI-klişe",
+  kanit_yok: "kanıt rakamı yok",
+  imza_yok: "imza ifade yok",
+  hashtag: "hashtag sayısı",
+  thread: "thread uzunluğu",
+  emoji: "emoji fazla",
+  zayif_hook: "zayıf hook",
+};
 
 // Sektor onceligine gore sirala; eksik kalani varsayilan sirayla tamamla.
 function orderTabs(emphasis?: PlatformId[]): PlatformId[] {
@@ -65,8 +76,12 @@ export default function OutputPage() {
     : single;
 
   const tabs = orderTabs(pkg?.platformEmphasis);
-  const bannedWords = loadBrand()?.voice.bannedWords ?? [];
-  const issues = pkg ? lintPackage(pkg, bannedWords) : [];
+  const brand = loadBrand();
+  const issues = pkg
+    ? brand
+      ? lintWithBrand(pkg, brand)
+      : lintPackage(pkg)
+    : [];
 
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
   useEffect(() => {
@@ -166,9 +181,9 @@ export default function OutputPage() {
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
           <p className="font-semibold">Kalite uyarıları ({issues.length}):</p>
           <ul className="mt-1 list-disc pl-5">
-            {issues.slice(0, 8).map((it, i) => (
+            {issues.slice(0, 10).map((it, i) => (
               <li key={i}>
-                {it.where}: {it.type === "yasak" ? "yasak kelime" : "AI-klişe"} "{it.term}"
+                {it.where}: {ISSUE_LABELS[it.type] ?? it.type} — {it.term}
               </li>
             ))}
           </ul>
