@@ -1,0 +1,188 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { loadBrand } from "@/lib/brand-store";
+import { getSector } from "@/lib/sectors";
+import {
+  ANGLE_HINTS,
+  ANGLE_LABELS,
+  CONTENT_TYPE_LABELS,
+  type Angle,
+  type Brand,
+  type ContentType,
+} from "@/lib/types";
+
+const ANGLES = Object.keys(ANGLE_LABELS) as Angle[];
+
+export default function CreatePage() {
+  const router = useRouter();
+  const [brand, setBrand] = useState<Brand | null>(null);
+  const [topic, setTopic] = useState("");
+  const [contentType, setContentType] = useState<ContentType>("deger");
+  const [angle, setAngle] = useState<Angle>("egitici");
+  const [personaIndex, setPersonaIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const b = loadBrand();
+    setBrand(b);
+    if (b) {
+      // Sektorun icerik karisimindan en yuksek payli tipi varsayilan sec.
+      const mix = getSector(b.sector).contentMix;
+      const top = (Object.entries(mix) as [ContentType, number][])
+        .filter(([, v]) => v > 0)
+        .sort((a, c) => c[1] - a[1])[0];
+      if (top) setContentType(top[0]);
+    }
+  }, []);
+
+  if (brand === null) {
+    return (
+      <div className="card space-y-3 text-center">
+        <h1 className="text-xl font-bold">Once marka profili gerekli</h1>
+        <p className="text-sm text-neutral-600">
+          Icerik uretmek icin once Marka Beyni'ni doldurmalisin.
+        </p>
+        <Link href="/brand" className="btn-primary mx-auto w-fit">
+          Marka Profili'ne git
+        </Link>
+      </div>
+    );
+  }
+
+  const sector = getSector(brand.sector);
+  const mix = sector.contentMix;
+
+  const submit = async () => {
+    setError(null);
+    if (!topic.trim()) {
+      setError("Konu bos olamaz.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand, topic, contentType, angle, personaIndex }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Uretim basarisiz.");
+        return;
+      }
+      sessionStorage.setItem("content-os.result", JSON.stringify(data));
+      router.push("/output");
+    } catch {
+      setError("Aga baglanilamadi. Tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold">Kampanya Olustur</h1>
+        <p className="text-sm text-neutral-600">
+          <span className="font-medium">{brand.name}</span> · {sector.label}
+        </p>
+      </div>
+
+      <section className="card space-y-5">
+        <div>
+          <label className="label">Bu hafta ne anlatmak istersin? (Konu)</label>
+          <input
+            className="input"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="or. Cimento stogu tazelendi"
+          />
+        </div>
+
+        <div>
+          <label className="label">Icerik tipi</label>
+          <div className="flex flex-wrap gap-2">
+            {(Object.keys(CONTENT_TYPE_LABELS) as ContentType[]).map((ct) => {
+              const pct = mix[ct] ?? 0;
+              const active = contentType === ct;
+              return (
+                <button
+                  key={ct}
+                  type="button"
+                  onClick={() => setContentType(ct)}
+                  className={`chip ${
+                    active
+                      ? "border-brand bg-brand text-white"
+                      : "border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-100"
+                  }`}
+                >
+                  {CONTENT_TYPE_LABELS[ct]}
+                  {pct > 0 && (
+                    <span className={active ? "opacity-80" : "text-neutral-400"}>
+                      {" "}
+                      · %{pct}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          <p className="hint">Yuzdeler sektorun onerilen icerik karisimini gosterir.</p>
+        </div>
+
+        <div>
+          <label className="label">Aci (Angle Generator — 5 evrensel aci)</label>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {ANGLES.map((a) => {
+              const active = angle === a;
+              return (
+                <button
+                  key={a}
+                  type="button"
+                  onClick={() => setAngle(a)}
+                  className={`rounded-xl border p-3 text-left transition ${
+                    active
+                      ? "border-brand bg-brand-tint"
+                      : "border-neutral-200 bg-white hover:bg-neutral-50"
+                  }`}
+                >
+                  <div className="font-medium">{ANGLE_LABELS[a]}</div>
+                  <div className="text-xs text-neutral-500">{ANGLE_HINTS[a]}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div>
+          <label className="label">Hedef persona</label>
+          <select
+            className="input"
+            value={personaIndex}
+            onChange={(e) => setPersonaIndex(Number(e.target.value))}
+          >
+            {brand.audience.map((p, i) => (
+              <option key={i} value={i}>
+                {p.name || `Persona ${i + 1}`}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {error && (
+          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+
+        <button type="button" className="btn-primary" onClick={submit} disabled={loading}>
+          {loading ? "Uretiliyor… (~10-20 sn)" : "Icerik paketi uret"}
+        </button>
+      </section>
+    </div>
+  );
+}
