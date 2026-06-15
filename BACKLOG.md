@@ -9,8 +9,7 @@
 
 - [x] Birleşik Kalite Raporu (yayına hazır mı?)  (26accc0)
 - [x] Mobil navigasyon + cila (hamburger drawer)  (f58cb03)
-- [ ] Onboarding akışı (yeni marka rehberi)
-  Done when: boş/zayıf beyinde Marka Profili'nde adım adım rehber + ilk-üretim engeli yumuşak uyarı; build yeşil; committed.
+- [x] Onboarding akışı (ilk çalıştırma 3-adım rehberi)  (7bbf7c6)
 
 ### Done (önceki):
 - [x] Prompt-caching restructure (sabit system prefix + cache_control)  (42aa4f0)
