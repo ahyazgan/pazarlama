@@ -12,6 +12,7 @@ import {
   type HistoryEntry,
 } from "@/lib/history";
 import { savePackageRemote } from "@/lib/persist";
+import { loadFeedback, netScores } from "@/lib/feedback";
 import { getSector } from "@/lib/sectors";
 import {
   assignAnglesToPersonas,
@@ -42,6 +43,7 @@ export default function CreatePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [feedbackStore, setFeedbackStore] = useState<ReturnType<typeof loadFeedback>>({});
   const [demo, setDemo] = useState(false);
   const [trend, setTrend] = useState("");
 
@@ -49,6 +51,7 @@ export default function CreatePage() {
     const b = loadBrand();
     setBrand(b);
     setHistory(loadHistory());
+    setFeedbackStore(loadFeedback());
     if (b) {
       // Sektorun icerik karisimindan en yuksek payli tipi varsayilan sec.
       const mix = getSector(b.sector).contentMix;
@@ -77,8 +80,9 @@ export default function CreatePage() {
   const mix = sector.contentMix;
   const duplicate = findDuplicate(history, topic, angle);
 
-  // Strateji Engine — zengin brief (boş sayfa sendromunu öldürür).
-  const brief = buildStrategyBrief(brand, topic, history);
+  // Strateji Engine — zengin brief (boş sayfa sendromunu öldürür) + öğrenilmiş feedback.
+  const feedback = netScores(feedbackStore, brand.sector);
+  const brief = buildStrategyBrief(brand, topic, history, feedback);
   const angleRec = brief.primaryAngle;
   const typeRec = brief.contentType;
   const topicIdeas = suggestTopics(sector, history);
@@ -146,7 +150,13 @@ export default function CreatePage() {
     setLoading(true);
     try {
       // Her persona için FARKLI açı (Constitution Katman 3).
-      const angles = assignAnglesToPersonas(sector, topic, brand.audience.length, history);
+      const angles = assignAnglesToPersonas(
+        sector,
+        topic,
+        brand.audience.length,
+        history,
+        feedback,
+      );
       const results: PersonaPackage[] = [];
       for (let i = 0; i < brand.audience.length; i++) {
         const pkg = await generateFor(i, angles[i]);

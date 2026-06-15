@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
 import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/lib/export";
 import { lintPackage, lintWithBrand } from "@/lib/quality";
+import { recordFeedback } from "@/lib/feedback";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -60,6 +61,7 @@ export default function OutputPage() {
   const [personas, setPersonas] = useState<PersonaPackage[] | null>(null);
   const [personaIdx, setPersonaIdx] = useState(0);
   const [tab, setTab] = useState<PlatformId>("instagram");
+  const [voted, setVoted] = useState<null | 1 | -1>(null);
 
   useEffect(() => {
     const multi = sessionStorage.getItem("content-os.results");
@@ -86,9 +88,15 @@ export default function OutputPage() {
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
   useEffect(() => {
     if (pkg) setTab(orderTabs(pkg.platformEmphasis)[0]);
+    setVoted(null);
     // pkg degisince (persona gecisi dahil) onerilen platforma don
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pkg?.platformEmphasis?.join(","), personaIdx]);
+
+  const vote = (v: 1 | -1) => {
+    if (pkg && brand) recordFeedback(brand.sector, pkg.angle, v);
+    setVoted(v);
+  };
 
   if (!pkg) {
     return (
@@ -189,6 +197,33 @@ export default function OutputPage() {
           </ul>
         </div>
       )}
+
+      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
+        <span className="text-neutral-600">
+          Bu paket ({ANGLE_LABELS[pkg.angle]} açısı) işe yaradı mı?
+        </span>
+        <button
+          type="button"
+          onClick={() => vote(1)}
+          disabled={voted !== null}
+          className={`chip ${voted === 1 ? "border-green-500 bg-green-50 text-green-700" : "border-neutral-300"}`}
+        >
+          👍 Evet
+        </button>
+        <button
+          type="button"
+          onClick={() => vote(-1)}
+          disabled={voted !== null}
+          className={`chip ${voted === -1 ? "border-red-400 bg-red-50 text-red-600" : "border-neutral-300"}`}
+        >
+          👎 Hayır
+        </button>
+        {voted !== null && (
+          <span className="text-xs text-neutral-500">
+            Teşekkürler — strateji önerisi bunu öğrenecek.
+          </span>
+        )}
+      </div>
 
       <div className="flex flex-wrap gap-2">
         {tabs.map((t, i) => (

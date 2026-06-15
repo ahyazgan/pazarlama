@@ -7,8 +7,7 @@
 
 ## Now (BLOKE işlerin kredensiyelsiz MVP versiyonları)
 
-- [ ] Trend Enjeksiyonu (manuel girdi) — web search olmadan
-  Done when: Kampanya ekranında opsiyonel "güncel trend/haber" alanı; doluysa prompt'a "içeriği bu güncel olaya bağla" direktifi girer; prompt testi + build yeşil; committed.
+- [x] Trend Enjeksiyonu (manuel girdi) — web search olmadan  (b3159bc)
 - [ ] Feedback Loop (yerel) — gerçek strateji öğrenmesi
   Done when: Çıktı ekranında 👍/👎 geri bildirim; yerel saklanır; recommender olumlu açıları öne çeker, olumsuzları kısar; pure scoring testi + build yeşil; committed.
 - [ ] İçerik Takvimi (ajanda/planlayıcı) — drag-drop yerine MVP

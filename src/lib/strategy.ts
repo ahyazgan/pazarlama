@@ -36,11 +36,15 @@ function norm(s: string): string {
   return s.toLowerCase();
 }
 
-// Açı puanlama: konu sinyalleri + sektör varsayılanı + son kullanım rotasyonu.
+// Açı bazında öğrenilmiş geri bildirim (sektör için net oy haritası).
+export type AngleFeedback = Partial<Record<Angle, number>>;
+
+// Açı puanlama: konu sinyalleri + sektör afinitesi + rotasyon + öğrenilmiş feedback.
 function scoreAngles(
   sector: SectorIntelligence,
   topic: string,
   history: HistoryEntry[] = [],
+  feedback: AngleFeedback = {},
 ): Map<Angle, number> {
   const t = norm(topic);
   const recent = history.slice(0, 5).map((h) => h.angle);
@@ -55,6 +59,9 @@ function scoreAngles(
     const rank = affinity.indexOf(angle);
     if (rank >= 0) score += (affinity.length - rank) * 0.4;
     score -= recent.filter((a) => a === angle).length * 0.5;
+    // Öğrenilmiş feedback (net oy, ±3 ile sınırlı).
+    const fb = Math.max(-3, Math.min(3, feedback[angle] ?? 0));
+    score += fb * 0.6;
     scores.set(angle, score);
   }
   return scores;
@@ -75,9 +82,10 @@ export function recommendAngle(
   sector: SectorIntelligence,
   topic: string,
   history: HistoryEntry[] = [],
+  feedback: AngleFeedback = {},
 ): Recommendation<Angle> {
   const t = norm(topic);
-  const scores = scoreAngles(sector, topic, history);
+  const scores = scoreAngles(sector, topic, history, feedback);
   const best = topAngle(scores);
 
   const hit = ANGLE_SIGNALS[best].some((kw) => t.includes(kw));
@@ -113,8 +121,9 @@ export function assignAnglesToPersonas(
   topic: string,
   count: number,
   history: HistoryEntry[] = [],
+  feedback: AngleFeedback = {},
 ): Angle[] {
-  const scores = scoreAngles(sector, topic, history);
+  const scores = scoreAngles(sector, topic, history, feedback);
   const out: Angle[] = [];
   let used = new Set<Angle>();
   for (let i = 0; i < count; i++) {
@@ -180,15 +189,16 @@ export function buildStrategyBrief(
   brand: Brand,
   topic: string,
   history: HistoryEntry[] = [],
+  feedback: AngleFeedback = {},
 ): StrategyBrief {
   const sector = getSector(brand.sector);
-  const angles = assignAnglesToPersonas(sector, topic, 2, history);
+  const angles = assignAnglesToPersonas(sector, topic, 2, history, feedback);
   const focus = focusPersona(brand, topic);
   const seedRaw = suggestTopics(sector, history, 1)[0] ?? sector.hooks[0] ?? "";
   const hookSeed = seedRaw.replace(/_+/g, "…").trim();
   return {
     contentType: recommendContentType(sector),
-    primaryAngle: recommendAngle(sector, topic, history),
+    primaryAngle: recommendAngle(sector, topic, history, feedback),
     secondaryAngle: angles[1] ?? angles[0],
     platformPriority: sector.platformEmphasis,
     personaFocusIndex: focus?.index ?? 0,
