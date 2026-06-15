@@ -23,7 +23,7 @@
 
 - [x] Sektörel uyumluluk denetimi (governance)  (e9459e9)
 - [x] Okunabilirlik denetimi  (35719f8)
-- [x] Marka ses-uyum skoru (voiceFit)  (commit)
+- [x] Marka ses-uyum skoru (voiceFit)  (a4f5195)
 
 ### Done (kreatif denetim v1):
 - [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)
