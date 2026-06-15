@@ -10,8 +10,12 @@
 - [x] LLM öz-eleştiri turu (/api/critique + buton, anahtarsız 503)  (5c1ec59)
 - [x] Manuel outcome-öğrenmesi (gerçek metrik → recommender)  (52428e2)
 - [x] Network etkisi (yerel içgörü; org-geneli backend-ready)  (3b9b080)
-- [ ] Otomatik yayın — dürüst iskelet
-  Done when: /integrations placeholder (manuel-şimdi / API-sonra açıklaması) + docs; GERÇEK OAuth/yayın yapılmaz (§4); build yeşil; committed.
+- [x] Otomatik yayın — dürüst iskelet (/integrations)  (fa5fab0)
+
+### Gerçek dış kaynağa bağlı kalan (kod hazır, runtime/kurulum bekliyor):
+- LLM öz-eleştiri: /api/critique kodu hazır; ANTHROPIC_API_KEY ile çalışır (yoksa 503).
+- Otomatik yayın: gerçek IG/TikTok OAuth + prod yayın (§4) — kullanıcı kurulumu gerekir.
+- Org-geneli network etkisi: paylaşımlı Supabase backend + çok kullanıcı (yerel içgörü hazır).
 
 -----
 
