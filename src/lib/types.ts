@@ -130,6 +130,19 @@ export interface ContentOutputs {
   variants?: ContentVariants; // A/B test alternatifleri (opsiyonel — eski çıktılarla uyum)
 }
 
+export interface CritiqueIssue {
+  where: string;
+  severity: "dusuk" | "orta" | "yuksek";
+  problem: string;
+  fix: string;
+}
+
+export interface CritiqueResult {
+  score: number;
+  verdict: string;
+  issues: CritiqueIssue[];
+}
+
 export interface GenerateRequest {
   brand: Brand;
   topic: string;

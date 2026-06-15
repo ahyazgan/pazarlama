@@ -14,6 +14,7 @@ import {
   CONTENT_TYPE_LABELS,
   PLATFORM_LABELS,
   type ContentPackage,
+  type CritiqueResult,
   type PersonaPackage,
   type PlatformId,
 } from "@/lib/types";
@@ -120,6 +121,30 @@ export default function OutputPage() {
   const vote = (v: 1 | -1) => {
     if (pkg && brand) recordFeedback(brand.sector, pkg.angle, v);
     setVoted(v);
+  };
+
+  const [crit, setCrit] = useState<CritiqueResult | null>(null);
+  const [critLoading, setCritLoading] = useState(false);
+  const [critError, setCritError] = useState<string | null>(null);
+  const runCritique = async () => {
+    if (!pkg || !brand) return;
+    setCritLoading(true);
+    setCritError(null);
+    setCrit(null);
+    try {
+      const res = await fetch("/api/critique", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand, pkg }),
+      });
+      const data = await res.json();
+      if (!res.ok) setCritError(data.error || "Denetim başarısız.");
+      else setCrit(data as CritiqueResult);
+    } catch {
+      setCritError("Ağa bağlanılamadı.");
+    } finally {
+      setCritLoading(false);
+    }
   };
 
   const [planDate, setPlanDate] = useState(todayISO);
@@ -235,6 +260,45 @@ export default function OutputPage() {
           </ul>
         </div>
       )}
+
+      <div className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-medium text-neutral-700">AI öz-eleştiri turu:</span>
+          <button
+            type="button"
+            className="chip border-neutral-300"
+            onClick={runCritique}
+            disabled={critLoading}
+          >
+            {critLoading ? "Denetleniyor…" : "AI ile denetle"}
+          </button>
+          {crit && (
+            <span
+              className={`font-semibold ${
+                crit.score >= 80 ? "text-green-600" : crit.score >= 60 ? "text-amber-600" : "text-red-600"
+              }`}
+            >
+              Marka uyum skoru: {crit.score}/100
+            </span>
+          )}
+          {critError && <span className="text-xs text-amber-700">{critError}</span>}
+        </div>
+        {crit && (
+          <div className="mt-2">
+            <p className="text-xs italic text-neutral-600">{crit.verdict}</p>
+            {crit.issues.length > 0 && (
+              <ul className="mt-1 space-y-1 text-xs text-neutral-700">
+                {crit.issues.map((it, i) => (
+                  <li key={i}>
+                    <span className="font-medium">[{it.severity}] {it.where}:</span> {it.problem}{" "}
+                    → <span className="text-brand-dark">{it.fix}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+      </div>
 
       <div className="flex flex-wrap items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
         <span className="text-neutral-600">

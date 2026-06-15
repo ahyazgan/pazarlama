@@ -5,14 +5,16 @@
 
 -----
 
-## Now (BEYNİ DAHA DERİN — teker teker)
+## Now (BLOKE işlere geçiş — kredensiyelsiz kod + runtime gate)
 
-- [x] Görsel kimlik (marka rengi + görsel stil)  (767d453)
-- [x] İçerik sütunları (content pillars)  (853b500)
-- [x] Marka hikayesi (origin / neden)  (6163e98)
-- [x] CTA / dönüşüm hedefi  (c2e9cc3)
-
-### Kalıcı BLOKE: network etkisi (backend) · outcome metrik (API) · otomatik yayın (OAuth) · LLM öz-eleştiri (anahtar)
+- [ ] LLM öz-eleştiri turu (üret → marka beynine göre eleştir → puanla)
+  Done when: /api/critique endpoint + pure critique prompt/schema; çıktıda "AI denetle" butonu; anahtarsız 503 + deterministik lint fallback; pure test + build yeşil; committed.
+- [ ] Manuel outcome-öğrenmesi (gerçek metrik girişi)
+  Done when: /calendar'da yayınlanan içeriğe gerçek metrik (erişim/etkileşim) girişi; ağırlıklı outcome recommender'a beslenir; pure test + build yeşil; committed.
+- [ ] Network etkisi (yerel/Supabase-ready agregasyon)
+  Done when: kullanıcının kendi kampanyalarından sektör+açı kazanım istatistiği; "senin verinde X kazanıyor" önerisi; pure agregasyon testi; build yeşil; committed.
+- [ ] Otomatik yayın — dürüst iskelet
+  Done when: /integrations placeholder (manuel-şimdi / API-sonra açıklaması) + docs; GERÇEK OAuth/yayın yapılmaz (§4); build yeşil; committed.
 
 -----
 
