@@ -19,8 +19,16 @@
 > research→generate (bulgu içeriğe + kaynak çıktıya). Constitution §11/6 ✓
 > Güvenlik: anahtar yalnızca git-ignore'lı .env.local'da; test sonrası revoke öneril(d)i.
 
-## Now (KREATİF KATMANI DERİNLEŞTİR — denetim/zekâ, sırayla)
+## Now (DENETİM/GOVERNANCE DERİNLEŞTİR — hukuk/kalite, sırayla)
 
+- [ ] Sektörel uyumluluk denetimi (riskli/regüle iddialar)
+  Done when: complianceForPackage(pkg, sector) genel + sektörel riskli iddiaları işaretler; Kalite Raporu'nda; test + build; committed.
+- [ ] Okunabilirlik skoru (uzun cümle/duvar metin)
+  Done when: readabilityIssues(text) uzun cümle uyarısı; çıktıda; test + build; committed.
+- [ ] Marka ses-uyum skoru (yasak/imza/ton tek skor)
+  Done when: voiceFit(pkg, brand) 0-100; Kalite Raporu'na; test + build; committed.
+
+### Done (kreatif denetim v1):
 - [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)
 - [x] SEO audit/skor  (c76e5e9)
 - [x] E-posta deliverability lint (lintEmail)  (6aaf38b)

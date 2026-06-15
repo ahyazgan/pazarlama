@@ -10,6 +10,7 @@ import { addToPlan, todayISO } from "@/lib/calendar";
 import { publishChecklist } from "@/lib/publish";
 import { brainScore } from "@/lib/brain-score";
 import { readiness } from "@/lib/readiness";
+import { complianceForPackage } from "@/lib/governance";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -113,7 +114,8 @@ export default function OutputPage() {
       : lintPackage(pkg)
     : [];
   const brain = brand ? brainScore(brand).score : 0;
-  const ready = readiness(brain, issues.length);
+  const compliance = pkg && brand ? complianceForPackage(pkg, brand.sector) : [];
+  const ready = readiness(brain, issues.length + compliance.length);
 
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
   useEffect(() => {
@@ -311,6 +313,20 @@ export default function OutputPage() {
               </li>
             ))}
           </ul>
+        )}
+        {compliance.length > 0 && (
+          <div className="mt-2 border-t border-neutral-200 pt-2">
+            <p className="text-xs font-semibold text-red-700">
+              ⚖ Uyumluluk uyarıları ({compliance.length}) — insan/hukuk onayı önerilir:
+            </p>
+            <ul className="mt-1 list-disc pl-5 text-xs text-red-700">
+              {compliance.map((c, i) => (
+                <li key={i}>
+                  &quot;{c.term}&quot; — {c.reason}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
 
