@@ -13,6 +13,7 @@ import {
 } from "@/lib/history";
 import { savePackageRemote } from "@/lib/persist";
 import { getSector } from "@/lib/sectors";
+import { recommendAngle, recommendContentType } from "@/lib/strategy";
 import {
   ANGLE_HINTS,
   ANGLE_LABELS,
@@ -69,6 +70,16 @@ export default function CreatePage() {
   const sector = getSector(brand.sector);
   const mix = sector.contentMix;
   const duplicate = findDuplicate(history, topic, angle);
+
+  // Strateji Engine — aktif öneri (boş sayfa sendromunu öldürür).
+  const angleRec = recommendAngle(sector, topic, history);
+  const typeRec = recommendContentType(sector);
+  const recApplied = angle === angleRec.value && contentType === typeRec.value;
+
+  const applyRecommendation = () => {
+    setAngle(angleRec.value);
+    setContentType(typeRec.value);
+  };
 
   const generateFor = async (idx: number) => {
     const res = await fetch("/api/generate", {
@@ -175,6 +186,28 @@ export default function CreatePage() {
           )}
         </div>
 
+        {/* Strateji Engine önerisi */}
+        <div className="rounded-xl border border-brand/30 bg-brand-tint/50 p-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="text-sm text-neutral-700">
+              <span className="font-semibold text-brand-dark">Strateji önerisi:</span>{" "}
+              {CONTENT_TYPE_LABELS[typeRec.value]} içerik ·{" "}
+              {ANGLE_LABELS[angleRec.value]} açısı
+            </p>
+            <button
+              type="button"
+              className="btn-ghost px-3 py-1 text-xs"
+              onClick={applyRecommendation}
+              disabled={recApplied}
+            >
+              {recApplied ? "Uygulandı ✓" : "Öneriyi uygula"}
+            </button>
+          </div>
+          <p className="hint mt-1">
+            {angleRec.reason} {typeRec.reason}
+          </p>
+        </div>
+
         <div>
           <label className="label">Icerik tipi</label>
           <div className="flex flex-wrap gap-2">
@@ -199,6 +232,7 @@ export default function CreatePage() {
                       · %{pct}
                     </span>
                   )}
+                  {ct === typeRec.value && <span title="Önerilen"> ★</span>}
                 </button>
               );
             })}
@@ -222,7 +256,14 @@ export default function CreatePage() {
                       : "border-neutral-200 bg-white hover:bg-neutral-50"
                   }`}
                 >
-                  <div className="font-medium">{ANGLE_LABELS[a]}</div>
+                  <div className="font-medium">
+                    {ANGLE_LABELS[a]}
+                    {a === angleRec.value && (
+                      <span className="ml-1 text-brand" title="Önerilen">
+                        ★
+                      </span>
+                    )}
+                  </div>
                   <div className="text-xs text-neutral-500">{ANGLE_HINTS[a]}</div>
                 </button>
               );

@@ -1,0 +1,103 @@
+import type {
+  Angle,
+  ContentType,
+  Persona,
+  SectorIntelligence,
+} from "./types";
+import { ANGLE_LABELS } from "./types";
+import type { HistoryEntry } from "./history";
+
+// ============================================================================
+// Strateji Engine — aktif öneri (Constitution Bölüm 3).
+// "Boş sayfa sendromunu öldürür": sistem en güçlü açı + içerik tipini önerir.
+// Saf, deterministik fonksiyonlar (test edilebilir). Kullanıcı yine değiştirebilir.
+// ============================================================================
+
+export interface Recommendation<T> {
+  value: T;
+  reason: string;
+}
+
+// Konu metnindeki sinyallere göre açı puanlama sözlüğü.
+const ANGLE_SIGNALS: Record<Angle, string[]> = {
+  korku: ["hata", "risk", "ceza", "gec", "geç", "kayip", "kayıp", "sorun", "tehlike", "kacir", "kaçır", "yanlis", "yanlış", "tukeniyor", "tükeniyor", "son"],
+  kazanc: ["kazan", "tasarruf", "bonus", "firsat", "fırsat", "indirim", "avantaj", "hizli", "hızlı", "erken", "ucretsiz", "ücretsiz", "kampanya"],
+  sosyal_kanit: ["musteri", "müşteri", "tercih", "referans", "yorum", "binlerce", "kisi", "kişi", "guven", "güven", "secti", "seçti"],
+  egitici: ["nasil", "nasıl", "rehber", "ipucu", "adim", "adım", "faktor", "faktör", "bilmen", "ogren", "öğren", "neden", "yontem", "yöntem"],
+  karsitlik: ["vs", "karsi", "karşı", "fark", "rakip", "kiyas", "kıyas", "onlar", "biz"],
+};
+
+// Sektör başına varsayılan (sinyal yoksa) açı eğilimi.
+const SECTOR_DEFAULT_ANGLE: Record<string, Angle> = {
+  insaat: "korku", // B2B: risk/ceza vurgusu güçlü çalışır
+  kafe: "egitici",
+  eticaret: "kazanc",
+  hizmet: "egitici",
+  guzellik: "egitici",
+};
+
+const ALL_ANGLES = Object.keys(ANGLE_LABELS) as Angle[];
+
+function norm(s: string): string {
+  return s.toLowerCase();
+}
+
+// En güçlü açıyı öner: konu sinyalleri + sektör varsayılanı + son kullanım rotasyonu.
+export function recommendAngle(
+  sector: SectorIntelligence,
+  topic: string,
+  history: HistoryEntry[] = [],
+): Recommendation<Angle> {
+  const t = norm(topic);
+  const recent = history.slice(0, 5).map((h) => h.angle);
+
+  const scores = new Map<Angle, number>();
+  for (const angle of ALL_ANGLES) {
+    let score = 0;
+    for (const kw of ANGLE_SIGNALS[angle]) {
+      if (t.includes(kw)) score += 2;
+    }
+    if (angle === SECTOR_DEFAULT_ANGLE[sector.sector]) score += 1; // hafif sektör eğilimi
+    score -= recent.filter((a) => a === angle).length * 0.5; // çeşitlilik (rotasyon)
+    scores.set(angle, score);
+  }
+
+  // En yüksek skor; eşitlikte ANGLE_LABELS sırasına göre stabil.
+  let best: Angle = ALL_ANGLES[0];
+  for (const angle of ALL_ANGLES) {
+    if ((scores.get(angle) ?? 0) > (scores.get(best) ?? 0)) best = angle;
+  }
+
+  const hit = ANGLE_SIGNALS[best].some((kw) => t.includes(kw));
+  const reason = hit
+    ? `Konudaki ifadeler "${ANGLE_LABELS[best]}" açısını işaret ediyor.`
+    : best === SECTOR_DEFAULT_ANGLE[sector.sector]
+      ? `${sector.label} için "${ANGLE_LABELS[best]}" açısı genelde en güçlü sonucu verir.`
+      : `Çeşitlilik için "${ANGLE_LABELS[best]}" açısı öneriliyor.`;
+
+  return { value: best, reason };
+}
+
+// İçerik tipini öner: sektör içerik karışımında en yüksek paylı tip.
+export function recommendContentType(
+  sector: SectorIntelligence,
+): Recommendation<ContentType> {
+  const entries = (Object.entries(sector.contentMix) as [ContentType, number][])
+    .filter(([, v]) => v > 0)
+    .sort((a, b) => b[1] - a[1]);
+  const top = entries[0];
+  const value = top?.[0] ?? "deger";
+  const reason = top
+    ? `${sector.label} içerik karışımında en yüksek pay: %${top[1]}.`
+    : "Varsayılan içerik tipi.";
+  return { value, reason };
+}
+
+// Persona'ya göre kısa strateji notu (üretim öncesi yön).
+export function personaStrategyNote(persona: Persona | undefined): string {
+  if (!persona) return "";
+  const pain = persona.pain?.trim();
+  return pain
+    ? `Hedef: ${persona.name || "persona"} — acıya ("${pain}") doğrudan değen bir hook kur.`
+    : "";
+}

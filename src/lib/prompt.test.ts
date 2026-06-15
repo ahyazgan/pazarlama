@@ -50,6 +50,17 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(p1).toContain("Satinalma Sorumlusu");
   });
 
+  it("kalite kurallari: anti-generic + aci-odakli hook + rakam uydurma yasagi", () => {
+    const p = buildUserPrompt(req);
+    expect(p).toMatch(/KALITE KURALLARI/);
+    expect(p).toMatch(/acisina degsin/);
+    expect(p).toMatch(/rakam UYDURMA/i);
+  });
+
+  it("system prompt AI-klise kaliplarini yasaklar", () => {
+    expect(buildSystemPrompt(req)).toMatch(/gunumuz dunyasinda/);
+  });
+
   it("OUTPUT_SCHEMA 4 platformu zorunlu kilar", () => {
     expect(OUTPUT_SCHEMA.required).toEqual(["instagram", "tiktok", "linkedin", "x"]);
   });

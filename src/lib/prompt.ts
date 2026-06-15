@@ -18,8 +18,12 @@ export function buildSystemPrompt(req: GenerateRequest): string {
   const sector = getSector(req.brand.sector);
   return `Sen ${sector.label} sektorunde uzman bir sosyal medya icerik stratejistisin.
 Generic icerik uretmek YASAK. Cikti, asagidaki marka beyni ve sektor zekasi ile
-o markaya OZGU olmali; baska bir marka bu icerigi kopyalayip kullanamamali.
-Turkce uret. Klise, bos ve "AI kokan" ifadelerden kacin.`;
+o markaya OZGU olmali; baska bir marka bu icerigi kelimesi kelimesine kopyalayip
+kullanamamali — markanin adi, kanit rakamlari, personasinin acisi ve sektor
+terminolojisi metne islenmis olmali.
+Turkce uret. Su "AI kokan" klise kaliplari KULLANMA: "gunumuz dunyasinda",
+"bu yazida/gonderide", "sizler icin", "hayatinizi kolaylastirmak icin",
+asiri emoji, ic bos sifat yiginlari. Somut ol; her cumle bir bilgi tasisin.`;
 }
 
 export function buildUserPrompt(req: GenerateRequest): string {
@@ -109,6 +113,23 @@ export function buildUserPrompt(req: GenerateRequest): string {
     "- LinkedIn: feed'de gorunen guclu ilk satir; beyaz bosluklu okunabilir govde; sektor insight'i; tartisma sorusu (B2B otorite tonu).",
   );
   lines.push("- X/Twitter: çengel tweet + deger tweet'leri + CTA seklinde thread (3-5 tweet).");
+  lines.push("");
+  lines.push("[KALITE KURALLARI — generic'ligi kir]");
+  lines.push(
+    "- Hook'un ilk satiri DOGRUDAN secilen personanin acisina degsin; merak/gerilim yaratsin.",
+  );
+  lines.push(
+    "- SADECE yukarida verilen gercek rakamlari/kanitlari kullan; rakam UYDURMA.",
+  );
+  lines.push(
+    "- Yasakli kelimeleri asla kullanma. Imza ifadeleri zorlamadan, dogal yerlestir.",
+  );
+  lines.push(
+    "- Sektor terminolojisini dogal kullan; jargonu yerinde, abartmadan kullan.",
+  );
+  lines.push(
+    "- Secilen aciya sadik kal; her platformun kendi DNA'sina (uzunluk, ritim, format) uy.",
+  );
   lines.push("");
   lines.push(
     "Ciktiyi SADECE verilen JSON semasina gore uret. Aciklama/markdown ekleme.",
