@@ -25,6 +25,8 @@
 - [ ] Feedback Loop (performans verisi → strateji öğrenir) — BLOKE: gerçek yayın performans verisi gerekir
 - [ ] Otomatik yayın (IG Graph API / TikTok API) — BLOKE: platform API erişimi + OAuth (prod yan etki)
 - [ ] İçerik takvimi (drag-drop planlama) — DÜŞÜK ÖNCELİK: constitution "manuel yayın yeterli (MVP)" diyor; doğrulanmış ihtiyaç olunca yapılır
+- [ ] Daha akıllı (devam): sektör başına platform vurgusu (B2B→LinkedIn, B2C→IG/TikTok ağırlık) + persona-bazlı otomatik açı çeşitliliği
+- [ ] Daha akıllı (devam): üretilen paketi otomatik öz-eleştiri turundan geçir (anahtar gerekir)
 
 -----
 
@@ -42,6 +44,7 @@
 - [x] Sektör zekasını genişlet (kafe/eticaret/hizmet/güzellik terim+hook)  (dd0d106)
 - [x] Demo modu — anahtarsız şablon çıktı + uçtan uca önizleme (smoke test geçti)  (ae67b7c)
 - [x] CI (GitHub Actions) + Constitution spec'i repoya + README demo/CI  (525d38e)
+- [x] Daha akıllı: Strateji Engine aktif önerisi (açı+tip+gerekçe) + anti-generic prompt beyni  (92311a7)
 
 -----
 
