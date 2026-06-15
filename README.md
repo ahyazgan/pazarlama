@@ -27,6 +27,10 @@ npm run dev
 
 `http://localhost:3000` → **Marka Profili** doldur → **Kampanya Oluştur** → **Çıktı**.
 
+### Anahtarsız deneme (Demo modu)
+
+`ANTHROPIC_API_KEY` olmadan tüm akışı denemek için Kampanya ekranında **"Demo modu"** kutusunu işaretle. Marka beyni + sektör + konu enjekte edilmiş **şablon** çıktı üretilir (Claude çağrılmaz). Gerçek üretim kalitesi için anahtar gerekir.
+
 ### Ortam değişkenleri
 
 | Değişken | Zorunlu | Açıklama |
@@ -44,6 +48,17 @@ npm run dev
 1. `/brand` — Marka Beyni formu (5 katman, sektör dropdown). Bir kez doldur.
 2. `/create` — Konu + içerik tipi + açı + persona seçimi.
 3. `/output` — Platform sekmeleri (IG/TikTok/LinkedIn/X) + kopyala butonları + görsel prompt.
+
+## Doğrulama
+
+```bash
+npm run typecheck   # tsc
+npm run lint        # eslint
+npm test            # vitest (29 test)
+npm run build       # next build
+```
+
+Her push'ta GitHub Actions (`.github/workflows/ci.yml`) bu zinciri çalıştırır. Ürün spesifikasyonu: [`docs/CONSTITUTION.md`](docs/CONSTITUTION.md).
 
 ## Generic'lik nasıl kırılır?
 
