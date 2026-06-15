@@ -26,6 +26,8 @@
 - [x] Marka ses-uyum skoru (voiceFit)  (a4f5195)
 - [x] Marka güvenliği + erişilebilirlik denetimi  (be1e2c1)
 - [x] Birleşik governance notu (A–D) + onay/sign-off  (16f2c3b)
+- [x] Onay panosu / denetim izi (/approvals)  (35fd643)
+- [x] Marka-bazlı governance kuralları (özel yasak + zorunlu ibare)  (d706146)
 
 ### Done (kreatif denetim v1):
 - [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)
