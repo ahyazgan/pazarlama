@@ -34,6 +34,9 @@ export default function RootLayout({
               <Link href="/calendar" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
                 Takvim
               </Link>
+              <Link href="/integrations" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
+                Entegrasyonlar
+              </Link>
             </nav>
           </div>
         </header>

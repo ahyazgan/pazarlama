@@ -9,8 +9,7 @@
 
 - [x] LLM öz-eleştiri turu (/api/critique + buton, anahtarsız 503)  (5c1ec59)
 - [x] Manuel outcome-öğrenmesi (gerçek metrik → recommender)  (52428e2)
-- [ ] Network etkisi (yerel/Supabase-ready agregasyon)
-  Done when: kullanıcının kendi kampanyalarından sektör+açı kazanım istatistiği; "senin verinde X kazanıyor" önerisi; pure agregasyon testi; build yeşil; committed.
+- [x] Network etkisi (yerel içgörü; org-geneli backend-ready)  (3b9b080)
 - [ ] Otomatik yayın — dürüst iskelet
   Done when: /integrations placeholder (manuel-şimdi / API-sonra açıklaması) + docs; GERÇEK OAuth/yayın yapılmaz (§4); build yeşil; committed.
 
