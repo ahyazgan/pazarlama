@@ -126,6 +126,18 @@ export default function BrandPage() {
           />
         </div>
         <div>
+          <label className="label">
+            Marka hikayesi{" "}
+            <span className="font-normal text-neutral-400">(origin / neden — özgünlük)</span>
+          </label>
+          <textarea
+            className="input min-h-[64px]"
+            value={brand.identity.story ?? ""}
+            onChange={(e) => set({ identity: { ...brand.identity, story: e.target.value } })}
+            placeholder="Bu marka neden, nasıl doğdu?"
+          />
+        </div>
+        <div>
           <label className="label">Kisilik (5 sifat)</label>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
             {brand.identity.personality.map((p, i) => (

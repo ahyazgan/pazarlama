@@ -23,6 +23,7 @@ export function emptyBrand(): Brand {
       differentiation: "",
       primaryColor: "#E8650A",
       visualStyle: "",
+      story: "",
     },
     voice: {
       tone: 5,
@@ -68,6 +69,8 @@ export const HAMMADDEM_SAMPLE: Brand = {
       "Tek pazaryerinde dogrulanmis çok tedarikçi + garantili teslim suresi; tek bir bayiye baglilik yok.",
     primaryColor: "#E8650A",
     visualStyle: "Net, teknik, saha-gerçekçi; turuncu vurgu, beyaz alan.",
+    story:
+      "Kurucular, santiyede malzeme gecikmesinin projeleri nasil durdurdugunu bizzat yasadi; tedariki seffaf ve garantili hale getirmek icin Hammaddem'i kurdu.",
   },
   voice: {
     tone: 4,

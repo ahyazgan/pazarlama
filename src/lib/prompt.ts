@@ -46,6 +46,11 @@ export function buildUserPrompt(req: GenerateRequest): string {
   lines.push(`Marka: ${brand.name}`);
   lines.push(`Misyon: ${brand.identity.mission || "-"}`);
   lines.push(`Deger onerisi: ${brand.identity.valueProp || "-"}`);
+  if (brand.identity.story?.trim()) {
+    lines.push(
+      `Marka hikayesi: ${brand.identity.story.trim()} (Ozgunluk icin uygun yerde, ozellikle "hikaye" tipinde, bu hikayeye dokun.)`,
+    );
+  }
   lines.push(
     `Kisilik (sifatlar): ${brand.identity.personality.filter(Boolean).join(", ") || "-"}`,
   );

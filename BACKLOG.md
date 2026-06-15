@@ -8,8 +8,7 @@
 ## Now (BEYNİ DAHA DERİN — teker teker)
 
 - [x] Görsel kimlik (marka rengi + görsel stil)  (767d453)
-- [ ] İçerik sütunları (content pillars)
-  Done when: brand.pillars; strateji konuya/rotasyona göre sütun önerir, prompt'a "bu sütuna hizmet et" girer; form + skor + test; build yeşil; committed.
+- [x] İçerik sütunları (content pillars)  (853b500)
 - [ ] Marka hikayesi (origin / neden)
   Done when: identity.story; prompt'a (özellikle hikaye tipinde) enjekte; form + skor + test; build yeşil; committed.
 - [ ] CTA / dönüşüm hedefi

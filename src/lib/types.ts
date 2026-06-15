@@ -31,6 +31,7 @@ export interface BrandIdentity {
   differentiation?: string; // neden onlardan farkliyiz (karsitlik acisini besler)
   primaryColor?: string; // marka ana rengi (hex) — gorsel prompt'ta kullanilir
   visualStyle?: string; // gorsel stil notu (ör. minimal, sicak, teknik)
+  story?: string; // marka hikayesi / kurulus "neden"i — ozgunluk katar
 }
 
 export interface BrandVoice {

@@ -52,6 +52,12 @@ export function brainScore(brand: Brand): BrainScore {
       hint: "Neden sen? Net fayda cümlesi.",
     },
     {
+      label: "Marka hikayesi",
+      points: 6,
+      filled: has(id.story),
+      hint: "Markanın origin/neden hikayesini yaz — özgünlük katar.",
+    },
+    {
       label: "Kişilik (≥3 sıfat)",
       points: 6,
       filled: countList(id.personality) >= 3,
