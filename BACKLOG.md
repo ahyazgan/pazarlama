@@ -16,8 +16,8 @@
 ## Next (pull once Now is clear)
 
 - [x] Persona-bazlı otomatik açı çeşitliliği (her persona farklı açı)  (c0a078f)
-- [ ] Üretilen paketi otomatik öz-eleştiri turundan geçir (kalite artışı)
-  Done when: opsiyonel ikinci tur — anahtar varsa çıktı "yasak kelime/klişe" kontrolünden geçer; (ANTHROPIC_API_KEY gerekir).
+- [x] Anahtarsız kalite-lint: çıktı yasak kelime + AI-klişe denetimi  (bd0fdc9)
+- [ ] LLM tabanlı öz-eleştiri turu (deterministik lint'in üstüne) — BLOKE: ANTHROPIC_API_KEY gerekir
 
 -----
 
@@ -47,6 +47,7 @@
 - [x] Konu önerici (taze konu fikirleri, boş sayfa sendromu)  (709b4f2)
 - [x] Çıktı kalite göstergesi (IG caption uzunluğu)  (cceeb76)
 - [x] Persona-bazlı açı çeşitliliği (her persona farklı açı)  (c0a078f)
+- [x] Anahtarsız kalite-lint (yasak kelime + AI-klişe denetimi)  (bd0fdc9)
 
 -----
 
