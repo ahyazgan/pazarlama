@@ -59,6 +59,11 @@ export interface BrandProof {
   references: string[]; // sosyal kanit / referanslar
 }
 
+export interface BrandGovernance {
+  extraBannedClaims?: string[]; // markaya özel yasak/riskli iddialar
+  requiredDisclaimers?: string[]; // her içerikte bulunması gereken zorunlu ibareler
+}
+
 export interface Brand {
   id?: string;
   name: string;
@@ -68,6 +73,7 @@ export interface Brand {
   audience: Persona[];
   proof: BrandProof;
   pillars?: string[]; // icerik sutunlari — markanin sahip oldugu tekrar eden temalar
+  governance?: BrandGovernance; // markaya özel governance kuralları
 }
 
 // --- Sektor Zekasi (sistem verisi) -------------------------------------------

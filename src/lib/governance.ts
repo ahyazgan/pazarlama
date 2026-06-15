@@ -188,9 +188,20 @@ function packageBlob(pkg: ContentPackage): string {
   ].join(" \n ");
 }
 
-// Paket için uyumluluk denetimi (benzersiz iddialar).
-export function complianceForPackage(pkg: ContentPackage, sector: SectorId): ComplianceIssue[] {
-  const found = scanText(packageBlob(pkg), sector);
+// Paket için uyumluluk denetimi (benzersiz iddialar) + markaya özel yasak iddialar.
+export function complianceForPackage(
+  pkg: ContentPackage,
+  sector: SectorId,
+  extraBanned: string[] = [],
+): ComplianceIssue[] {
+  const blob = packageBlob(pkg);
+  const found = scanText(blob, sector);
+  const lower = blob.toLowerCase();
+  for (const c of extraBanned.map((x) => x.trim()).filter(Boolean)) {
+    if (lower.includes(c.toLowerCase())) {
+      found.push({ term: c, reason: "Markaya özel yasak iddia" });
+    }
+  }
   const seen = new Set<string>();
   return found.filter((i) => {
     const k = i.term.toLowerCase();
@@ -198,6 +209,16 @@ export function complianceForPackage(pkg: ContentPackage, sector: SectorId): Com
     seen.add(k);
     return true;
   });
+}
+
+// Zorunlu ibare (disclaimer) denetimi: her gerekli ibare metinde var mı?
+export function disclaimerIssues(pkg: ContentPackage, required: string[] = []): ComplianceIssue[] {
+  const lower = packageBlob(pkg).toLowerCase();
+  return required
+    .map((d) => d.trim())
+    .filter(Boolean)
+    .filter((d) => !lower.includes(d.toLowerCase()))
+    .map((d) => ({ term: d, reason: "Zorunlu ibare eksik (markaya özel)" }));
 }
 
 // Tek metin için (reklam/SEO/e-posta gibi diğer motorlar da kullanabilir).

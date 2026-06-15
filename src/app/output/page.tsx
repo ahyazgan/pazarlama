@@ -14,6 +14,7 @@ import {
   accessibilityForPackage,
   brandSafety,
   complianceForPackage,
+  disclaimerIssues,
   governanceGrade,
   readabilityForPackage,
   voiceFit,
@@ -122,7 +123,13 @@ export default function OutputPage() {
       : lintPackage(pkg)
     : [];
   const brain = brand ? brainScore(brand).score : 0;
-  const compliance = pkg && brand ? complianceForPackage(pkg, brand.sector) : [];
+  const compliance =
+    pkg && brand
+      ? [
+          ...complianceForPackage(pkg, brand.sector, brand.governance?.extraBannedClaims ?? []),
+          ...disclaimerIssues(pkg, brand.governance?.requiredDisclaimers ?? []),
+        ]
+      : [];
   const readability = pkg ? readabilityForPackage(pkg) : [];
   const safety = pkg ? brandSafety(pkg) : [];
   const access = pkg ? accessibilityForPackage(pkg) : [];

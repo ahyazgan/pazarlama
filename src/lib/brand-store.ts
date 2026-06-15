@@ -68,6 +68,7 @@ export function emptyBrand(): Brand {
     ],
     proof: { numbers: [""], cases: [""], references: [""] },
     pillars: [""],
+    governance: { extraBannedClaims: [""], requiredDisclaimers: [""] },
   };
 }
 
@@ -186,6 +187,10 @@ export const HAMMADDEM_SAMPLE: Brand = {
     references: ["500+ muteahhit tarafindan tercih edildi"],
   },
   pillars: ["Tedarik guvenligi", "Saha verimliligi", "Maliyet ve seffaflik"],
+  governance: {
+    extraBannedClaims: ["en ucuz", "rakipsiz"],
+    requiredDisclaimers: ["Fiyatlara KDV dahil degildir"],
+  },
 };
 
 export const CONTENT_TYPE_FALLBACK: ContentType = "deger";

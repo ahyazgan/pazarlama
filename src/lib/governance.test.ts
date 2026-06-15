@@ -4,6 +4,7 @@ import {
   brandSafety,
   complianceForPackage,
   complianceForText,
+  disclaimerIssues,
   governanceGrade,
   readabilityForPackage,
   voiceFit,
@@ -44,6 +45,24 @@ describe("governance — uyumluluk", () => {
 
   it("temiz metin → sorun yok", () => {
     expect(complianceForText("Garantili teslim süresiyle şantiyeye değer katıyoruz.", "insaat")).toEqual([]);
+  });
+
+  it("markaya özel yasak iddiayı yakalar (extraBanned)", () => {
+    const c = complianceForPackage(pkg("Piyasanın en ucuz teklifi"), "insaat", ["en ucuz"]);
+    expect(c.some((i) => /Markaya özel/.test(i.reason))).toBe(true);
+  });
+});
+
+describe("governance — zorunlu ibare (disclaimer)", () => {
+  it("eksik zorunlu ibareyi işaretler", () => {
+    const d = disclaimerIssues(pkg("Hemen sipariş ver"), ["Fiyatlara KDV dahil degildir"]);
+    expect(d.length).toBe(1);
+  });
+  it("ibare varsa sorun yok", () => {
+    const d = disclaimerIssues(pkg("Teklif al. Fiyatlara KDV dahil degildir."), [
+      "Fiyatlara KDV dahil degildir",
+    ]);
+    expect(d).toEqual([]);
   });
 });
 

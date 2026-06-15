@@ -335,6 +335,40 @@ export default function BrandPage() {
         <p className="hint">Her içerik bir sütuna hizmet eder; marka temalarını sahiplenir.</p>
       </section>
 
+      {/* Governance kuralları (markaya özel denetim) */}
+      <section className="card space-y-4">
+        <h2 className="font-semibold">
+          Governance Kuralları{" "}
+          <span className="text-sm font-normal text-neutral-500">
+            (markaya özel denetim — çıktıda zorlanır)
+          </span>
+        </h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="label">Ek yasak iddialar</label>
+            <StringList
+              values={brand.governance?.extraBannedClaims ?? [""]}
+              onChange={(extraBannedClaims) =>
+                set({ governance: { ...brand.governance, extraBannedClaims } })
+              }
+              placeholder='or. "en ucuz"'
+            />
+            <p className="hint">Çıktıda geçerse uyumluluk uyarısı verir (bloklayıcı).</p>
+          </div>
+          <div>
+            <label className="label">Zorunlu ibareler (disclaimer)</label>
+            <StringList
+              values={brand.governance?.requiredDisclaimers ?? [""]}
+              onChange={(requiredDisclaimers) =>
+                set({ governance: { ...brand.governance, requiredDisclaimers } })
+              }
+              placeholder="or. Fiyatlara KDV dahil değildir"
+            />
+            <p className="hint">İçerikte bulunmazsa eksik ibare uyarısı verir.</p>
+          </div>
+        </div>
+      </section>
+
       {/* Katman 2: Ses */}
       <section className="card space-y-4">
         <h2 className="font-semibold">2. Ses</h2>
