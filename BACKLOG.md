@@ -7,6 +7,14 @@
 
 ## Now (work top to bottom, don’t pause between items)
 
+- [ ] Birleşik Kalite Raporu (yayına hazır mı?)
+  Done when: çıktıda beyin skoru + lint + (LLM critique) tek panelde; pure readiness fonksiyonu + test; build yeşil; committed.
+- [ ] Mobil navigasyon + cila
+  Done when: header mobilde hamburger/drawer; nav taşmıyor; build yeşil; committed.
+- [ ] Onboarding akışı (yeni marka rehberi)
+  Done when: boş/zayıf beyinde Marka Profili'nde adım adım rehber + ilk-üretim engeli yumuşak uyarı; build yeşil; committed.
+
+### Done (önceki):
 - [x] Prompt-caching restructure (sabit system prefix + cache_control)  (42aa4f0)
 
 ### Gerçek dış kaynağa bağlı kalan (kod hazır / kurulum bekliyor):

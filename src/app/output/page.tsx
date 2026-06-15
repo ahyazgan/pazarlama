@@ -8,6 +8,8 @@ import { lintPackage, lintWithBrand } from "@/lib/quality";
 import { recordFeedback } from "@/lib/feedback";
 import { addToPlan, todayISO } from "@/lib/calendar";
 import { publishChecklist } from "@/lib/publish";
+import { brainScore } from "@/lib/brain-score";
+import { readiness } from "@/lib/readiness";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -109,6 +111,8 @@ export default function OutputPage() {
       ? lintWithBrand(pkg, brand)
       : lintPackage(pkg)
     : [];
+  const brain = brand ? brainScore(brand).score : 0;
+  const ready = readiness(brain, issues.length);
 
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
   useEffect(() => {
@@ -244,22 +248,48 @@ export default function OutputPage() {
         </div>
       )}
 
-      {issues.length === 0 ? (
-        <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
-          Kalite kontrolü temiz ✓ (yasak kelime / AI-klişe bulunamadı)
+      {/* Birleşik Kalite Raporu */}
+      <div
+        className={`rounded-lg border px-3 py-2 text-sm ${
+          ready.level === "hazir"
+            ? "border-green-200 bg-green-50"
+            : ready.level === "neredeyse"
+              ? "border-amber-200 bg-amber-50"
+              : "border-red-200 bg-red-50"
+        }`}
+      >
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-medium">
+          <span
+            className={
+              ready.level === "hazir"
+                ? "text-green-700"
+                : ready.level === "neredeyse"
+                  ? "text-amber-800"
+                  : "text-red-700"
+            }
+          >
+            {ready.ready ? "✓" : "•"} Kalite Raporu: {ready.label}
+          </span>
+          <span className="text-neutral-500">Beyin %{brain}</span>
+          <span className="text-neutral-500">
+            {issues.length === 0 ? "Lint temiz" : `${issues.length} lint uyarısı`}
+          </span>
+          {brain < 60 && (
+            <Link href="/brand" className="text-xs text-brand-dark underline">
+              Beyni güçlendir
+            </Link>
+          )}
         </div>
-      ) : (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          <p className="font-semibold">Kalite uyarıları ({issues.length}):</p>
-          <ul className="mt-1 list-disc pl-5">
+        {issues.length > 0 && (
+          <ul className="mt-1 list-disc pl-5 text-xs text-neutral-700">
             {issues.slice(0, 10).map((it, i) => (
               <li key={i}>
                 {it.where}: {ISSUE_LABELS[it.type] ?? it.type} — {it.term}
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
         <div className="flex flex-wrap items-center gap-2">
