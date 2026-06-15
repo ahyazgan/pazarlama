@@ -121,6 +121,15 @@ export function buildSystemPrompt(brand: GenerateRequest["brand"]): string {
   lines.push(`Terminoloji (dogal kullan): ${sector.terminology.join(", ")}`);
   lines.push(`Mevsimsellik: ${sector.seasonality}`);
   lines.push(`Uygun hook formulleri (ilham al, kopyalama): ${sector.hooks.join(" | ")}`);
+  if (sector.knowledge) {
+    const k = sector.knowledge;
+    if (k.regulations.length)
+      lines.push(`Mevzuat/standart (dogru kullan, yanlis bilgi verme): ${k.regulations.join("; ")}`);
+    if (k.commonMistakes.length)
+      lines.push(`Sektorde sik hatalar (egitici/korku acisinda kullan): ${k.commonMistakes.join("; ")}`);
+    if (k.benchmarks.length)
+      lines.push(`Genel kiyas bilgileri (markaya MAL ETME, genel doğru olarak kullan): ${k.benchmarks.join("; ")}`);
+  }
 
   lines.push("");
   lines.push("[PLATFORM DNA — her platformun kendi fizigi]");

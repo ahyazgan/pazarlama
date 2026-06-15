@@ -51,6 +51,14 @@ describe("sector_intelligence seed", () => {
     }
   });
 
+  it("insaat derin bilgi tabani icerir (mevzuat/hata/benchmark)", () => {
+    const k = SECTORS.insaat.knowledge;
+    expect(k).toBeTruthy();
+    expect(k!.regulations.length).toBeGreaterThanOrEqual(3);
+    expect(k!.commonMistakes.length).toBeGreaterThanOrEqual(3);
+    expect(k!.benchmarks.length).toBeGreaterThanOrEqual(1);
+  });
+
   it("getSector bilinmeyen icin insaat'a duser", () => {
     expect(getSector("yok" as SectorId).sector).toBe("insaat");
   });

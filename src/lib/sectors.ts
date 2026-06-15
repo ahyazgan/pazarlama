@@ -38,6 +38,24 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
       "Aktif sezon Mart-Kasim (saha/döküm yogun). Kis aylarinda planlama, stok ve tedarik anlasmalari one cikar.",
     platformEmphasis: ["linkedin", "instagram", "x", "tiktok"],
     angleAffinity: ["korku", "egitici", "karsitlik", "kazanc", "sosyal_kanit"],
+    knowledge: {
+      regulations: [
+        "TS EN 206 hazir beton standardi",
+        "Deprem yonetmeligi (TBDY 2018) donati/beton siniflari",
+        "CE / G uygunluk isareti zorunlulugu",
+        "Sevk irsaliyesi ve e-irsaliye yukumlulugu",
+      ],
+      commonMistakes: [
+        "Beton sinifini (C25/C30) projeye gore dogrulamadan siparis",
+        "Tedarikçiyi son ana birakip teslim suresini garanti etmemek",
+        "Agrega/çimento stok kosullarini (nem/ayrismа) ihmal etmek",
+        "Tek tedarikçiye bagimlilik → gecikmede plan B yok",
+      ],
+      benchmarks: [
+        "Saha duruslarinin önemli kismi malzeme gecikmesinden kaynaklanir",
+        "Planli tedarik, acil siparise kiyasla maliyeti belirgin düsurur",
+      ],
+    },
   },
 
   kafe: {

@@ -5,8 +5,18 @@
 
 -----
 
-## Now (work top to bottom, don’t pause between items)
+## Now (ARAŞTIRMA katmanı — daha kaliteli/doğrulanabilir bilgi)
 
+- [ ] Sektör bilgi korpusunu derinleştir (mevzuat/sezon/hata/benchmark)
+  Done when: SectorIntelligence'a knowledge alanları (regulations/commonMistakes/benchmarks) + insaat dolu; prompt'a enjekte; test + build yeşil; committed.
+- [ ] Araştırma brief tipleri + citations şeması (kredensiyelsiz iskelet)
+  Done when: ResearchBrief + Source tipleri; çıktı şemasına sources[]; pure builder/parse; test + build yeşil; committed.
+- [ ] Kalite-lint: atıfsız iddia / şüpheli sayı kuralı
+  Done when: metinde marka kanıtında olmayan sayı + kaynaksız iddia işaretlenir; test + build yeşil; committed.
+- [ ] /api/research web_search iskeleti (anahtarsız 503)
+  Done when: /api/research endpoint (web_search_20260209 + citations) kod olarak hazır; anahtarsız 503; build yeşil; committed.
+
+### Done (önceki):
 - [x] Birleşik Kalite Raporu (yayına hazır mı?)  (26accc0)
 - [x] Mobil navigasyon + cila (hamburger drawer)  (f58cb03)
 - [x] Onboarding akışı (ilk çalıştırma 3-adım rehberi)  (7bbf7c6)

@@ -58,6 +58,12 @@ describe("system prompt — SABIT cache prefix (marka beyni + sektor + DNA)", ()
     expect(s).toMatch(/Ton kurallari:/);
   });
 
+  it("sektor derin bilgi tabanini (mevzuat/hata) enjekte eder", () => {
+    const s = sys();
+    expect(s).toMatch(/Mevzuat\/standart/);
+    expect(s).toMatch(/sik hatalar/);
+  });
+
   it("platform DNA + oncelik + kalite kurallari + A/B", () => {
     const s = sys();
     for (const p of ["Instagram", "TikTok", "LinkedIn", "X"]) expect(s).toContain(p);

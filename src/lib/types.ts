@@ -81,6 +81,13 @@ export interface SectorIntelligence {
   seasonality: string; // mevsimsellik notu
   platformEmphasis: PlatformId[]; // sektore gore oncelikli platform sirasi (en onemli ilk)
   angleAffinity: Angle[]; // sektorde en cok donus veren aci sirasi (en guclu ilk)
+  knowledge?: SectorKnowledge; // derin bilgi tabani (mevzuat/hata/benchmark)
+}
+
+export interface SectorKnowledge {
+  regulations: string[]; // mevzuat / standart / uyum noktalari
+  commonMistakes: string[]; // sektorde sik yapilan hatalar
+  benchmarks: string[]; // kiyas/olcut bilgileri (genel, marka-disi)
 }
 
 // --- Uretim cikti paketi -----------------------------------------------------
