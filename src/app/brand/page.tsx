@@ -7,10 +7,13 @@ import { BrainMeter } from "@/components/BrainMeter";
 import { brainScore } from "@/lib/brain-score";
 import { SECTOR_OPTIONS, getSector } from "@/lib/sectors";
 import {
+  deleteBrand,
   emptyBrand,
   HAMMADDEM_SAMPLE,
   loadBrand,
+  loadBrands,
   saveBrandLocal,
+  setActiveBrand,
 } from "@/lib/brand-store";
 import { saveBrandRemote } from "@/lib/persist";
 import type { Brand, SectorId } from "@/lib/types";
@@ -18,12 +21,36 @@ import type { Brand, SectorId } from "@/lib/types";
 export default function BrandPage() {
   const router = useRouter();
   const [brand, setBrand] = useState<Brand>(emptyBrand());
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     const existing = loadBrand();
     if (existing) setBrand(existing);
+    setBrands(loadBrands());
   }, []);
+
+  const switchTo = (id: string) => {
+    if (id === "__new__") {
+      setBrand(emptyBrand());
+      setSaved(false);
+      return;
+    }
+    const found = loadBrands().find((b) => b.id === id);
+    if (found) {
+      setActiveBrand(id);
+      setBrand(found);
+      setSaved(false);
+    }
+  };
+
+  const removeCurrent = () => {
+    if (!brand.id) return;
+    const next = deleteBrand(brand.id);
+    setBrands(next.brands);
+    setBrand(loadBrand() ?? emptyBrand());
+    setSaved(false);
+  };
 
   const set = (patch: Partial<Brand>) => {
     setBrand((b) => ({ ...b, ...patch }));
@@ -40,7 +67,9 @@ export default function BrandPage() {
   };
 
   const save = () => {
-    saveBrandLocal(brand);
+    const stored = saveBrandLocal(brand);
+    setBrand(stored);
+    setBrands(loadBrands());
     void persistRemote();
     setSaved(true);
   };
@@ -68,6 +97,36 @@ export default function BrandPage() {
           Hammaddem ornegiyle doldur
         </button>
       </div>
+
+      {brands.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
+          <span className="text-neutral-600">Marka:</span>
+          <select
+            className="input w-auto py-1"
+            value={brand.id ?? "__new__"}
+            onChange={(e) => switchTo(e.target.value)}
+          >
+            {brands.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.name || "(isimsiz)"}
+              </option>
+            ))}
+            {!brand.id && <option value="__new__">(yeni marka)</option>}
+          </select>
+          <button type="button" className="btn-ghost px-3 py-1" onClick={() => switchTo("__new__")}>
+            + Yeni marka
+          </button>
+          {brand.id && brands.length > 1 && (
+            <button
+              type="button"
+              className="px-2 py-1 text-xs text-neutral-400 hover:text-red-500"
+              onClick={removeCurrent}
+            >
+              Bu markayı sil
+            </button>
+          )}
+        </div>
+      )}
 
       <BrainMeter score={score} />
 

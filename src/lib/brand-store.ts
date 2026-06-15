@@ -9,7 +9,36 @@ import type { Brand, ContentType, SectorId } from "./types";
 // Bu sayede uretim endpoint'i DB'ye bagimli olmaz; marka body ile gecer.
 // ============================================================================
 
-const KEY = "content-os.brand";
+const KEY = "content-os.brand"; // eski tek-marka anahtari (migrasyon kaynagi)
+const MULTI_KEY = "content-os.brands"; // {brands, activeId}
+
+export interface BrandStore {
+  brands: Brand[];
+  activeId: string | null;
+}
+
+export function genBrandId(): string {
+  return `b-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+}
+
+// --- Pure yardımcılar (test edilebilir) --------------------------------------
+
+export function pickActiveBrand(store: BrandStore): Brand | null {
+  if (!store.brands.length) return null;
+  return store.brands.find((b) => b.id === store.activeId) ?? store.brands[0];
+}
+
+export function upsertBrandList(brands: Brand[], brand: Brand): Brand[] {
+  const idx = brands.findIndex((b) => b.id === brand.id);
+  if (idx === -1) return [...brands, brand];
+  const next = [...brands];
+  next[idx] = brand;
+  return next;
+}
+
+export function removeBrandFromList(brands: Brand[], id: string): Brand[] {
+  return brands.filter((b) => b.id !== id);
+}
 
 export function emptyBrand(): Brand {
   return {
@@ -42,19 +71,65 @@ export function emptyBrand(): Brand {
   };
 }
 
-export function loadBrand(): Brand | null {
-  if (typeof window === "undefined") return null;
+// Çok-marka store'u yükle; eski tek-marka kaydını otomatik migrate et.
+export function loadBrandStore(): BrandStore {
+  if (typeof window === "undefined") return { brands: [], activeId: null };
   try {
-    const raw = window.localStorage.getItem(KEY);
-    return raw ? (JSON.parse(raw) as Brand) : null;
+    const raw = window.localStorage.getItem(MULTI_KEY);
+    if (raw) return JSON.parse(raw) as BrandStore;
   } catch {
-    return null;
+    /* ignore */
   }
+  // Migrasyon: eski tek marka varsa store'a taşı.
+  try {
+    const old = window.localStorage.getItem(KEY);
+    if (old) {
+      const b = JSON.parse(old) as Brand;
+      if (!b.id) b.id = genBrandId();
+      const store: BrandStore = { brands: [b], activeId: b.id };
+      window.localStorage.setItem(MULTI_KEY, JSON.stringify(store));
+      return store;
+    }
+  } catch {
+    /* ignore */
+  }
+  return { brands: [], activeId: null };
 }
 
-export function saveBrandLocal(brand: Brand): void {
+function persistStore(store: BrandStore): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(KEY, JSON.stringify(brand));
+  window.localStorage.setItem(MULTI_KEY, JSON.stringify(store));
+}
+
+export function loadBrands(): Brand[] {
+  return loadBrandStore().brands;
+}
+
+// Aktif marka (geriye dönük uyum: loadBrand eski adı korunur).
+export function loadBrand(): Brand | null {
+  return pickActiveBrand(loadBrandStore());
+}
+
+export function setActiveBrand(id: string): void {
+  const store = loadBrandStore();
+  if (store.brands.some((b) => b.id === id)) persistStore({ ...store, activeId: id });
+}
+
+// Markayı kaydet (id yoksa üret), upsert et ve aktif yap.
+export function saveBrandLocal(brand: Brand): Brand {
+  const withId = brand.id ? brand : { ...brand, id: genBrandId() };
+  const store = loadBrandStore();
+  persistStore({ brands: upsertBrandList(store.brands, withId), activeId: withId.id! });
+  return withId;
+}
+
+export function deleteBrand(id: string): BrandStore {
+  const store = loadBrandStore();
+  const brands = removeBrandFromList(store.brands, id);
+  const activeId = store.activeId === id ? (brands[0]?.id ?? null) : store.activeId;
+  const next = { brands, activeId };
+  persistStore(next);
+  return next;
 }
 
 export const HAMMADDEM_SAMPLE: Brand = {

@@ -5,17 +5,19 @@
 
 -----
 
-## Now (BLOKE işlere geçiş — kredensiyelsiz kod + runtime gate)
+## Now (çok-marka + portabilite + haftalık plan — teker teker)
 
-- [x] LLM öz-eleştiri turu (/api/critique + buton, anahtarsız 503)  (5c1ec59)
-- [x] Manuel outcome-öğrenmesi (gerçek metrik → recommender)  (52428e2)
-- [x] Network etkisi (yerel içgörü; org-geneli backend-ready)  (3b9b080)
-- [x] Otomatik yayın — dürüst iskelet (/integrations)  (fa5fab0)
+- [ ] Çok marka desteği (her kullanıcı 1+ marka — Constitution §7)
+  Done when: birden çok marka saklanır, aktif marka seçilebilir; eski tek-marka kaydı migrate edilir; pure seçim/migrasyon testi; build yeşil; committed.
+- [ ] Beyin export / import (JSON portabilite + yedek)
+  Done when: Marka Profili'nden beyni JSON indir + JSON'dan yükle; pure serialize/parse + doğrulama testi; build yeşil; committed.
+- [ ] Haftalık içerik planı üreteci (Strateji Engine derinliği)
+  Done when: sektör içerik karışımı + sütun + açı rotasyonuyla N günlük plan (konu tohumu + tip + açı + persona) üretir; takvime tek tıkla eklenebilir; pure planner testi; build yeşil; committed.
 
-### Gerçek dış kaynağa bağlı kalan (kod hazır, runtime/kurulum bekliyor):
-- LLM öz-eleştiri: /api/critique kodu hazır; ANTHROPIC_API_KEY ile çalışır (yoksa 503).
-- Otomatik yayın: gerçek IG/TikTok OAuth + prod yayın (§4) — kullanıcı kurulumu gerekir.
-- Org-geneli network etkisi: paylaşımlı Supabase backend + çok kullanıcı (yerel içgörü hazır).
+### Gerçek dış kaynağa bağlı kalan (kod hazır / kurulum bekliyor):
+- LLM öz-eleştiri (/api/critique): ANTHROPIC_API_KEY ile çalışır (yoksa 503).
+- Otomatik yayın: IG/TikTok OAuth + prod (§4) — kullanıcı kurulumu.
+- Org-geneli network: paylaşımlı Supabase backend + çok kullanıcı.
 
 -----
 
