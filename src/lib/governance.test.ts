@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  accessibilityForPackage,
+  brandSafety,
   complianceForPackage,
   complianceForText,
   readabilityForPackage,
@@ -67,5 +69,28 @@ describe("governance — ses uyumu", () => {
       HAMMADDEM_SAMPLE,
     );
     expect(v.score).toBeGreaterThanOrEqual(90);
+  });
+});
+
+describe("governance — marka güvenliği", () => {
+  it("hassas konu + rakip karalamayı yakalar", () => {
+    const s1 = brandSafety(pkg("Bu konu tamamen siyaset meselesi"));
+    expect(s1.some((i) => /Hassas/.test(i.reason))).toBe(true);
+    const s2 = brandSafety(pkg("Rakipler berbat, onlardan uzak durun"));
+    expect(s2.some((i) => /karalama/.test(i.reason))).toBe(true);
+  });
+  it("temiz metin güvenli", () => {
+    expect(brandSafety(pkg("Garantili teslim ile şantiyeye değer."))).toEqual([]);
+  });
+});
+
+describe("governance — erişilebilirlik", () => {
+  it("kısa alt-text'i işaretler", () => {
+    expect(accessibilityForPackage(pkg("x")).some((a) => /alt-text/.test(a.where))).toBe(true);
+  });
+  it("yeterli alt-text temiz (caps yok)", () => {
+    const p = pkg("Normal bir caption metni.");
+    p.outputs.instagram.altText = "Şantiyede beton mikseri ve irsaliye kontrolü yapılıyor.";
+    expect(accessibilityForPackage(p)).toEqual([]);
   });
 });

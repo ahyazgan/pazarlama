@@ -90,6 +90,46 @@ export function voiceFit(pkg: ContentPackage, brand: Brand): VoiceFit {
   return { score, notes };
 }
 
+// --- Marka güvenliği (brand safety) -----------------------------------------
+export interface SafetyIssue {
+  term: string;
+  reason: string;
+}
+
+const PROFANITY = ["aptal", "salak", "gerizekalı", "rezil", "berbat"];
+const SENSITIVE = ["siyaset", "politik", "parti ", "iktidar", "muhalefet", "din ", "dini ", "irk", "etnik", "mezhep"];
+const DISPARAGE = ["rakipler berbat", "diğerleri çöp", "hepsi dolandırıcı", "rakip kötü", "onlar beceriksiz"];
+
+export function brandSafety(pkg: ContentPackage): SafetyIssue[] {
+  const blob = packageBlob(pkg).toLowerCase();
+  const out: SafetyIssue[] = [];
+  for (const w of PROFANITY) if (blob.includes(w)) out.push({ term: w, reason: "Aşağılayıcı/argo ifade" });
+  for (const w of SENSITIVE) if (blob.includes(w)) out.push({ term: w.trim(), reason: "Hassas konu (siyaset/din/etnik) — marka güvenliği riski" });
+  for (const w of DISPARAGE) if (blob.includes(w)) out.push({ term: w, reason: "Rakip karalama — itibar/hukuk riski" });
+  return out;
+}
+
+// --- Erişilebilirlik ---------------------------------------------------------
+export interface AccessibilityIssue {
+  where: string;
+  detail: string;
+}
+
+export function accessibilityForPackage(pkg: ContentPackage): AccessibilityIssue[] {
+  const out: AccessibilityIssue[] = [];
+  const alt = pkg.outputs.instagram.altText.trim();
+  if (alt.length < 15) {
+    out.push({ where: "Instagram alt-text", detail: "eksik/yetersiz (görme engelliler için açıklayıcı olmalı)" });
+  }
+  const cap = pkg.outputs.instagram.caption;
+  const letters = cap.replace(/[^A-Za-zÇĞİÖŞÜçğıöşü]/g, "");
+  const upper = cap.replace(/[^A-ZÇĞİÖŞÜ]/g, "");
+  if (letters.length > 20 && upper.length / letters.length > 0.6) {
+    out.push({ where: "Instagram caption", detail: "aşırı BÜYÜK HARF (bağırma/erişilebilirlik sorunu)" });
+  }
+  return out;
+}
+
 function packageBlob(pkg: ContentPackage): string {
   const o = pkg.outputs;
   return [

@@ -10,7 +10,13 @@ import { addToPlan, todayISO } from "@/lib/calendar";
 import { publishChecklist } from "@/lib/publish";
 import { brainScore } from "@/lib/brain-score";
 import { readiness } from "@/lib/readiness";
-import { complianceForPackage, readabilityForPackage, voiceFit } from "@/lib/governance";
+import {
+  accessibilityForPackage,
+  brandSafety,
+  complianceForPackage,
+  readabilityForPackage,
+  voiceFit,
+} from "@/lib/governance";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -116,8 +122,13 @@ export default function OutputPage() {
   const brain = brand ? brainScore(brand).score : 0;
   const compliance = pkg && brand ? complianceForPackage(pkg, brand.sector) : [];
   const readability = pkg ? readabilityForPackage(pkg) : [];
+  const safety = pkg ? brandSafety(pkg) : [];
+  const access = pkg ? accessibilityForPackage(pkg) : [];
   const voice = pkg && brand ? voiceFit(pkg, brand) : null;
-  const ready = readiness(brain, issues.length + compliance.length + readability.length);
+  const ready = readiness(
+    brain,
+    issues.length + compliance.length + readability.length + safety.length + access.length,
+  );
 
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
   useEffect(() => {
@@ -336,6 +347,34 @@ export default function OutputPage() {
               {compliance.map((c, i) => (
                 <li key={i}>
                   &quot;{c.term}&quot; — {c.reason}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {safety.length > 0 && (
+          <div className="mt-2 border-t border-neutral-200 pt-2">
+            <p className="text-xs font-semibold text-red-700">
+              🛡 Marka güvenliği ({safety.length}):
+            </p>
+            <ul className="mt-1 list-disc pl-5 text-xs text-red-700">
+              {safety.map((s, i) => (
+                <li key={i}>
+                  &quot;{s.term}&quot; — {s.reason}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {access.length > 0 && (
+          <div className="mt-2 border-t border-neutral-200 pt-2">
+            <p className="text-xs font-semibold text-amber-800">
+              ♿ Erişilebilirlik ({access.length}):
+            </p>
+            <ul className="mt-1 list-disc pl-5 text-xs text-amber-800">
+              {access.map((a, i) => (
+                <li key={i}>
+                  {a.where}: {a.detail}
                 </li>
               ))}
             </ul>
