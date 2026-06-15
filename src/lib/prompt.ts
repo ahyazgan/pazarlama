@@ -16,33 +16,32 @@ import { platformDnaBlock } from "./platform-dna";
 // sektore ozel terminoloji + hook formullerini + icerik karisimini veriyoruz.
 // ============================================================================
 
-export function buildSystemPrompt(req: GenerateRequest): string {
-  const sector = getSector(req.brand.sector);
-  return `Sen ${sector.label} sektorunde uzman bir sosyal medya icerik stratejistisin.
-Generic icerik uretmek YASAK. Cikti, asagidaki marka beyni ve sektor zekasi ile
-o markaya OZGU olmali; baska bir marka bu icerigi kelimesi kelimesine kopyalayip
-kullanamamali — markanin adi, kanit rakamlari, personasinin acisi ve sektor
-terminolojisi metne islenmis olmali.
-Turkce uret. Su "AI kokan" klise kaliplari KULLANMA: "gunumuz dunyasinda",
-"bu yazida/gonderide", "sizler icin", "hayatinizi kolaylastirmak icin",
-asiri emoji, ic bos sifat yiginlari. Somut ol; her cumle bir bilgi tasisin.`;
-}
+// ============================================================================
+// Prompt kurulumu — Constitution Bolum 8.
+// CACHING ICIN AYRIM: buildSystemPrompt = markaya/sektore gore SABIT prefix
+// (her uretimde ayni → prompt-caching ile ucuzlar). buildUserPrompt = yalnizca
+// degisen gorev (konu/tip/aci/persona/trend). Generic'lik yine marka beyni +
+// sektor zekasi enjeksiyonuyla kirilir.
+// ============================================================================
 
-export function buildUserPrompt(req: GenerateRequest): string {
-  const { brand, topic, contentType, angle, personaIndex } = req;
+export function buildSystemPrompt(brand: GenerateRequest["brand"]): string {
   const sector = getSector(brand.sector);
-  const persona = brand.audience[personaIndex] ?? brand.audience[0];
-
   const toneLabel =
-    brand.voice.tone <= 3
-      ? "resmi/kurumsal"
-      : brand.voice.tone >= 7
-        ? "samimi/sicak"
-        : "dengeli";
-
+    brand.voice.tone <= 3 ? "resmi/kurumsal" : brand.voice.tone >= 7 ? "samimi/sicak" : "dengeli";
   const lines: string[] = [];
 
-  lines.push("[MARKA BEYNI ENJEKSIYONU]");
+  lines.push(
+    `Sen ${sector.label} sektorunde uzman bir sosyal medya icerik stratejistisin.`,
+  );
+  lines.push(
+    `Generic icerik uretmek YASAK. Cikti, asagidaki marka beyni ve sektor zekasi ile o markaya OZGU olmali; baska bir marka bunu kopyalayip kullanamamali.`,
+  );
+  lines.push(
+    `Turkce uret. Su "AI kokan" klise kaliplari KULLANMA: "gunumuz dunyasinda", "bu yazida/gonderide", "sizler icin", "hayatinizi kolaylastirmak icin", asiri emoji, ic bos sifat yiginlari. Somut ol; her cumle bir bilgi tasisin.`,
+  );
+
+  lines.push("");
+  lines.push("[MARKA BEYNI]");
   lines.push(`Marka: ${brand.name}`);
   lines.push(`Misyon: ${brand.identity.mission || "-"}`);
   lines.push(`Deger onerisi: ${brand.identity.valueProp || "-"}`);
@@ -64,9 +63,7 @@ export function buildUserPrompt(req: GenerateRequest): string {
     );
   }
   lines.push(
-    `Ses: ton=${brand.voice.tone}/10 (${toneLabel}); cumle yapisi: ${
-      brand.voice.sentenceStyle || "-"
-    }`,
+    `Ses: ton=${brand.voice.tone}/10 (${toneLabel}); cumle yapisi: ${brand.voice.sentenceStyle || "-"}`,
   );
   lines.push(`Ton kurallari: ${toneDirectives(brand.voice.tone)}`);
   const color = brand.identity.primaryColor?.trim() || "#E8650A";
@@ -81,14 +78,11 @@ export function buildUserPrompt(req: GenerateRequest): string {
   }
   if (brand.voice.signaturePhrases.filter(Boolean).length) {
     lines.push(
-      `Imza ifadeler (uygun yerde kullan): ${brand.voice.signaturePhrases
-        .filter(Boolean)
-        .join(" | ")}`,
+      `Imza ifadeler (uygun yerde kullan): ${brand.voice.signaturePhrases.filter(Boolean).join(" | ")}`,
     );
   }
   const goodEx = (brand.voice.goodExamples ?? []).filter(Boolean);
   if (goodEx.length) {
-    lines.push("");
     lines.push(
       "[SES ORNEKLERI — markanin gercek iyi gonderileri] Bunlarin ses/ritim/uzunlugunu TAKLIT et, kelimesi kelimesine KOPYALAMA:",
     );
@@ -96,34 +90,12 @@ export function buildUserPrompt(req: GenerateRequest): string {
   }
   const badEx = (brand.voice.badExamples ?? []).filter(Boolean);
   if (badEx.length) {
-    lines.push("");
     lines.push("[KACINILACAK ORNEKLER] Bu tarza ASLA benzeme:");
     badEx.forEach((e, i) => lines.push(`Kotu ${i + 1}: ${e}`));
   }
-  if (persona) {
-    lines.push(
-      `Hedef persona: ${persona.name} — acisi: ${persona.pain || "-"}; motivasyonu: ${
-        persona.motivation || "-"
-      }`,
-    );
-    const depth: string[] = [];
-    if (persona.objections?.trim()) depth.push(`itirazlar: ${persona.objections.trim()}`);
-    if (persona.vocabulary?.trim())
-      depth.push(`kullandigi kelimeler: ${persona.vocabulary.trim()}`);
-    if (persona.triggers?.trim()) depth.push(`tetikleyiciler: ${persona.triggers.trim()}`);
-    if (depth.length) {
-      lines.push(`Persona derinligi — ${depth.join("; ")}.`);
-      lines.push(
-        "Personanin kendi kelimeleriyle yaz; bir itirazi onceden karsila; bir tetikleyiciye dokun.",
-      );
-    }
-    lines.push("Bu personanin acisina/motivasyonuna dogrudan hitap et.");
-  }
   if (brand.proof.numbers.filter(Boolean).length) {
     lines.push(
-      `Kanit (gercek rakamlar — uydurma, sadece bunlari kullan): ${brand.proof.numbers
-        .filter(Boolean)
-        .join("; ")}`,
+      `Kanit (gercek rakamlar — uydurma, sadece bunlari kullan): ${brand.proof.numbers.filter(Boolean).join("; ")}`,
     );
   }
   if (brand.proof.cases.filter(Boolean).length) {
@@ -132,21 +104,10 @@ export function buildUserPrompt(req: GenerateRequest): string {
   if (brand.proof.references.filter(Boolean).length) {
     lines.push(`Referanslar: ${brand.proof.references.filter(Boolean).join("; ")}`);
   }
-
-  lines.push("");
-  lines.push("[SEKTOR ZEKASI ENJEKSIYONU]");
-  lines.push(`Terminoloji (dogal kullan): ${sector.terminology.join(", ")}`);
-  lines.push(`Mevsimsellik: ${sector.seasonality}`);
-  lines.push(
-    `Uygun hook formulleri (bunlardan ilham al, kopyalama): ${sector.hooks.join(" | ")}`,
-  );
-
-  lines.push("");
-  lines.push("[GOREV]");
   const pillars = (brand.pillars ?? []).filter((p) => p && p.trim());
   if (pillars.length) {
     lines.push(
-      `Icerik sutunlari: ${pillars.join(", ")}. Bu icerik, en uygun sutuna acikca hizmet etsin (markanin sahip oldugu temayi guclendir).`,
+      `Icerik sutunlari: ${pillars.join(", ")}. Her icerik en uygun sutuna acikca hizmet etsin.`,
     );
   }
   if (brand.identity.ctaGoal?.trim()) {
@@ -154,53 +115,70 @@ export function buildUserPrompt(req: GenerateRequest): string {
       `Donusum hedefi: ${brand.identity.ctaGoal.trim()}. Tum CTA'lar bu eyleme yonlendirsin (generic "bizi takip et" deme).`,
     );
   }
+
+  lines.push("");
+  lines.push("[SEKTOR ZEKASI]");
+  lines.push(`Terminoloji (dogal kullan): ${sector.terminology.join(", ")}`);
+  lines.push(`Mevsimsellik: ${sector.seasonality}`);
+  lines.push(`Uygun hook formulleri (ilham al, kopyalama): ${sector.hooks.join(" | ")}`);
+
+  lines.push("");
+  lines.push("[PLATFORM DNA — her platformun kendi fizigi]");
+  lines.push(platformDnaBlock(sector.platformEmphasis));
+  lines.push(
+    `[PLATFORM ONCELIGI] Bu sektorde en cok donus veren sira: ${sector.platformEmphasis
+      .map((p) => PLATFORM_LABELS[p])
+      .join(" > ")}. Ilk iki platforma ekstra ozen goster.`,
+  );
+
+  lines.push("");
+  lines.push("[KALITE KURALLARI — generic'ligi kir]");
+  lines.push("- Hook'un ilk satiri DOGRUDAN secilen personanin acisina degsin.");
+  lines.push("- SADECE verilen gercek rakamlari kullan; rakam UYDURMA.");
+  lines.push("- Yasakli kelimeleri asla kullanma; imza ifadeleri dogal yerlestir.");
+  lines.push("- Sektor terminolojisini dogal kullan; secilen aciya sadik kal.");
+  lines.push(
+    "[A/B VARYANT] 'variants' alanini doldur: belirgin farkli 2-3 alternatif — captions, tiktokHooks, xOpeners.",
+  );
+  lines.push(
+    "Su 4 platform icin TAM paket uret (Instagram, TikTok, LinkedIn, X). Ciktiyi SADECE verilen JSON semasina gore ver; aciklama/markdown ekleme.",
+  );
+
+  return lines.join("\n");
+}
+
+export function buildUserPrompt(req: GenerateRequest): string {
+  const { brand, topic, contentType, angle, personaIndex } = req;
+  const persona = brand.audience[personaIndex] ?? brand.audience[0];
+  const lines: string[] = [];
+
+  lines.push("[GOREV]");
+  if (persona) {
+    lines.push(
+      `Hedef persona: ${persona.name} — acisi: ${persona.pain || "-"}; motivasyonu: ${persona.motivation || "-"}`,
+    );
+    const depth: string[] = [];
+    if (persona.objections?.trim()) depth.push(`itirazlar: ${persona.objections.trim()}`);
+    if (persona.vocabulary?.trim()) depth.push(`kullandigi kelimeler: ${persona.vocabulary.trim()}`);
+    if (persona.triggers?.trim()) depth.push(`tetikleyiciler: ${persona.triggers.trim()}`);
+    if (depth.length) {
+      lines.push(`Persona derinligi — ${depth.join("; ")}.`);
+      lines.push("Personanin kelimeleriyle yaz; bir itirazi onceden karsila; bir tetikleyiciye dokun.");
+    }
+    lines.push("Bu personanin acisina/motivasyonuna dogrudan hitap et.");
+  }
   lines.push(`Konu: ${topic}`);
   lines.push(`Icerik tipi: ${CONTENT_TYPE_LABELS[contentType]}`);
   lines.push(`Aci: ${ANGLE_LABELS[angle]} — ${ANGLE_HINTS[angle]}`);
   if (req.trend && req.trend.trim()) {
     lines.push(
-      `[TREND ENJEKSIYONU] Guncel olay/trend: "${req.trend.trim()}". Icerigi bu guncel baglama dogal sekilde bagla; zorlamadan, marka mesajiyla ortustur.`,
+      `[TREND] Guncel olay/trend: "${req.trend.trim()}". Icerigi bu guncel baglama dogal sekilde bagla.`,
     );
   }
   lines.push("");
   lines.push(
-    "Su 4 platform icin TAM paket uret. Her platformun PLATFORM DNA'sina KESIN uy:",
+    "Yukaridaki marka beyni + sektor zekasina gore bu gorev icin TAM paketi (4 platform + variants) JSON semasina uygun uret.",
   );
-  lines.push("");
-  lines.push("[PLATFORM DNA — her platformun kendi fizigi]");
-  lines.push(platformDnaBlock(sector.platformEmphasis));
-  lines.push("");
-  lines.push(
-    `[PLATFORM ONCELIGI] Bu sektorde en cok donus veren platform sirasi: ${sector.platformEmphasis
-      .map((p) => PLATFORM_LABELS[p])
-      .join(" > ")}. Ilk iki platforma ekstra ozen goster.`,
-  );
-  lines.push("");
-  lines.push("[KALITE KURALLARI — generic'ligi kir]");
-  lines.push(
-    "- Hook'un ilk satiri DOGRUDAN secilen personanin acisina degsin; merak/gerilim yaratsin.",
-  );
-  lines.push(
-    "- SADECE yukarida verilen gercek rakamlari/kanitlari kullan; rakam UYDURMA.",
-  );
-  lines.push(
-    "- Yasakli kelimeleri asla kullanma. Imza ifadeleri zorlamadan, dogal yerlestir.",
-  );
-  lines.push(
-    "- Sektor terminolojisini dogal kullan; jargonu yerinde, abartmadan kullan.",
-  );
-  lines.push(
-    "- Secilen aciya sadik kal; her platformun kendi DNA'sina (uzunluk, ritim, format) uy.",
-  );
-  lines.push("");
-  lines.push(
-    "[A/B VARYANT] Ayrica 'variants' alanini doldur: birbirinden belirgin farkli 2-3 alternatif uret — captions (IG caption), tiktokHooks (TikTok hook), xOpeners (X acilis tweet'i). Her alternatif ayni stratejiyi farkli aci/ifadeyle denesin.",
-  );
-  lines.push("");
-  lines.push(
-    "Ciktiyi SADECE verilen JSON semasina gore uret. Aciklama/markdown ekleme.",
-  );
-
   return lines.join("\n");
 }
 

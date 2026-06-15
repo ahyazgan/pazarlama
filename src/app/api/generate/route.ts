@@ -59,7 +59,14 @@ export async function POST(request: Request) {
       max_tokens: 16000,
       // Structured outputs su an beta; parse edilebilir JSON garantisi (Constitution Bolum 8).
       betas: ["structured-outputs-2025-11-13"],
-      system: buildSystemPrompt(body),
+      // Marka beyni + sektor zekasi SABIT prefix → prompt-caching ile ucuzlar.
+      system: [
+        {
+          type: "text",
+          text: buildSystemPrompt(body.brand),
+          cache_control: { type: "ephemeral" },
+        },
+      ],
       messages: [{ role: "user", content: buildUserPrompt(body) }],
       output_format: {
         type: "json_schema",
