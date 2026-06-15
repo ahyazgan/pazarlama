@@ -27,6 +27,8 @@ export interface BrandIdentity {
   mission: string; // misyon: ne icin varsin?
   valueProp: string; // deger onerisi: neden sen?
   personality: string[]; // 5 sifat
+  competitors?: string[]; // rakipler
+  differentiation?: string; // neden onlardan farkliyiz (karsitlik acisini besler)
 }
 
 export interface BrandVoice {

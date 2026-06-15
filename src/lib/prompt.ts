@@ -49,6 +49,15 @@ export function buildUserPrompt(req: GenerateRequest): string {
   lines.push(
     `Kisilik (sifatlar): ${brand.identity.personality.filter(Boolean).join(", ") || "-"}`,
   );
+  const competitors = (brand.identity.competitors ?? []).filter(Boolean);
+  const diff = brand.identity.differentiation?.trim();
+  if (competitors.length || diff) {
+    lines.push(
+      `[KONUMLANDIRMA] Rakipler/alternatifler: ${competitors.join(", ") || "-"}. Farkimiz: ${
+        diff || "-"
+      }. Karsitlik acisinda bu farki one cikar; rakip ismi vermeden ustunlugu goster.`,
+    );
+  }
   lines.push(
     `Ses: ton=${brand.voice.tone}/10 (${toneLabel}); cumle yapisi: ${
       brand.voice.sentenceStyle || "-"

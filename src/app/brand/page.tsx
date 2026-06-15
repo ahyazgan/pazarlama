@@ -138,6 +138,30 @@ export default function BrandPage() {
             ))}
           </div>
         </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="label">
+              Rakipler / alternatifler{" "}
+              <span className="font-normal text-neutral-400">(konumlandırma)</span>
+            </label>
+            <StringList
+              values={brand.identity.competitors ?? [""]}
+              onChange={(competitors) => set({ identity: { ...brand.identity, competitors } })}
+              placeholder="or. yerel hırdavatçı"
+            />
+          </div>
+          <div>
+            <label className="label">Neden onlardan farklıyız?</label>
+            <textarea
+              className="input min-h-[88px]"
+              value={brand.identity.differentiation ?? ""}
+              onChange={(e) =>
+                set({ identity: { ...brand.identity, differentiation: e.target.value } })
+              }
+              placeholder="Karşıtlık açısını besleyen net fark"
+            />
+          </div>
+        </div>
       </section>
 
       {/* Katman 2: Ses */}

@@ -7,8 +7,7 @@
 
 ## Now (BEYNİ ÖĞRET — form değil örnek+konumlandırma ile derinleştir)
 
-- [ ] Altın + negatif örnekler (few-shot voice öğrenme)
-  Done when: Marka Profili'ne "en iyi gönderiler" + "böyle yazma" alanları; prompt'a few-shot/kaçınılacak blokları girer; prompt testi + build yeşil; committed.
+- [x] Altın + negatif örnekler (few-shot voice öğrenme)  (d582cde)
 - [ ] Rakip & konumlandırma zekası
   Done when: kimliğe rakipler + farkımız alanları; prompt'a konumlandırma bloğu (karşıtlık açısını besler); test + build yeşil; committed.
 - [ ] Persona derinliği (jobs-to-be-done)

@@ -90,6 +90,13 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(toneDirectives(5)).toMatch(/Dengeli/);
   });
 
+  it("konumlandirma (rakip + fark) enjekte eder", () => {
+    const p = buildUserPrompt(req);
+    expect(p).toMatch(/KONUMLANDIRMA/);
+    expect(p).toMatch(/yerel hirdavatçi/); // HAMMADDEM competitor
+    expect(p).toMatch(/Karsitlik acisinda/);
+  });
+
   it("altin ornekleri (few-shot) ve kacinilacak ornekleri enjekte eder", () => {
     const p = buildUserPrompt(req);
     expect(p).toMatch(/SES ORNEKLERI/);

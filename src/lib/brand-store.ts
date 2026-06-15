@@ -15,7 +15,13 @@ export function emptyBrand(): Brand {
   return {
     name: "",
     sector: "insaat" as SectorId,
-    identity: { mission: "", valueProp: "", personality: ["", "", "", "", ""] },
+    identity: {
+      mission: "",
+      valueProp: "",
+      personality: ["", "", "", "", ""],
+      competitors: [""],
+      differentiation: "",
+    },
     voice: {
       tone: 5,
       sentenceStyle: "",
@@ -52,6 +58,9 @@ export const HAMMADDEM_SAMPLE: Brand = {
     valueProp:
       "Tek pazaryerinden, dogrulanmis tedarikçilerden, zamaninda teslimatla malzeme tedariki.",
     personality: ["guvenilir", "hizli", "seffaf", "teknik", "cozum-odakli"],
+    competitors: ["yerel hirdavatçi", "tek tedarikçiyle çalismak"],
+    differentiation:
+      "Tek pazaryerinde dogrulanmis çok tedarikçi + garantili teslim suresi; tek bir bayiye baglilik yok.",
   },
   voice: {
     tone: 4,
