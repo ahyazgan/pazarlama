@@ -111,11 +111,18 @@ export interface XOutput {
   thread: string[]; // tweet 1..n
 }
 
+export interface ContentVariants {
+  captions: string[]; // IG caption alternatifleri (A/B)
+  tiktokHooks: string[]; // TikTok hook alternatifleri
+  xOpeners: string[]; // X açılış tweet alternatifleri
+}
+
 export interface ContentOutputs {
   instagram: InstagramOutput;
   tiktok: TikTokOutput;
   linkedin: LinkedInOutput;
   x: XOutput;
+  variants?: ContentVariants; // A/B test alternatifleri (opsiyonel — eski çıktılarla uyum)
 }
 
 export interface GenerateRequest {

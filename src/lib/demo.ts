@@ -52,6 +52,21 @@ export function buildDemoPackage(req: GenerateRequest): ContentPackage {
         insight: `Sektör notu: ${sector.seasonality}`,
         discussionQuestion: `Siz ${topic} konusunda ${t0} tarafını nasıl yönetiyorsunuz?`,
       },
+      variants: {
+        captions: [
+          `${topic}: ${personaName} için neden önemli? ${sig}.`,
+          `${personaPain} mı? ${topic} ile çözülür. (${num})`,
+          `${angleLabel} açısı — ${topic}. ${brand.name}.`,
+        ],
+        tiktokHooks: [
+          `"${topic}" — 3 saniyede neden umursamalısın?`,
+          `${personaName}: bunu kaçırma — ${topic}.`,
+        ],
+        xOpeners: [
+          `${topic} hakkında kısa bir gerçek 🧵`,
+          `Çoğu ${personaName} ${topic} konusunda şunu atlıyor:`,
+        ],
+      },
       x: {
         thread: [
           `${topic} 🧵 ${personaName} için kısa bir değerlendirme.`,

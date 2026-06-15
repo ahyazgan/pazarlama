@@ -37,6 +37,28 @@ function orderTabs(emphasis?: PlatformId[]): PlatformId[] {
   return [...emphasis, ...DEFAULT_TABS.filter((t) => !seen.has(t))];
 }
 
+function Variants({ title, items }: { title: string; items?: string[] }) {
+  if (!items || items.length === 0) return null;
+  return (
+    <div className="rounded-xl border border-dashed border-brand/40 bg-brand-tint/30 p-4">
+      <div className="mb-2 text-sm font-semibold text-brand-dark">{title} (A/B varyant)</div>
+      <div className="space-y-2">
+        {items.map((v, i) => (
+          <div key={i} className="flex items-start justify-between gap-2 text-sm">
+            <span className="text-neutral-800">
+              <span className="mr-1 text-xs font-semibold text-neutral-400">
+                {String.fromCharCode(65 + i)}
+              </span>
+              {v}
+            </span>
+            <CopyButton text={v} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Block({
   title,
   body,
@@ -315,6 +337,7 @@ export default function OutputPage() {
               copy={o.instagram.imagePrompt}
             />
             <Block title="Alt-text" body={o.instagram.altText} copy={o.instagram.altText} />
+            <Variants title="Caption" items={o.variants?.captions} />
           </>
         )}
 
@@ -346,6 +369,7 @@ export default function OutputPage() {
               copy={o.tiktok.soundSuggestion}
             />
             <Block title="CTA" body={o.tiktok.cta} copy={o.tiktok.cta} />
+            <Variants title="Hook" items={o.variants?.tiktokHooks} />
           </>
         )}
 
@@ -368,22 +392,25 @@ export default function OutputPage() {
         )}
 
         {tab === "x" && (
-          <Block
-            title="Thread"
-            copy={o.x.thread.map((t, i) => `${i + 1}/ ${t}`).join("\n\n")}
-            body={
-              <div className="space-y-3">
-                {o.x.thread.map((t, i) => (
-                  <div key={i} className="rounded-lg bg-neutral-50 p-3">
-                    <span className="mr-2 text-xs font-semibold text-neutral-400">
-                      {i + 1}/{o.x.thread.length}
-                    </span>
-                    {t}
-                  </div>
-                ))}
-              </div>
-            }
-          />
+          <>
+            <Block
+              title="Thread"
+              copy={o.x.thread.map((t, i) => `${i + 1}/ ${t}`).join("\n\n")}
+              body={
+                <div className="space-y-3">
+                  {o.x.thread.map((t, i) => (
+                    <div key={i} className="rounded-lg bg-neutral-50 p-3">
+                      <span className="mr-2 text-xs font-semibold text-neutral-400">
+                        {i + 1}/{o.x.thread.length}
+                      </span>
+                      {t}
+                    </div>
+                  ))}
+                </div>
+              }
+            />
+            <Variants title="Açılış tweet" items={o.variants?.xOpeners} />
+          </>
         )}
       </section>
     </div>

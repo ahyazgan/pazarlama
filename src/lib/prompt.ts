@@ -173,6 +173,10 @@ export function buildUserPrompt(req: GenerateRequest): string {
   );
   lines.push("");
   lines.push(
+    "[A/B VARYANT] Ayrica 'variants' alanini doldur: birbirinden belirgin farkli 2-3 alternatif uret — captions (IG caption), tiktokHooks (TikTok hook), xOpeners (X acilis tweet'i). Her alternatif ayni stratejiyi farkli aci/ifadeyle denesin.",
+  );
+  lines.push("");
+  lines.push(
     "Ciktiyi SADECE verilen JSON semasina gore uret. Aciklama/markdown ekleme.",
   );
 
@@ -248,6 +252,16 @@ export const OUTPUT_SCHEMA = {
       },
       required: ["thread"],
     },
+    variants: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        captions: { type: "array", items: { type: "string" } },
+        tiktokHooks: { type: "array", items: { type: "string" } },
+        xOpeners: { type: "array", items: { type: "string" } },
+      },
+      required: ["captions", "tiktokHooks", "xOpeners"],
+    },
   },
-  required: ["instagram", "tiktok", "linkedin", "x"],
+  required: ["instagram", "tiktok", "linkedin", "x", "variants"],
 } as const;

@@ -119,7 +119,17 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(buildUserPrompt(noEx)).not.toMatch(/SES ORNEKLERI/);
   });
 
-  it("OUTPUT_SCHEMA 4 platformu zorunlu kilar", () => {
-    expect(OUTPUT_SCHEMA.required).toEqual(["instagram", "tiktok", "linkedin", "x"]);
+  it("OUTPUT_SCHEMA 4 platform + variants zorunlu kilar", () => {
+    expect(OUTPUT_SCHEMA.required).toEqual([
+      "instagram",
+      "tiktok",
+      "linkedin",
+      "x",
+      "variants",
+    ]);
+  });
+
+  it("A/B varyant direktifi prompt'a girer", () => {
+    expect(buildUserPrompt(req)).toMatch(/A\/B VARYANT/);
   });
 });

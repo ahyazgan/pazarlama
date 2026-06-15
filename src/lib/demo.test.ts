@@ -43,4 +43,12 @@ describe("demo (anahtarsiz) cikti ureteci", () => {
   it("instagram gorsel prompt marka rengini icerir", () => {
     expect(pkg.outputs.instagram.imagePrompt).toContain("#E8650A");
   });
+
+  it("A/B varyantlari uretir (caption + tiktok hook + x opener)", () => {
+    const v = pkg.outputs.variants;
+    expect(v).toBeTruthy();
+    expect(v!.captions.length).toBeGreaterThanOrEqual(2);
+    expect(v!.tiktokHooks.length).toBeGreaterThanOrEqual(2);
+    expect(v!.xOpeners.length).toBeGreaterThanOrEqual(2);
+  });
 });

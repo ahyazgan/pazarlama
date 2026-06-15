@@ -7,8 +7,7 @@
 
 ## Now (teker teker DERİN — work top to bottom)
 
-- [ ] Beyin Doluluk Skoru + rehberli iyileştirme
-  Done when: brainScore(brand) katman-ağırlıklı 0-100 skor + eksik yüksek-getirili alan listesi; Marka Profili'nde canlı çubuk + ipuçları; üretim öncesi düşük-skor uyarısı; birim testler; build yeşil; committed.
+- [x] Beyin Doluluk Skoru + rehberli iyileştirme  (10b6c12)
 - [ ] Varyant üretimi (A/B) — derin
   Done when: IG caption + TikTok hook + X çengel için 2-3 varyant (schema + prompt); demo mock'lar; çıktıda varyant seçici; test + build yeşil; committed.
 - [ ] Beyin/prompt şeffaflık önizlemesi
