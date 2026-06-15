@@ -12,6 +12,7 @@
 - [x] Kalite-lint: şüpheli/kaynaksız sayı kuralı  (1f62ac8)
 - [x] /api/research web_search iskeleti (anahtarsız 503)  (8bde277)
 - [x] research→generate UI akışı + çıktıda kaynaklar  (1c28221)
+- [x] Model kararı: Sonnet 4.6 (kalite-öncelikli) + IG hashtag uyum düzeltmesi  (079930a)
 
 > GERÇEK ANAHTARLA UÇTAN UCA DOĞRULANDI (Haiku): generate (markaya özgü) ·
 > research (web_search, kaynaklı) · critique (28/100, ihlalleri yakaladı) ·
