@@ -9,8 +9,7 @@
 
 - [x] Sektör platform vurgusu (daha akıllı hedefleme)  (db2d557)
 - [x] Konu önerici (boş sayfa sendromunu öldür)  (709b4f2)
-- [ ] Çıktı kalite göstergeleri (IG caption uzunluğu)
-  Done when: Çıktı ekranında IG caption karakter sayısı + ~125 hedef göstergesi; pure util test + build yeşil; committed.
+- [x] Çıktı kalite göstergeleri (IG caption uzunluğu)  (cceeb76)
 
 -----
 
@@ -45,6 +44,9 @@
 - [x] Demo modu (anahtarsız uçtan uca, smoke test geçti)  (ae67b7c)
 - [x] CI (GitHub Actions) + Constitution spec'i repoya  (525d38e)
 - [x] Strateji Engine aktif önerisi + anti-generic prompt beyni  (92311a7)
+- [x] Sektör platform vurgusu (prompt önceliği + çıktı sekme sırası/★)  (db2d557)
+- [x] Konu önerici (taze konu fikirleri, boş sayfa sendromu)  (709b4f2)
+- [x] Çıktı kalite göstergesi (IG caption uzunluğu)  (cceeb76)
 
 -----
 
