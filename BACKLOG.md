@@ -10,8 +10,7 @@
 - [x] Görsel kimlik (marka rengi + görsel stil)  (767d453)
 - [x] İçerik sütunları (content pillars)  (853b500)
 - [x] Marka hikayesi (origin / neden)  (6163e98)
-- [ ] CTA / dönüşüm hedefi
-  Done when: identity.ctaGoal; prompt CTA'ları bu hedefe yöneltir; form + skor + test; build yeşil; committed.
+- [x] CTA / dönüşüm hedefi  (c2e9cc3)
 
 ### Kalıcı BLOKE: network etkisi (backend) · outcome metrik (API) · otomatik yayın (OAuth) · LLM öz-eleştiri (anahtar)
 
@@ -66,6 +65,10 @@
 - [x] A/B varyant üretimi  (faf960c)
 - [x] Şeffaflık önizlemesi (beyne ne enjekte ediliyor)  (9fcafc4)
 - [x] Yayın hazırlığı (.ics + manuel checklist)  (9dba81c)
+- [x] BEYİN DERİN: görsel kimlik (marka rengi + stil)  (767d453)
+- [x] BEYİN DERİN: içerik sütunları (content pillars)  (853b500)
+- [x] BEYİN DERİN: marka hikayesi (origin/neden)  (6163e98)
+- [x] BEYİN DERİN: CTA dönüşüm hedefi  (c2e9cc3)
 
 -----
 
