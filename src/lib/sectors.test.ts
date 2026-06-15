@@ -22,6 +22,15 @@ describe("sector_intelligence seed", () => {
     expect(insaat.contentMix.deger).toBeGreaterThanOrEqual(40);
   });
 
+  it("her sektor yeterince zengin (>=10 terim, >=5 hook, mevsimsellik notu)", () => {
+    for (const id of Object.keys(SECTORS) as SectorId[]) {
+      const s = SECTORS[id];
+      expect(s.terminology.length, `${id} terminoloji`).toBeGreaterThanOrEqual(10);
+      expect(s.hooks.length, `${id} hook`).toBeGreaterThanOrEqual(5);
+      expect(s.seasonality.length, `${id} mevsimsellik`).toBeGreaterThan(20);
+    }
+  });
+
   it("getSector bilinmeyen icin insaat'a duser", () => {
     expect(getSector("yok" as SectorId).sector).toBe("insaat");
   });
