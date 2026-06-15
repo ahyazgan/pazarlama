@@ -7,8 +7,7 @@
 
 ## Now (BLOKE işlere geçiş — kredensiyelsiz kod + runtime gate)
 
-- [ ] LLM öz-eleştiri turu (üret → marka beynine göre eleştir → puanla)
-  Done when: /api/critique endpoint + pure critique prompt/schema; çıktıda "AI denetle" butonu; anahtarsız 503 + deterministik lint fallback; pure test + build yeşil; committed.
+- [x] LLM öz-eleştiri turu (/api/critique + buton, anahtarsız 503)  (5c1ec59)
 - [ ] Manuel outcome-öğrenmesi (gerçek metrik girişi)
   Done when: /calendar'da yayınlanan içeriğe gerçek metrik (erişim/etkileşim) girişi; ağırlıklı outcome recommender'a beslenir; pure test + build yeşil; committed.
 - [ ] Network etkisi (yerel/Supabase-ready agregasyon)

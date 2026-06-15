@@ -18,6 +18,8 @@ export interface CalendarEntry {
   sector: SectorId;
   date: string; // YYYY-MM-DD
   status: PlanStatus;
+  reach?: number; // gerçek erişim (yayınlandıktan sonra elle girilir)
+  engagement?: number; // gerçek etkileşim
 }
 
 const KEY = "content-os.calendar";
@@ -50,6 +52,14 @@ export function addToPlan(entry: Omit<CalendarEntry, "id" | "status">): Calendar
 
 export function setStatus(id: string, status: PlanStatus): CalendarEntry[] {
   const next = loadPlan().map((e) => (e.id === id ? { ...e, status } : e));
+  persist(next);
+  return next;
+}
+
+export function setMetrics(id: string, reach: number, engagement: number): CalendarEntry[] {
+  const next = loadPlan().map((e) =>
+    e.id === id ? { ...e, reach, engagement, status: "yayinlandi" as PlanStatus } : e,
+  );
   persist(next);
   return next;
 }

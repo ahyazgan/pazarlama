@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { netScores, type FeedbackStore } from "./feedback";
+import {
+  metricsAngleScores,
+  mergeAngleScores,
+  netScores,
+  type FeedbackStore,
+} from "./feedback";
 import { recommendAngle } from "./strategy";
 import { getSector } from "./sectors";
+import type { CalendarEntry } from "./calendar";
 
 const insaat = getSector("insaat");
 
@@ -10,6 +16,50 @@ describe("feedback netScores (pure)", () => {
     const store: FeedbackStore = { insaat: { kazanc: 3, korku: -1 } };
     expect(netScores(store, "insaat").kazanc).toBe(3);
     expect(netScores(store, "kafe")).toEqual({});
+  });
+});
+
+describe("metricsAngleScores (outcome öğrenmesi)", () => {
+  const e = (
+    angle: CalendarEntry["angle"],
+    reach: number,
+    engagement: number,
+  ): CalendarEntry => ({
+    id: Math.random().toString(),
+    topic: "t",
+    contentType: "deger",
+    angle,
+    sector: "insaat",
+    date: "2026-06-10",
+    status: "yayinlandi",
+    reach,
+    engagement,
+  });
+
+  it("yüksek etkileşim oranlı açıya +, düşüğe - verir", () => {
+    const store = metricsAngleScores([
+      e("kazanc", 1000, 200), // %20 — yüksek
+      e("korku", 1000, 20), // %2 — düşük
+    ]);
+    const s = store.insaat!;
+    expect((s.kazanc ?? 0)).toBeGreaterThan(0);
+    expect((s.korku ?? 0)).toBeLessThan(0);
+  });
+
+  it("metriksiz/planlı kayıtları yok sayar", () => {
+    const store = metricsAngleScores([
+      { ...e("kazanc", 0, 0), status: "planlandi", reach: undefined, engagement: undefined },
+    ]);
+    expect(store.insaat).toBeUndefined();
+  });
+});
+
+describe("mergeAngleScores", () => {
+  it("iki haritayı toplar", () => {
+    expect(mergeAngleScores({ korku: 2 }, { korku: -1, kazanc: 3 })).toEqual({
+      korku: 1,
+      kazanc: 3,
+    });
   });
 });
 

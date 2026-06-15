@@ -12,7 +12,8 @@ import {
   type HistoryEntry,
 } from "@/lib/history";
 import { savePackageRemote } from "@/lib/persist";
-import { loadFeedback, netScores } from "@/lib/feedback";
+import { loadFeedback, mergeAngleScores, metricsAngleScores, netScores } from "@/lib/feedback";
+import { loadPlan } from "@/lib/calendar";
 import { brainScore } from "@/lib/brain-score";
 import { brainInjectionSummary } from "@/lib/brain-preview";
 import { getSector } from "@/lib/sectors";
@@ -46,6 +47,7 @@ export default function CreatePage() {
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [feedbackStore, setFeedbackStore] = useState<ReturnType<typeof loadFeedback>>({});
+  const [plan, setPlan] = useState<ReturnType<typeof loadPlan>>([]);
   const [demo, setDemo] = useState(false);
   const [trend, setTrend] = useState("");
 
@@ -54,6 +56,7 @@ export default function CreatePage() {
     setBrand(b);
     setHistory(loadHistory());
     setFeedbackStore(loadFeedback());
+    setPlan(loadPlan());
     if (b) {
       // Sektorun icerik karisimindan en yuksek payli tipi varsayilan sec.
       const mix = getSector(b.sector).contentMix;
@@ -83,7 +86,12 @@ export default function CreatePage() {
   const duplicate = findDuplicate(history, topic, angle);
 
   // Strateji Engine — zengin brief (boş sayfa sendromunu öldürür) + öğrenilmiş feedback.
-  const feedback = netScores(feedbackStore, brand.sector);
+  // Öğrenme: el-işareti feedback + gerçek metrik sinyali birleştirilir.
+  const metricStore = metricsAngleScores(plan);
+  const feedback = mergeAngleScores(
+    netScores(feedbackStore, brand.sector),
+    netScores(metricStore, brand.sector),
+  );
   const brief = buildStrategyBrief(brand, topic, history, feedback);
   const score = brainScore(brand);
   const injection = brainInjectionSummary({
