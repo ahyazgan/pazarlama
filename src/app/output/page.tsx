@@ -13,7 +13,14 @@ import {
   type PlatformId,
 } from "@/lib/types";
 
-const TABS: PlatformId[] = ["instagram", "tiktok", "linkedin", "x"];
+const DEFAULT_TABS: PlatformId[] = ["instagram", "tiktok", "linkedin", "x"];
+
+// Sektor onceligine gore sirala; eksik kalani varsayilan sirayla tamamla.
+function orderTabs(emphasis?: PlatformId[]): PlatformId[] {
+  if (!emphasis?.length) return DEFAULT_TABS;
+  const seen = new Set(emphasis);
+  return [...emphasis, ...DEFAULT_TABS.filter((t) => !seen.has(t))];
+}
 
 function Block({
   title,
@@ -54,6 +61,15 @@ export default function OutputPage() {
   const pkg: ContentPackage | null = personas
     ? (personas[personaIdx]?.pkg ?? null)
     : single;
+
+  const tabs = orderTabs(pkg?.platformEmphasis);
+
+  // Onerilen (ilk) platformu varsayilan aktif sekme yap.
+  useEffect(() => {
+    if (pkg) setTab(orderTabs(pkg.platformEmphasis)[0]);
+    // pkg degisince (persona gecisi dahil) onerilen platforma don
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pkg?.platformEmphasis?.join(","), personaIdx]);
 
   if (!pkg) {
     return (
@@ -139,7 +155,7 @@ export default function OutputPage() {
       )}
 
       <div className="flex flex-wrap gap-2">
-        {TABS.map((t) => (
+        {tabs.map((t, i) => (
           <button
             key={t}
             type="button"
@@ -149,8 +165,10 @@ export default function OutputPage() {
                 ? "border-brand bg-brand text-white"
                 : "border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-100"
             }`}
+            title={i === 0 ? "Bu sektörde en öncelikli platform" : undefined}
           >
             {PLATFORM_LABELS[t]}
+            {i === 0 && pkg.platformEmphasis ? " ★" : ""}
           </button>
         ))}
       </div>

@@ -67,6 +67,7 @@ export interface SectorIntelligence {
   contentMix: Record<ContentType, number>; // toplam 100
   hooks: string[]; // hook formulleri
   seasonality: string; // mevsimsellik notu
+  platformEmphasis: PlatformId[]; // sektore gore oncelikli platform sirasi (en onemli ilk)
 }
 
 // --- Uretim cikti paketi -----------------------------------------------------
@@ -124,6 +125,7 @@ export interface ContentPackage {
   angle: Angle;
   outputs: ContentOutputs;
   demo?: boolean; // sablon (demo) icerik mi?
+  platformEmphasis?: PlatformId[]; // sektore gore onerilen platform sirasi (cikti vurgusu)
 }
 
 // Coklu persona uretimi: her persona icin ayri paket (Constitution Katman 3).

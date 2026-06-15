@@ -36,6 +36,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     ],
     seasonality:
       "Aktif sezon Mart-Kasim (saha/döküm yogun). Kis aylarinda planlama, stok ve tedarik anlasmalari one cikar.",
+    platformEmphasis: ["linkedin", "instagram", "x", "tiktok"],
   },
 
   kafe: {
@@ -66,6 +67,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     ],
     seasonality:
       "Kampanya dönemleri ve hafta sonu yogunlugu belirleyici; mevsimsel menü gecisleri (yaz soguk içecek/cold brew, kis sicak çikolata/sahlep).",
+    platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
   },
 
   eticaret: {
@@ -96,6 +98,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     ],
     seasonality:
       "Kampanya takvimi belirleyici: sezon sonu, özel günler (Sevgililer, Anneler Günü), 11.11, Black Friday, okula dönüs.",
+    platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
   },
 
   hizmet: {
@@ -126,6 +129,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     ],
     seasonality:
       "Yil basi planlama, çeyrek dönem hedefleri ve bütçe dönemleri (Q4/Q1) talebi etkiler.",
+    platformEmphasis: ["linkedin", "instagram", "x", "tiktok"],
   },
 
   guzellik: {
@@ -156,6 +160,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     ],
     seasonality:
       "Mevsim gecisleri (yaz: SPF/yaglanma, kis: nem/bariyer) ve özel gün/düğün dönemleri talebi sekillendirir.",
+    platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
   },
 };
 

@@ -6,6 +6,7 @@ import {
   OUTPUT_SCHEMA,
 } from "@/lib/prompt";
 import { buildDemoPackage } from "@/lib/demo";
+import { getSector } from "@/lib/sectors";
 import type { ContentOutputs, GenerateRequest } from "@/lib/types";
 
 // Uretim sunucu tarafinda; Node runtime gerekir (Anthropic SDK).
@@ -96,6 +97,7 @@ export async function POST(request: Request) {
       contentType: body.contentType,
       angle: body.angle,
       outputs,
+      platformEmphasis: getSector(body.brand.sector).platformEmphasis,
     });
   } catch (err) {
     const message =

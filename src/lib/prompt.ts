@@ -2,6 +2,7 @@ import {
   ANGLE_HINTS,
   ANGLE_LABELS,
   CONTENT_TYPE_LABELS,
+  PLATFORM_LABELS,
   type GenerateRequest,
 } from "./types";
 import { getSector } from "./sectors";
@@ -113,6 +114,12 @@ export function buildUserPrompt(req: GenerateRequest): string {
     "- LinkedIn: feed'de gorunen guclu ilk satir; beyaz bosluklu okunabilir govde; sektor insight'i; tartisma sorusu (B2B otorite tonu).",
   );
   lines.push("- X/Twitter: çengel tweet + deger tweet'leri + CTA seklinde thread (3-5 tweet).");
+  lines.push("");
+  lines.push(
+    `[PLATFORM ONCELIGI] Bu sektorde en cok donus veren platform sirasi: ${sector.platformEmphasis
+      .map((p) => PLATFORM_LABELS[p])
+      .join(" > ")}. Ilk iki platforma ekstra ozen goster.`,
+  );
   lines.push("");
   lines.push("[KALITE KURALLARI — generic'ligi kir]");
   lines.push(

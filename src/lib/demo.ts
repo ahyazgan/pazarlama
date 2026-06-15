@@ -27,6 +27,7 @@ export function buildDemoPackage(req: GenerateRequest): ContentPackage {
     contentType,
     angle,
     demo: true,
+    platformEmphasis: sector.platformEmphasis,
     outputs: {
       instagram: {
         caption: `${topic} — ${personaName} için fark yaratan nokta. ${sig}. ${angleLabel} açısıyla: ${personaPain} çözülür. (${num})`,

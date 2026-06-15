@@ -31,6 +31,19 @@ describe("sector_intelligence seed", () => {
     }
   });
 
+  it("her sektorde platformEmphasis 4 benzersiz platform icerir", () => {
+    const all = ["instagram", "tiktok", "linkedin", "x"];
+    for (const id of Object.keys(SECTORS) as SectorId[]) {
+      const pe = SECTORS[id].platformEmphasis;
+      expect([...pe].sort()).toEqual([...all].sort());
+    }
+  });
+
+  it("B2B insaat LinkedIn'i once vurgular, B2C kafe Instagram'i", () => {
+    expect(SECTORS.insaat.platformEmphasis[0]).toBe("linkedin");
+    expect(SECTORS.kafe.platformEmphasis[0]).toBe("instagram");
+  });
+
   it("getSector bilinmeyen icin insaat'a duser", () => {
     expect(getSector("yok" as SectorId).sector).toBe("insaat");
   });

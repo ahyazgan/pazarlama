@@ -57,6 +57,12 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(p).toMatch(/rakam UYDURMA/i);
   });
 
+  it("platform onceligini enjekte eder (insaat -> LinkedIn once)", () => {
+    const p = buildUserPrompt(req);
+    expect(p).toMatch(/PLATFORM ONCELIGI/);
+    expect(p).toMatch(/LinkedIn > Instagram/);
+  });
+
   it("system prompt AI-klise kaliplarini yasaklar", () => {
     expect(buildSystemPrompt(req)).toMatch(/gunumuz dunyasinda/);
   });
