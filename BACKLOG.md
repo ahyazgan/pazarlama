@@ -11,6 +11,12 @@
 - [x] Araştırma brief tipleri + citations + grounding enjeksiyonu  (88fe709)
 - [x] Kalite-lint: şüpheli/kaynaksız sayı kuralı  (1f62ac8)
 - [x] /api/research web_search iskeleti (anahtarsız 503)  (8bde277)
+- [x] research→generate UI akışı + çıktıda kaynaklar  (1c28221)
+
+> GERÇEK ANAHTARLA UÇTAN UCA DOĞRULANDI (Haiku): generate (markaya özgü) ·
+> research (web_search, kaynaklı) · critique (28/100, ihlalleri yakaladı) ·
+> research→generate (bulgu içeriğe + kaynak çıktıya). Constitution §11/6 ✓
+> Güvenlik: anahtar yalnızca git-ignore'lı .env.local'da; test sonrası revoke öneril(d)i.
 
 ### Done (önceki):
 - [x] Birleşik Kalite Raporu (yayına hazır mı?)  (26accc0)
