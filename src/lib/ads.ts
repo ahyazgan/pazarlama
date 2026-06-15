@@ -1,5 +1,26 @@
 import type { AdCopy, AdObjective, AdsRequest } from "./types";
 
+// Platform reklam karakter limitleri (sert/önerilen). Aşım → platform reddi/kırpma riski.
+export interface AdLimitIssue {
+  where: string;
+  len: number;
+  limit: number;
+}
+
+const overLimit = (where: string, text: string, limit: number, out: AdLimitIssue[]) => {
+  if (text.length > limit) out.push({ where, len: text.length, limit });
+};
+
+export function lintAds(ad: AdCopy): AdLimitIssue[] {
+  const out: AdLimitIssue[] = [];
+  ad.google.headlines.forEach((h, i) => overLimit(`Google başlık ${i + 1}`, h, 30, out));
+  ad.google.descriptions.forEach((d, i) => overLimit(`Google açıklama ${i + 1}`, d, 90, out));
+  ad.meta.headlines.forEach((h, i) => overLimit(`Meta başlık ${i + 1}`, h, 40, out));
+  ad.meta.descriptions.forEach((d, i) => overLimit(`Meta açıklama ${i + 1}`, d, 30, out));
+  ad.meta.primaryTexts.forEach((p, i) => overLimit(`Meta birincil metin ${i + 1}`, p, 200, out));
+  return out;
+}
+
 // ============================================================================
 // Reklam metni motoru (paid media CREATIVE). Marka beyni system prefix'ten gelir
 // (buildSystemPrompt); burada yalnizca reklam gorevi + sema. Butce/yayin DEGIL.

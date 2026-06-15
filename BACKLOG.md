@@ -19,12 +19,19 @@
 > research→generate (bulgu içeriğe + kaynak çıktıya). Constitution §11/6 ✓
 > Güvenlik: anahtar yalnızca git-ignore'lı .env.local'da; test sonrası revoke öneril(d)i.
 
-## Now (AJANS KREATİF KATMANI — yazı/kreatif kısmı, sırayla)
+## Now (KREATİF KATMANI DERİNLEŞTİR — denetim/zekâ, sırayla)
 
-- [x] Reklam metni motoru (paid media creative)  (00c53e4)  — gerçek Sonnet ile doğrulandı
-- [x] SEO içerik motoru (blog/uzun-form + meta)  (75ddf13)
-- [x] E-posta/funnel metni (dizi + landing)  (f2baa1e)
-- [x] Topluluk yönetimi: yorum/DM yanıt taslağı  (f2baa1e)
+- [ ] Reklam limit denetimi (platform karakter sınırları)
+  Done when: lintAds(adCopy) Google ≤30/≤90 + Meta sınırlarını işaretler; /ads'te uyarı; test + build; committed.
+- [ ] SEO audit/skor (title/meta/anahtar kelime yerleşimi)
+  Done when: auditSeo(seo) checklist + 0-100 skor; /seo'da gösterim; test + build; committed.
+- [ ] E-posta deliverability lint (spam-kelime + subject uzunluğu)
+  Done when: lintEmail(kit) spam-kelime + subject uzunluk uyarıları; /email'de gösterim; test + build; committed.
+- [ ] Topluluk triyaj (duygu/aciliyet + insana yükselt)
+  Done when: triageComment(text) kategori/aciliyet/escalate; /community'de yanıttan önce gösterim; test + build; committed.
+
+### Done (kreatif katman v1):
+- [x] Reklam metni motoru  (00c53e4)  · SEO  (75ddf13)  · E-posta+Topluluk  (f2baa1e)
 
 ### Yazılım-dışı / bloke (dürüst):
 - Reklam BÜTÇE yönetimi/optimizasyonu, gerçek yayın (OAuth), metrik çekme/attribution → API/harcama/§4

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { lintAds } from "@/lib/ads";
 import { loadBrand } from "@/lib/brand-store";
 import type { AdCopy, AdObjective, Brand } from "@/lib/types";
 
@@ -143,6 +144,26 @@ export default function AdsPage() {
           {loading ? "Üretiliyor…" : "Reklam metni üret"}
         </button>
       </section>
+
+      {ads && (() => {
+        const issues = lintAds(ads);
+        return issues.length === 0 ? (
+          <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
+            Karakter limitleri temiz ✓ (platform reddi riski yok)
+          </div>
+        ) : (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            <p className="font-semibold">Limit uyarıları ({issues.length}):</p>
+            <ul className="mt-1 list-disc pl-5">
+              {issues.map((it, i) => (
+                <li key={i}>
+                  {it.where}: {it.len}/{it.limit} karakter — kısalt
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })()}
 
       {ads && (
         <section className="card space-y-4">

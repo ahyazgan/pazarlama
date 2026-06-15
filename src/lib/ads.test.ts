@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AD_SCHEMA, buildAdsUser, buildDemoAds } from "./ads";
+import { AD_SCHEMA, buildAdsUser, buildDemoAds, lintAds } from "./ads";
 import { HAMMADDEM_SAMPLE } from "./brand-store";
 import type { AdsRequest } from "./types";
 
@@ -38,5 +38,25 @@ describe("reklam metni", () => {
   it("google açıklamaları 90 karakter sınırında", () => {
     const ads = buildDemoAds(req);
     for (const d of ads.google.descriptions) expect(d.length).toBeLessThanOrEqual(90);
+  });
+});
+
+describe("lintAds — platform limitleri", () => {
+  it("limit aşan alanları işaretler", () => {
+    const ad = buildDemoAds(req);
+    ad.google.headlines = ["Bu başlık otuz karakterden kesinlikle çok daha uzundur"];
+    ad.google.descriptions = ["x".repeat(120)];
+    const issues = lintAds(ad);
+    expect(issues.some((i) => i.where.startsWith("Google başlık"))).toBe(true);
+    expect(issues.some((i) => i.where.startsWith("Google açıklama") && i.limit === 90)).toBe(true);
+  });
+
+  it("limitlere uyan reklam temiz", () => {
+    const ad = {
+      meta: { primaryTexts: ["kısa"], headlines: ["kısa"], descriptions: ["kısa"], cta: "Al" },
+      google: { headlines: ["kısa"], descriptions: ["kısa"] },
+      audience: "x",
+    };
+    expect(lintAds(ad)).toEqual([]);
   });
 });
