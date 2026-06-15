@@ -124,6 +124,12 @@ export interface ContentPackage {
   outputs: ContentOutputs;
 }
 
+// Coklu persona uretimi: her persona icin ayri paket (Constitution Katman 3).
+export interface PersonaPackage {
+  personaName: string;
+  pkg: ContentPackage;
+}
+
 // --- UI yardimci etiketleri ---------------------------------------------------
 
 export const CONTENT_TYPE_LABELS: Record<ContentType, string> = {

@@ -9,6 +9,7 @@ import {
   CONTENT_TYPE_LABELS,
   PLATFORM_LABELS,
   type ContentPackage,
+  type PersonaPackage,
   type PlatformId,
 } from "@/lib/types";
 
@@ -35,13 +36,24 @@ function Block({
 }
 
 export default function OutputPage() {
-  const [pkg, setPkg] = useState<ContentPackage | null>(null);
+  const [single, setSingle] = useState<ContentPackage | null>(null);
+  const [personas, setPersonas] = useState<PersonaPackage[] | null>(null);
+  const [personaIdx, setPersonaIdx] = useState(0);
   const [tab, setTab] = useState<PlatformId>("instagram");
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("content-os.result");
-    if (raw) setPkg(JSON.parse(raw) as ContentPackage);
+    const multi = sessionStorage.getItem("content-os.results");
+    if (multi) {
+      setPersonas(JSON.parse(multi) as PersonaPackage[]);
+      return;
+    }
+    const one = sessionStorage.getItem("content-os.result");
+    if (one) setSingle(JSON.parse(one) as ContentPackage);
   }, []);
+
+  const pkg: ContentPackage | null = personas
+    ? (personas[personaIdx]?.pkg ?? null)
+    : single;
 
   if (!pkg) {
     return (
@@ -98,6 +110,28 @@ export default function OutputPage() {
           </Link>
         </div>
       </div>
+
+      {personas && personas.length > 1 && (
+        <div className="rounded-xl border border-neutral-200 bg-white p-3">
+          <p className="hint mb-2">Persona (her biri için ayrı açı):</p>
+          <div className="flex flex-wrap gap-2">
+            {personas.map((p, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setPersonaIdx(i)}
+                className={`chip ${
+                  personaIdx === i
+                    ? "border-brand bg-brand-tint text-brand-dark"
+                    : "border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-100"
+                }`}
+              >
+                {p.personaName}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2">
         {TABS.map((t) => (

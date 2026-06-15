@@ -18,7 +18,9 @@ import {
   CONTENT_TYPE_LABELS,
   type Angle,
   type Brand,
+  type ContentPackage,
   type ContentType,
+  type PersonaPackage,
 } from "@/lib/types";
 
 const ANGLES = Object.keys(ANGLE_LABELS) as Angle[];
@@ -66,6 +68,17 @@ export default function CreatePage() {
   const mix = sector.contentMix;
   const duplicate = findDuplicate(history, topic, angle);
 
+  const generateFor = async (idx: number) => {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ brand, topic, contentType, angle, personaIndex: idx }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Uretim basarisiz.");
+    return data as ContentPackage;
+  };
+
   const submit = async () => {
     setError(null);
     if (!topic.trim()) {
@@ -74,21 +87,41 @@ export default function CreatePage() {
     }
     setLoading(true);
     try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ brand, topic, contentType, angle, personaIndex }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Uretim basarisiz.");
-        return;
+      const pkg = await generateFor(personaIndex);
+      recordHistory({ topic, contentType, angle, personaIndex });
+      sessionStorage.removeItem("content-os.results");
+      sessionStorage.setItem("content-os.result", JSON.stringify(pkg));
+      router.push("/output");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Aga baglanilamadi. Tekrar deneyin.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Constitution Katman 3: her persona icin AYRI icerik acisi uretilir.
+  const submitAll = async () => {
+    setError(null);
+    if (!topic.trim()) {
+      setError("Konu bos olamaz.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const results: PersonaPackage[] = [];
+      for (let i = 0; i < brand.audience.length; i++) {
+        const pkg = await generateFor(i);
+        results.push({
+          personaName: brand.audience[i].name || `Persona ${i + 1}`,
+          pkg,
+        });
       }
       recordHistory({ topic, contentType, angle, personaIndex });
-      sessionStorage.setItem("content-os.result", JSON.stringify(data));
+      sessionStorage.removeItem("content-os.result");
+      sessionStorage.setItem("content-os.results", JSON.stringify(results));
       router.push("/output");
-    } catch {
-      setError("Aga baglanilamadi. Tekrar deneyin.");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Aga baglanilamadi. Tekrar deneyin.");
     } finally {
       setLoading(false);
     }
@@ -217,9 +250,23 @@ export default function CreatePage() {
           </div>
         )}
 
-        <button type="button" className="btn-primary" onClick={submit} disabled={loading}>
-          {loading ? "Uretiliyor… (~10-20 sn)" : "Icerik paketi uret"}
-        </button>
+        <div className="flex flex-wrap gap-3">
+          <button type="button" className="btn-primary" onClick={submit} disabled={loading}>
+            {loading ? "Uretiliyor…" : "Icerik paketi uret"}
+          </button>
+          {brand.audience.length > 1 && (
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={submitAll}
+              disabled={loading}
+            >
+              {loading
+                ? "Uretiliyor…"
+                : `Tum personalar icin ayri uret (${brand.audience.length})`}
+            </button>
+          )}
+        </div>
       </section>
     </div>
   );

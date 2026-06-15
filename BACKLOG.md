@@ -13,8 +13,7 @@
 
 ## Now (work top to bottom, don’t pause between items)
 
-- [ ] Çıktı: paketi tek dosya (JSON + markdown) olarak dışa aktar
-  Done when: çıktı ekranından tüm paket JSON ve markdown olarak indirilebilir; markdown formatlayıcı test edilir; build temiz; committed.
+- [x] Çıktı: paketi tek dosya (JSON + markdown) olarak dışa aktar  (bd9b44a)
 - [ ] "Tüm personalar için üret" — her persona ayrı açı (Constitution Katman 3)
   Done when: tek tıkla her persona için ayrı paket üretilir, çıktıda persona sekmeleriyle gösterilir; build temiz; committed. (Not: uçtan uca üretim ANTHROPIC_API_KEY gerektirir.)
 
