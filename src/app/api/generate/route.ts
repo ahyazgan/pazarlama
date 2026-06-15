@@ -105,6 +105,7 @@ export async function POST(request: Request) {
       angle: body.angle,
       outputs,
       platformEmphasis: getSector(body.brand.sector).platformEmphasis,
+      sources: body.research?.sources,
     });
   } catch (err) {
     const message =

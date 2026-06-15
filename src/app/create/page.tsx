@@ -33,6 +33,7 @@ import {
   type ContentPackage,
   type ContentType,
   type PersonaPackage,
+  type ResearchBrief,
 } from "@/lib/types";
 
 const ANGLES = Object.keys(ANGLE_LABELS) as Angle[];
@@ -51,6 +52,9 @@ export default function CreatePage() {
   const [plan, setPlan] = useState<ReturnType<typeof loadPlan>>([]);
   const [demo, setDemo] = useState(false);
   const [trend, setTrend] = useState("");
+  const [research, setResearch] = useState<ResearchBrief | null>(null);
+  const [researching, setResearching] = useState(false);
+  const [researchErr, setResearchErr] = useState<string | null>(null);
 
   useEffect(() => {
     const b = loadBrand();
@@ -67,6 +71,12 @@ export default function CreatePage() {
       if (top) setContentType(top[0]);
     }
   }, []);
+
+  // Konu değişince araştırma bayatlar → temizle.
+  useEffect(() => {
+    setResearch(null);
+    setResearchErr(null);
+  }, [topic]);
 
   if (brand === null) {
     return (
@@ -115,6 +125,30 @@ export default function CreatePage() {
     setPersonaIndex(brief.personaFocusIndex);
   };
 
+  const runResearch = async () => {
+    if (!brand || !topic.trim()) {
+      setResearchErr("Önce konu gir.");
+      return;
+    }
+    setResearching(true);
+    setResearchErr(null);
+    setResearch(null);
+    try {
+      const res = await fetch("/api/research", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand, topic }),
+      });
+      const data = await res.json();
+      if (!res.ok) setResearchErr(data.error || "Araştırma başarısız.");
+      else setResearch(data as ResearchBrief);
+    } catch {
+      setResearchErr("Ağa bağlanılamadı.");
+    } finally {
+      setResearching(false);
+    }
+  };
+
   const generateFor = async (idx: number, angleArg: Angle = angle) => {
     const res = await fetch("/api/generate", {
       method: "POST",
@@ -127,6 +161,7 @@ export default function CreatePage() {
         personaIndex: idx,
         demo,
         trend: trend.trim() || undefined,
+        research: research ?? undefined,
       }),
     });
     const data = await res.json();
@@ -408,6 +443,36 @@ export default function CreatePage() {
             placeholder="or. Yeni deprem yönetmeliği yürürlüğe girdi"
           />
           <p className="hint">Doldurulursa içerik bu güncel olaya bağlanır.</p>
+        </div>
+
+        <div className="rounded-xl border border-neutral-200 bg-white p-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm font-medium text-neutral-700">
+              Araştırma turu (web — güncel + kaynaklı):
+            </span>
+            <button
+              type="button"
+              className="chip border-neutral-300"
+              onClick={runResearch}
+              disabled={researching || !topic.trim()}
+            >
+              {researching ? "Araştırılıyor…" : research ? "Yeniden araştır" : "Önce araştır"}
+            </button>
+            {research && (
+              <span className="text-xs text-green-600">
+                {research.findings.length} bulgu · {research.sources.length} kaynak — üretime
+                eklenecek
+              </span>
+            )}
+            {researchErr && <span className="text-xs text-amber-700">{researchErr}</span>}
+          </div>
+          {research && (
+            <ul className="mt-2 list-disc pl-5 text-xs text-neutral-700">
+              {research.findings.slice(0, 5).map((f, i) => (
+                <li key={i}>{f}</li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <details className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">

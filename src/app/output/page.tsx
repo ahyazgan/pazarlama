@@ -249,6 +249,28 @@ export default function OutputPage() {
         </div>
       )}
 
+      {pkg.sources && pkg.sources.length > 0 && (
+        <div className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm">
+          <p className="font-medium text-blue-800">
+            Araştırma kaynakları ({pkg.sources.length}) — içerik bu bulgulara dayandırıldı
+          </p>
+          <ul className="mt-1 list-disc pl-5 text-xs">
+            {pkg.sources.map((s, i) => (
+              <li key={i}>
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 underline"
+                >
+                  {s.title || s.url}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Birleşik Kalite Raporu */}
       <div
         className={`rounded-lg border px-3 py-2 text-sm ${
