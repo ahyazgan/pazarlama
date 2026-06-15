@@ -19,13 +19,23 @@
 > research→generate (bulgu içeriğe + kaynak çıktıya). Constitution §11/6 ✓
 > Güvenlik: anahtar yalnızca git-ignore'lı .env.local'da; test sonrası revoke öneril(d)i.
 
-### Done (önceki):
-- [x] Birleşik Kalite Raporu (yayına hazır mı?)  (26accc0)
-- [x] Mobil navigasyon + cila (hamburger drawer)  (f58cb03)
-- [x] Onboarding akışı (ilk çalıştırma 3-adım rehberi)  (7bbf7c6)
+## Now (AJANS KREATİF KATMANI — yazı/kreatif kısmı, sırayla)
+
+- [ ] Reklam metni motoru (paid media creative)
+  Done when: /api/ads + AD_SCHEMA (Meta: primary/headline/description/CTA + Google: headlines/descriptions + hedef-kitle önerisi); demo mock; /ads UI; anahtarsız 503; test + build yeşil; committed.
+- [ ] SEO içerik motoru (blog/uzun-form + meta)
+  Done when: /api/seo + şema (başlık, meta description, H2 outline, anahtar kelimeler, giriş paragrafı); demo; /seo UI; test + build yeşil; committed.
+- [ ] E-posta/funnel metni
+  Done when: e-posta dizisi (hoşgeldin/nurture) + landing kopya üreteci; demo; UI; test + build; committed.
+- [ ] Topluluk yönetimi: yorum/DM yanıt taslağı
+  Done when: marka sesiyle yorum/DM yanıt taslakları üreteci; demo; UI; test + build; committed.
+
+### Yazılım-dışı / bloke (dürüst):
+- Reklam BÜTÇE yönetimi/optimizasyonu, gerçek yayın (OAuth), metrik çekme/attribution → API/harcama/§4
+- İnsan stratejist & hesap yönetimi → yazılım değil
 
 ### Done (önceki):
-- [x] Prompt-caching restructure (sabit system prefix + cache_control)  (42aa4f0)
+- [x] Model kararı: Sonnet 4.6 + IG hashtag fix  (079930a)
 
 ### Gerçek dış kaynağa bağlı kalan (kod hazır / kurulum bekliyor):
 - LLM öz-eleştiri (/api/critique): ANTHROPIC_API_KEY ile çalışır (yoksa 503).

@@ -6,6 +6,7 @@ import Link from "next/link";
 const LINKS: [string, string][] = [
   ["/brand", "Marka Profili"],
   ["/create", "Kampanya"],
+  ["/ads", "Reklam"],
   ["/plan", "Plan"],
   ["/calendar", "Takvim"],
   ["/integrations", "Entegrasyonlar"],

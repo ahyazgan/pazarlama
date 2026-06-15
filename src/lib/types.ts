@@ -165,6 +165,31 @@ export interface ResearchBrief {
   generatedAt?: string; // ISO
 }
 
+// Reklam metni (paid media creative — bütçe yönetimi DEĞİL, yalnızca kreatif).
+export type AdObjective = "trafik" | "donusum" | "etkilesim" | "bilinirlik";
+
+export interface AdCopy {
+  meta: {
+    primaryTexts: string[]; // Meta birincil metin varyantları
+    headlines: string[]; // başlık varyantları (~40 karakter)
+    descriptions: string[]; // açıklama varyantları (~30 karakter)
+    cta: string; // önerilen buton (ör. "Teklif Al")
+  };
+  google: {
+    headlines: string[]; // Google başlıkları (≤30 karakter, 3-5 adet)
+    descriptions: string[]; // Google açıklamaları (≤90 karakter, 2 adet)
+  };
+  audience: string; // hedef-kitle önerisi (ilgi/demografi/davranış)
+}
+
+export interface AdsRequest {
+  brand: Brand;
+  topic: string;
+  objective: AdObjective;
+  personaIndex: number;
+  demo?: boolean;
+}
+
 export interface GenerateRequest {
   brand: Brand;
   topic: string;
