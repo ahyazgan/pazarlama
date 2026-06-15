@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  angleInsights,
   assignAnglesToPersonas,
   buildStrategyBrief,
   recommendAngle,
@@ -23,6 +24,23 @@ describe("recommendContentType", () => {
 
   it("eticaret -> urun (%40)", () => {
     expect(recommendContentType(eticaret).value).toBe("urun");
+  });
+});
+
+describe("angleInsights (network etkisinin yerel hali)", () => {
+  it("en güçlü ve en zayıf açıyı bulur", () => {
+    const ins = angleInsights({ kazanc: 4, korku: -3, egitici: 1 });
+    expect(ins.best).toBe("kazanc");
+    expect(ins.worst).toBe("korku");
+    expect(ins.headline).toMatch(/kazanıyor/);
+  });
+  it("veri yoksa nötr başlık", () => {
+    expect(angleInsights({}).headline).toMatch(/Henüz yeterli veri/);
+  });
+  it("sadece pozitif sinyal varsa worst null", () => {
+    const ins = angleInsights({ egitici: 2 });
+    expect(ins.best).toBe("egitici");
+    expect(ins.worst).toBeNull();
   });
 });
 

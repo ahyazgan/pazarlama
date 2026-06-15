@@ -135,6 +135,33 @@ export function assignAnglesToPersonas(
   return out;
 }
 
+export interface AngleInsight {
+  ranked: [Angle, number][]; // sinyalli açılar, skora göre azalan
+  best: Angle | null; // en güçlü (pozitif) açı
+  worst: Angle | null; // en zayıf (negatif) açı
+  headline: string; // tek cümle içgörü
+}
+
+// Kullanıcının kendi verisinden (feedback + metrik) açı performansı içgörüsü.
+// Network etkisinin yerel hali; org-geneli agregasyon paylaşımlı backend ister.
+export function angleInsights(feedback: AngleFeedback): AngleInsight {
+  const ranked = (Object.entries(feedback) as [Angle, number][])
+    .filter(([, v]) => v !== 0)
+    .sort((a, b) => b[1] - a[1]);
+  const best = ranked.length && ranked[0][1] > 0 ? ranked[0][0] : null;
+  const last = ranked[ranked.length - 1];
+  const worst = ranked.length && last[1] < 0 ? last[0] : null;
+  let headline = "Henüz yeterli veri yok — ürettikçe ve sonuç girdikçe öğrenir.";
+  if (best && worst) {
+    headline = `Senin verinde "${ANGLE_LABELS[best]}" kazanıyor, "${ANGLE_LABELS[worst]}" zayıf.`;
+  } else if (best) {
+    headline = `Senin verinde "${ANGLE_LABELS[best]}" açısı öne çıkıyor.`;
+  } else if (worst) {
+    headline = `"${ANGLE_LABELS[worst]}" açısı senin verinde zayıf kalıyor.`;
+  }
+  return { ranked, best, worst, headline };
+}
+
 // Konu önerici — sektör hook'larından, son kullanılan konulara benzemeyen taze fikirler.
 // "Boş sayfa sendromunu" daha da öldürür. Hook'taki "___" yer tutucusu temizlenir.
 export function suggestTopics(

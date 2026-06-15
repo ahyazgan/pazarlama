@@ -18,6 +18,7 @@ import { brainScore } from "@/lib/brain-score";
 import { brainInjectionSummary } from "@/lib/brain-preview";
 import { getSector } from "@/lib/sectors";
 import {
+  angleInsights,
   assignAnglesToPersonas,
   buildStrategyBrief,
   suggestTopics,
@@ -93,6 +94,7 @@ export default function CreatePage() {
     netScores(metricStore, brand.sector),
   );
   const brief = buildStrategyBrief(brand, topic, history, feedback);
+  const insights = angleInsights(feedback);
   const score = brainScore(brand);
   const injection = brainInjectionSummary({
     brand,
@@ -203,6 +205,16 @@ export default function CreatePage() {
           <span className="font-medium">{brand.name}</span> · {sector.label}
         </p>
       </div>
+
+      {insights.ranked.length > 0 && (
+        <div className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm">
+          <span className="font-medium text-neutral-700">Senin verinden öğrenilen:</span>{" "}
+          {insights.headline}
+          <span className="ml-1 text-xs text-neutral-400">
+            (org-geneli network etkisi paylaşımlı backend ile açılır)
+          </span>
+        </div>
+      )}
 
       {score.score < 60 && (
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">

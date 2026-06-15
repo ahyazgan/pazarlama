@@ -8,8 +8,7 @@
 ## Now (BLOKE işlere geçiş — kredensiyelsiz kod + runtime gate)
 
 - [x] LLM öz-eleştiri turu (/api/critique + buton, anahtarsız 503)  (5c1ec59)
-- [ ] Manuel outcome-öğrenmesi (gerçek metrik girişi)
-  Done when: /calendar'da yayınlanan içeriğe gerçek metrik (erişim/etkileşim) girişi; ağırlıklı outcome recommender'a beslenir; pure test + build yeşil; committed.
+- [x] Manuel outcome-öğrenmesi (gerçek metrik → recommender)  (52428e2)
 - [ ] Network etkisi (yerel/Supabase-ready agregasyon)
   Done when: kullanıcının kendi kampanyalarından sektör+açı kazanım istatistiği; "senin verinde X kazanıyor" önerisi; pure agregasyon testi; build yeşil; committed.
 - [ ] Otomatik yayın — dürüst iskelet
