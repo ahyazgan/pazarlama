@@ -38,6 +38,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
       "Aktif sezon Mart-Kasim (saha/döküm yogun). Kis aylarinda planlama, stok ve tedarik anlasmalari one cikar.",
     platformEmphasis: ["linkedin", "instagram", "x", "tiktok"],
     angleAffinity: ["korku", "egitici", "karsitlik", "kazanc", "sosyal_kanit"],
+    defaultDisclaimers: ["Fiyatlara KDV dahil degildir", "Teknik ozellikler projeye gore degisebilir"],
     knowledge: {
       regulations: [
         "TS EN 206 hazir beton standardi",
@@ -88,6 +89,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
       "Kampanya dönemleri ve hafta sonu yogunlugu belirleyici; mevsimsel menü gecisleri (yaz soguk içecek/cold brew, kis sicak çikolata/sahlep).",
     platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
     angleAffinity: ["egitici", "sosyal_kanit", "kazanc", "karsitlik", "korku"],
+    defaultDisclaimers: ["Gorseller temsilidir", "Fiyatlar subeye gore degisebilir"],
   },
 
   eticaret: {
@@ -120,6 +122,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
       "Kampanya takvimi belirleyici: sezon sonu, özel günler (Sevgililer, Anneler Günü), 11.11, Black Friday, okula dönüs.",
     platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
     angleAffinity: ["kazanc", "korku", "sosyal_kanit", "karsitlik", "egitici"],
+    defaultDisclaimers: ["Stoklarla sinirlidir", "Kampanya kosullari gecerlidir"],
   },
 
   hizmet: {
@@ -152,6 +155,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
       "Yil basi planlama, çeyrek dönem hedefleri ve bütçe dönemleri (Q4/Q1) talebi etkiler.",
     platformEmphasis: ["linkedin", "instagram", "x", "tiktok"],
     angleAffinity: ["egitici", "korku", "kazanc", "sosyal_kanit", "karsitlik"],
+    defaultDisclaimers: ["Sonuclar kisiye/projeye gore degisir"],
   },
 
   guzellik: {
@@ -184,6 +188,7 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
       "Mevsim gecisleri (yaz: SPF/yaglanma, kis: nem/bariyer) ve özel gün/düğün dönemleri talebi sekillendirir.",
     platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
     angleAffinity: ["egitici", "korku", "sosyal_kanit", "kazanc", "karsitlik"],
+    defaultDisclaimers: ["Kozmetik urundur; tibbi tedavi amacli degildir", "Sonuclar kisiden kisiye degisir"],
   },
 };
 

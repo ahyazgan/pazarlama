@@ -88,6 +88,7 @@ export interface SectorIntelligence {
   platformEmphasis: PlatformId[]; // sektore gore oncelikli platform sirasi (en onemli ilk)
   angleAffinity: Angle[]; // sektorde en cok donus veren aci sirasi (en guclu ilk)
   knowledge?: SectorKnowledge; // derin bilgi tabani (mevzuat/hata/benchmark)
+  defaultDisclaimers: string[]; // sektor icin onerilen zorunlu ibareler
 }
 
 export interface SectorKnowledge {

@@ -59,6 +59,12 @@ describe("sector_intelligence seed", () => {
     expect(k!.benchmarks.length).toBeGreaterThanOrEqual(1);
   });
 
+  it("her sektorde varsayilan disclaimer var", () => {
+    for (const id of Object.keys(SECTORS) as SectorId[]) {
+      expect(SECTORS[id].defaultDisclaimers.length).toBeGreaterThanOrEqual(1);
+    }
+  });
+
   it("getSector bilinmeyen icin insaat'a duser", () => {
     expect(getSector("yok" as SectorId).sector).toBe("insaat");
   });

@@ -364,6 +364,17 @@ export default function BrandPage() {
               }
               placeholder="or. Fiyatlara KDV dahil değildir"
             />
+            <button
+              type="button"
+              className="btn-ghost mt-1 px-3 py-1 text-xs"
+              onClick={() => {
+                const current = (brand.governance?.requiredDisclaimers ?? []).filter(Boolean);
+                const merged = Array.from(new Set([...current, ...sector.defaultDisclaimers]));
+                set({ governance: { ...brand.governance, requiredDisclaimers: merged } });
+              }}
+            >
+              Sektör önerisini ekle ({sector.label})
+            </button>
             <p className="hint">İçerikte bulunmazsa eksik ibare uyarısı verir.</p>
           </div>
         </div>
