@@ -13,19 +13,12 @@
 
 ## Now (work top to bottom, don’t pause between items)
 
-- [x] Verification chain: ESLint + Vitest kurulumu  (ace62e2)
-- [x] Unit testler: prompt enjeksiyonu + sektör zekası  (ace62e2)
-- [x] İçerik Hafızası (tekrarı önleme — Faz 2)  (43713ae)
-- [x] Hook kütüphanesini Kampanya ekranında yüzeye çıkar (Faz 2)  (382b110)
-
------
-
-## Next (pull these once “Now” is clear)
-
+- [ ] Çıktı: paketi tek dosya (JSON + markdown) olarak dışa aktar
+  Done when: çıktı ekranından tüm paket JSON ve markdown olarak indirilebilir; markdown formatlayıcı test edilir; build temiz; committed.
 - [ ] "Tüm personalar için üret" — her persona ayrı açı (Constitution Katman 3)
-  Done when: tek tıkla her persona için ayrı paket üretilir, çıktıda persona sekmeleriyle gösterilir; committed.
-- [ ] Çıktı: paketi tek dosya (JSON/markdown) olarak dışa aktar
-  Done when: çıktı ekranından tüm paket indirilebilir; committed.
+  Done when: tek tıkla her persona için ayrı paket üretilir, çıktıda persona sekmeleriyle gösterilir; build temiz; committed. (Not: uçtan uca üretim ANTHROPIC_API_KEY gerektirir.)
+
+> Sıra notu: export (saf client, tam doğrulanabilir) çoklu-persona'nın önüne alındı.
 
 -----
 
@@ -43,7 +36,11 @@
 ## Done (archive — keep last ~10 for context)
 
 - [x] Content OS MVP iskeleti: marka beyni + sektör zekası → içerik paketi  (58e243f)
-- [x] Otonomi protokolü (CLAUDE.md) + Content OS backlog'u  (önceki commit)
+- [x] Otonomi protokolü (CLAUDE.md) + Content OS backlog'u
+- [x] Verification chain: ESLint + Vitest kurulumu  (ace62e2)
+- [x] Unit testler: prompt enjeksiyonu + sektör zekası  (ace62e2)
+- [x] İçerik Hafızası (tekrarı önleme — Faz 2)  (43713ae)
+- [x] Hook kütüphanesini Kampanya ekranında yüzeye çıkar (Faz 2)  (2194453)
 
 -----
 

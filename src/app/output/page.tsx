@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { downloadText, packageToMarkdown, slugify } from "@/lib/export";
 import {
   ANGLE_LABELS,
   CONTENT_TYPE_LABELS,
@@ -65,9 +66,37 @@ export default function OutputPage() {
             {CONTENT_TYPE_LABELS[pkg.contentType]} · {ANGLE_LABELS[pkg.angle]} acisi
           </p>
         </div>
-        <Link href="/create" className="btn-ghost">
-          Yeni kampanya
-        </Link>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={() =>
+              downloadText(
+                `${slugify(pkg.topic)}.md`,
+                packageToMarkdown(pkg),
+                "text/markdown",
+              )
+            }
+          >
+            Markdown indir
+          </button>
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={() =>
+              downloadText(
+                `${slugify(pkg.topic)}.json`,
+                JSON.stringify(pkg, null, 2),
+                "application/json",
+              )
+            }
+          >
+            JSON indir
+          </button>
+          <Link href="/create" className="btn-ghost">
+            Yeni kampanya
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
