@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
-import { downloadText, packageToMarkdown, slugify } from "@/lib/export";
+import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/lib/export";
 import {
   ANGLE_LABELS,
   CONTENT_TYPE_LABELS,
@@ -176,7 +176,27 @@ export default function OutputPage() {
       <section className="card space-y-3">
         {tab === "instagram" && (
           <>
-            <Block title="Caption" body={o.instagram.caption} copy={o.instagram.caption} />
+            <Block
+              title="Caption"
+              body={
+                <>
+                  {o.instagram.caption}
+                  {(() => {
+                    const h = captionLengthHint(o.instagram.caption);
+                    const cls =
+                      h.status === "iyi"
+                        ? "text-green-600"
+                        : h.status === "uzun"
+                          ? "text-amber-600"
+                          : "text-neutral-500";
+                    return (
+                      <div className={`mt-2 text-xs font-medium ${cls}`}>{h.label}</div>
+                    );
+                  })()}
+                </>
+              }
+              copy={o.instagram.caption}
+            />
             <Block
               title="Ilk yorum (hashtag)"
               body={o.instagram.firstComment}

@@ -8,8 +8,7 @@
 ## Now (work top to bottom, don’t pause between items)
 
 - [x] Sektör platform vurgusu (daha akıllı hedefleme)  (db2d557)
-- [ ] Konu önerici (boş sayfa sendromunu öldür)
-  Done when: Kampanya ekranında sektör hook'larından son kullanılmayan 3 taze konu fikri çip olarak gösterilir (hafızadan eler); pure util test + build yeşil; committed.
+- [x] Konu önerici (boş sayfa sendromunu öldür)  (709b4f2)
 - [ ] Çıktı kalite göstergeleri (IG caption uzunluğu)
   Done when: Çıktı ekranında IG caption karakter sayısı + ~125 hedef göstergesi; pure util test + build yeşil; committed.
 

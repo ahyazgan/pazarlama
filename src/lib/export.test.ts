@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { packageToMarkdown, slugify } from "./export";
+import { captionLengthHint, packageToMarkdown, slugify } from "./export";
 import type { ContentPackage } from "./types";
 
 const pkg: ContentPackage = {
@@ -68,6 +68,20 @@ describe("packageToMarkdown", () => {
   it("x thread'ini numaralandirir", () => {
     expect(md).toMatch(/1\/ X1/);
     expect(md).toMatch(/3\/ X3/);
+  });
+});
+
+describe("captionLengthHint", () => {
+  it("~125 hedefe yakını iyi sayar", () => {
+    expect(captionLengthHint("x".repeat(120)).status).toBe("iyi");
+  });
+  it("çok uzunu uzun işaretler", () => {
+    const h = captionLengthHint("x".repeat(300));
+    expect(h.status).toBe("uzun");
+    expect(h.label).toMatch(/Uzun/);
+  });
+  it("çok kısayı kısa işaretler", () => {
+    expect(captionLengthHint("kısa").status).toBe("kisa");
   });
 });
 

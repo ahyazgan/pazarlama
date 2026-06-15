@@ -45,6 +45,28 @@ export function packageToMarkdown(pkg: ContentPackage): string {
   return L.join("\n");
 }
 
+// Çıktı kalite göstergesi: IG caption hedefi ~125 karakter (hook görünürlüğü).
+export interface LengthHint {
+  count: number;
+  target: number;
+  status: "iyi" | "uzun" | "kisa";
+  label: string;
+}
+
+export function captionLengthHint(caption: string, target = 125): LengthHint {
+  const count = caption.length;
+  let status: LengthHint["status"] = "iyi";
+  if (count > target * 1.4) status = "uzun";
+  else if (count < target * 0.3) status = "kisa";
+  const label =
+    status === "uzun"
+      ? `Uzun (${count}/${target}) — hook ilk satırda kalsın`
+      : status === "kisa"
+        ? `Kısa (${count}/${target})`
+        : `İyi (${count}/${target})`;
+  return { count, target, status, label };
+}
+
 export function slugify(s: string): string {
   return (
     s
