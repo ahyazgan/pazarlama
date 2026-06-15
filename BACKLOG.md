@@ -10,8 +10,7 @@
 - [x] Beyin Doluluk Skoru + rehberli iyileştirme  (10b6c12)
 - [x] Varyant üretimi (A/B) — derin  (faf960c)
 - [x] Beyin/prompt şeffaflık önizlemesi  (9fcafc4)
-- [ ] Yayın hazırlığı paketi
-  Done when: platform başına kopyala checklist + .ics takvim hatırlatıcı dışa aktarımı; pure ics üreteci + test; build yeşil; committed.
+- [x] Yayın hazırlığı paketi (.ics + checklist)  (9dba81c)
 
 ### Kalıcı BLOKE: network etkisi (backend) · outcome metrik (API) · otomatik yayın (OAuth) · LLM öz-eleştiri (anahtar)
 
@@ -62,6 +61,10 @@
 - [x] BEYNİ ÖĞRET: few-shot altın/negatif örnekler  (d582cde)
 - [x] BEYNİ ÖĞRET: rakip & konumlandırma  (90b155f)
 - [x] BEYNİ ÖĞRET: persona derinliği (jobs-to-be-done)  (f230805)
+- [x] Beyin Doluluk Skoru + rehberli iyileştirme  (10b6c12)
+- [x] A/B varyant üretimi  (faf960c)
+- [x] Şeffaflık önizlemesi (beyne ne enjekte ediliyor)  (9fcafc4)
+- [x] Yayın hazırlığı (.ics + manuel checklist)  (9dba81c)
 
 -----
 
