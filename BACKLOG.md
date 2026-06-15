@@ -7,8 +7,7 @@
 
 ## Now (DERİN tur — work top to bottom, don’t pause between items)
 
-- [ ] Platform DNA veri katmanı + derin prompt enjeksiyonu (Üretim Pipeline derinliği)
-  Done when: src/lib/platform-dna.ts yapısal per-platform kurallar; prompt her platform için somut spec bloğu enjekte eder; test + build yeşil; committed.
+- [x] Platform DNA veri katmanı + derin prompt enjeksiyonu  (80ddbb5)
 - [ ] Strateji Brief üreteci (Strateji Engine derinliği)
   Done when: buildStrategyBrief() birincil+ikincil açı, platform önceliği, persona odağı, hook tohumu üretir; create ekranında zengin panel; pure test + build yeşil; committed.
 - [ ] Sektör açı afinitesi + ses-ton→somut kural (Sektör + Marka Beyni derinliği)

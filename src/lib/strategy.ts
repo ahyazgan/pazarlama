@@ -1,10 +1,13 @@
 import type {
   Angle,
+  Brand,
   ContentType,
   Persona,
+  PlatformId,
   SectorIntelligence,
 } from "./types";
 import { ANGLE_LABELS } from "./types";
+import { getSector } from "./sectors";
 import type { HistoryEntry } from "./history";
 
 // ============================================================================
@@ -147,6 +150,56 @@ export function suggestTopics(
     if (out.length >= count) break;
   }
   return out;
+}
+
+// En çok konuya değen persona (acı/motivasyon kelimeleri konuda geçiyorsa öne al).
+function focusPersona(brand: Brand, topic: string): { index: number; persona: Persona } | null {
+  if (!brand.audience.length) return null;
+  const t = norm(topic);
+  let bestIdx = 0;
+  let bestScore = -1;
+  brand.audience.forEach((p, i) => {
+    const blob = `${p.pain} ${p.motivation}`.toLowerCase();
+    const words = blob.split(/\W+/).filter((w) => w.length > 3);
+    const score = words.filter((w) => t.includes(w)).length;
+    if (score > bestScore) {
+      bestScore = score;
+      bestIdx = i;
+    }
+  });
+  return { index: bestIdx, persona: brand.audience[bestIdx] };
+}
+
+export interface StrategyBrief {
+  contentType: Recommendation<ContentType>;
+  primaryAngle: Recommendation<Angle>;
+  secondaryAngle: Angle;
+  platformPriority: PlatformId[];
+  personaFocusIndex: number;
+  personaFocusName: string;
+  hookSeed: string;
+}
+
+// Strateji Engine'in zengin çıktısı — boş sayfa sendromunu tam öldürür (Bölüm 3).
+export function buildStrategyBrief(
+  brand: Brand,
+  topic: string,
+  history: HistoryEntry[] = [],
+): StrategyBrief {
+  const sector = getSector(brand.sector);
+  const angles = assignAnglesToPersonas(sector, topic, 2, history);
+  const focus = focusPersona(brand, topic);
+  const seedRaw = suggestTopics(sector, history, 1)[0] ?? sector.hooks[0] ?? "";
+  const hookSeed = seedRaw.replace(/_+/g, "…").trim();
+  return {
+    contentType: recommendContentType(sector),
+    primaryAngle: recommendAngle(sector, topic, history),
+    secondaryAngle: angles[1] ?? angles[0],
+    platformPriority: sector.platformEmphasis,
+    personaFocusIndex: focus?.index ?? 0,
+    personaFocusName: focus?.persona.name || "hedef kitle",
+    hookSeed,
+  };
 }
 
 // Persona'ya göre kısa strateji notu (üretim öncesi yön).

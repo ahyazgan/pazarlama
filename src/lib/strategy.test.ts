@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   assignAnglesToPersonas,
+  buildStrategyBrief,
   recommendAngle,
   recommendContentType,
   suggestTopics,
 } from "./strategy";
 import { getSector } from "./sectors";
+import { HAMMADDEM_SAMPLE } from "./brand-store";
 import type { HistoryEntry } from "./history";
 
 const insaat = getSector("insaat");
@@ -20,6 +22,29 @@ describe("recommendContentType", () => {
 
   it("eticaret -> urun (%40)", () => {
     expect(recommendContentType(eticaret).value).toBe("urun");
+  });
+});
+
+describe("buildStrategyBrief", () => {
+  const brief = buildStrategyBrief(HAMMADDEM_SAMPLE, "Geç teslimat cezası riski");
+
+  it("birincil ve ikincil açı farklı", () => {
+    expect(brief.secondaryAngle).not.toBe(brief.primaryAngle.value);
+  });
+
+  it("platform önceliği sektörden gelir (insaat -> LinkedIn ilk)", () => {
+    expect(brief.platformPriority[0]).toBe("linkedin");
+  });
+
+  it("konuya en çok değen personayı odak seçer", () => {
+    // 'Geç teslimat' Saha Müdür'ün acısı -> 0. persona
+    expect(brief.personaFocusIndex).toBe(0);
+    expect(brief.personaFocusName).toMatch(/Saha/);
+  });
+
+  it("hook tohumu yer tutucusuz", () => {
+    expect(brief.hookSeed).not.toMatch(/_/);
+    expect(brief.hookSeed.length).toBeGreaterThan(3);
   });
 });
 

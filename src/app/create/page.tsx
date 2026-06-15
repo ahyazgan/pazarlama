@@ -15,14 +15,14 @@ import { savePackageRemote } from "@/lib/persist";
 import { getSector } from "@/lib/sectors";
 import {
   assignAnglesToPersonas,
-  recommendAngle,
-  recommendContentType,
+  buildStrategyBrief,
   suggestTopics,
 } from "@/lib/strategy";
 import {
   ANGLE_HINTS,
   ANGLE_LABELS,
   CONTENT_TYPE_LABELS,
+  PLATFORM_LABELS,
   type Angle,
   type Brand,
   type ContentPackage,
@@ -76,15 +76,17 @@ export default function CreatePage() {
   const mix = sector.contentMix;
   const duplicate = findDuplicate(history, topic, angle);
 
-  // Strateji Engine — aktif öneri (boş sayfa sendromunu öldürür).
-  const angleRec = recommendAngle(sector, topic, history);
-  const typeRec = recommendContentType(sector);
+  // Strateji Engine — zengin brief (boş sayfa sendromunu öldürür).
+  const brief = buildStrategyBrief(brand, topic, history);
+  const angleRec = brief.primaryAngle;
+  const typeRec = brief.contentType;
   const topicIdeas = suggestTopics(sector, history);
   const recApplied = angle === angleRec.value && contentType === typeRec.value;
 
   const applyRecommendation = () => {
     setAngle(angleRec.value);
     setContentType(typeRec.value);
+    setPersonaIndex(brief.personaFocusIndex);
   };
 
   const generateFor = async (idx: number, angleArg: Angle = angle) => {
@@ -238,6 +240,24 @@ export default function CreatePage() {
           <p className="hint mt-1">
             {angleRec.reason} {typeRec.reason}
           </p>
+          <div className="mt-2 grid gap-1 text-xs text-neutral-600 sm:grid-cols-2">
+            <div>
+              <span className="font-medium">İkincil açı:</span>{" "}
+              {ANGLE_LABELS[brief.secondaryAngle]}
+            </div>
+            <div>
+              <span className="font-medium">Persona odağı:</span> {brief.personaFocusName}
+            </div>
+            <div>
+              <span className="font-medium">Platform önceliği:</span>{" "}
+              {brief.platformPriority.map((p) => PLATFORM_LABELS[p]).join(" › ")}
+            </div>
+            {brief.hookSeed && (
+              <div>
+                <span className="font-medium">Hook tohumu:</span> {brief.hookSeed}
+              </div>
+            )}
+          </div>
         </div>
 
         <div>
