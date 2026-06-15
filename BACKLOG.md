@@ -23,8 +23,8 @@
 
 - [x] Reklam metni motoru (paid media creative)  (00c53e4)  — gerçek Sonnet ile doğrulandı
 - [x] SEO içerik motoru (blog/uzun-form + meta)  (75ddf13)
-- [x] E-posta/funnel metni (dizi + landing)  (commit)
-- [x] Topluluk yönetimi: yorum/DM yanıt taslağı  (commit)
+- [x] E-posta/funnel metni (dizi + landing)  (f2baa1e)
+- [x] Topluluk yönetimi: yorum/DM yanıt taslağı  (f2baa1e)
 
 ### Yazılım-dışı / bloke (dürüst):
 - Reklam BÜTÇE yönetimi/optimizasyonu, gerçek yayın (OAuth), metrik çekme/attribution → API/harcama/§4
