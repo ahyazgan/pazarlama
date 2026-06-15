@@ -9,8 +9,7 @@
 
 - [x] Trend Enjeksiyonu (manuel girdi) — web search olmadan  (b3159bc)
 - [x] Feedback Loop (yerel 👍/👎 → recommender öğrenir)  (25e50f1)
-- [ ] İçerik Takvimi (ajanda/planlayıcı) — drag-drop yerine MVP
-  Done when: çıktıdan "Takvime ekle" (tarih); /calendar tarihe göre planlanan paketleri listeler + durum (planlandı/yayınlandı); pure helper testi + build yeşil; committed.
+- [x] İçerik Takvimi (ajanda/planlayıcı)  (34b4c6a)
 
 ### Kalıcı BLOKE (sahtesi yapılmaz):
 - [ ] Otomatik yayın (IG Graph / TikTok API) — OAuth + prod yan etki (§4)
@@ -57,6 +56,9 @@
 - [x] DERİN tur: Strateji Brief üreteci  (0a15806)
 - [x] DERİN tur: sektör açı afinitesi + ses-ton kuralları  (f378202)
 - [x] DERİN tur: derin kalite-lint (6 yeni kural)  (08597a9)
+- [x] Trend enjeksiyonu (manuel girdi)  (b3159bc)
+- [x] Feedback loop (yerel 👍/👎 → öğrenen recommender)  (25e50f1)
+- [x] İçerik takvimi (ajanda/planlayıcı + /calendar)  (34b4c6a)
 
 -----
 
