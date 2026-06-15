@@ -5,11 +5,9 @@
 
 -----
 
-## Now (çok-marka + portabilite + haftalık plan — teker teker)
+## Now (work top to bottom, don’t pause between items)
 
-- [x] Çok marka desteği (1+ marka, seç/sil, migrasyon)  (74a27e2)
-- [x] Beyin export / import (JSON portabilite + yedek)  (c24c6fb)
-- [x] Haftalık içerik planı üreteci (/plan)  (f965fe6)
+- [x] Prompt-caching restructure (sabit system prefix + cache_control)  (42aa4f0)
 
 ### Gerçek dış kaynağa bağlı kalan (kod hazır / kurulum bekliyor):
 - LLM öz-eleştiri (/api/critique): ANTHROPIC_API_KEY ile çalışır (yoksa 503).
