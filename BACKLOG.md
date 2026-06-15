@@ -13,17 +13,16 @@
 
 ## Now (work top to bottom, don’t pause between items)
 
-- [x] Çıktı: paketi tek dosya (JSON + markdown) olarak dışa aktar  (bd9b44a)
-- [ ] "Tüm personalar için üret" — her persona ayrı açı (Constitution Katman 3)
-  Done when: tek tıkla her persona için ayrı paket üretilir, çıktıda persona sekmeleriyle gösterilir; build temiz; committed. (Not: uçtan uca üretim ANTHROPIC_API_KEY gerektirir.)
+- [ ] Supabase kalıcı kayıt (brands + content_packages) — env varsa
+  Done when: env yapılandırılmışsa marka kaydı ve üretilen paket Supabase'e best-effort yazılır, yoksa sessizce localStorage'a düşer; saf yardımcılar test edilir; build temiz; committed.
 
-> Sıra notu: export (saf client, tam doğrulanabilir) çoklu-persona'nın önüne alındı.
+> "Now" sprinti (tooling+test, içerik hafızası, hook UI, export, çoklu-persona) tamamlandı → Done arşivinde.
+> Sıradaki iş "Later" listesinden Now'a çekildi: Supabase kalıcı kayıt (env varsa).
 
 -----
 
 ## Later (lower priority — only if Now + Next clear)
 
-- [ ] Supabase kalıcı kayıt (brands + content_packages) — env varsa
 - [ ] Trend Enjeksiyonu (web search ile sektörel güncel haber bağlama)
 - [ ] Feedback Loop (performans verisi → strateji öğrenir)
 - [ ] Otomatik yayın (IG Graph API / TikTok API)
@@ -40,6 +39,8 @@
 - [x] Unit testler: prompt enjeksiyonu + sektör zekası  (ace62e2)
 - [x] İçerik Hafızası (tekrarı önleme — Faz 2)  (43713ae)
 - [x] Hook kütüphanesini Kampanya ekranında yüzeye çıkar (Faz 2)  (2194453)
+- [x] Çıktı dışa aktarma (markdown + JSON)  (bd9b44a)
+- [x] Tüm personalar için ayrı üretim + persona sekmeleri  (759c00d)
 
 -----
 

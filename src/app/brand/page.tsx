@@ -10,6 +10,7 @@ import {
   loadBrand,
   saveBrandLocal,
 } from "@/lib/brand-store";
+import { saveBrandRemote } from "@/lib/persist";
 import type { Brand, SectorId } from "@/lib/types";
 
 export default function BrandPage() {
@@ -29,13 +30,21 @@ export default function BrandPage() {
 
   const sector = getSector(brand.sector);
 
+  // Best-effort: Supabase yapilandirilmissa uzak kayit + brand id'yi sakla.
+  const persistRemote = async () => {
+    const id = await saveBrandRemote(brand);
+    if (id) window.localStorage.setItem("content-os.brand_id", id);
+  };
+
   const save = () => {
     saveBrandLocal(brand);
+    void persistRemote();
     setSaved(true);
   };
 
   const saveAndGo = () => {
     saveBrandLocal(brand);
+    void persistRemote();
     router.push("/create");
   };
 

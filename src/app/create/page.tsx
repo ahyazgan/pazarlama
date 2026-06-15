@@ -11,6 +11,7 @@ import {
   recordHistory,
   type HistoryEntry,
 } from "@/lib/history";
+import { savePackageRemote } from "@/lib/persist";
 import { getSector } from "@/lib/sectors";
 import {
   ANGLE_HINTS,
@@ -76,7 +77,14 @@ export default function CreatePage() {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Uretim basarisiz.");
-    return data as ContentPackage;
+    const pkg = data as ContentPackage;
+    // Best-effort uzak kayit (env + brand_id varsa); yoksa sessizce atlar.
+    const brandId =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem("content-os.brand_id")
+        : null;
+    void savePackageRemote(brandId, pkg);
+    return pkg;
   };
 
   const submit = async () => {
