@@ -7,8 +7,7 @@
 
 ## Now (work top to bottom, don’t pause between items)
 
-- [ ] Birleşik Kalite Raporu (yayına hazır mı?)
-  Done when: çıktıda beyin skoru + lint + (LLM critique) tek panelde; pure readiness fonksiyonu + test; build yeşil; committed.
+- [x] Birleşik Kalite Raporu (yayına hazır mı?)  (26accc0)
 - [ ] Mobil navigasyon + cila
   Done when: header mobilde hamburger/drawer; nav taşmıyor; build yeşil; committed.
 - [ ] Onboarding akışı (yeni marka rehberi)

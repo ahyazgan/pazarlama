@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Nav } from "@/components/Nav";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body>
-        <header className="border-b border-neutral-200 bg-white">
+        <header className="relative border-b border-neutral-200 bg-white">
           <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
             <Link href="/" className="flex items-center gap-2 font-bold">
               <span className="grid h-7 w-7 place-items-center rounded-md bg-brand text-white">
@@ -24,23 +25,7 @@ export default function RootLayout({
               </span>
               Content OS
             </Link>
-            <nav className="flex items-center gap-1 text-sm">
-              <Link href="/brand" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
-                Marka Profili
-              </Link>
-              <Link href="/create" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
-                Kampanya Olustur
-              </Link>
-              <Link href="/plan" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
-                Plan
-              </Link>
-              <Link href="/calendar" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
-                Takvim
-              </Link>
-              <Link href="/integrations" className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
-                Entegrasyonlar
-              </Link>
-            </nav>
+            <Nav />
           </div>
         </header>
         <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
