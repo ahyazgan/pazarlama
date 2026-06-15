@@ -112,6 +112,25 @@ export default function CreatePage() {
             onChange={(e) => setTopic(e.target.value)}
             placeholder="or. Cimento stogu tazelendi"
           />
+          {sector.hooks.length > 0 && (
+            <div className="mt-2">
+              <p className="hint mb-1">
+                Hook kütüphanesi ({sector.label}) — tıkla, boşluğu doldur:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {sector.hooks.map((h, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => setTopic(h)}
+                    className="chip border-neutral-300 bg-white text-left text-neutral-700 hover:border-brand hover:bg-brand-tint"
+                  >
+                    {h}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div>

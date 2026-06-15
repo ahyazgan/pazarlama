@@ -15,10 +15,8 @@
 
 - [x] Verification chain: ESLint + Vitest kurulumu  (ace62e2)
 - [x] Unit testler: prompt enjeksiyonu + sektör zekası  (ace62e2)
-- [ ] İçerik Hafızası (tekrarı önleme — Faz 2)
-  Done when: üretilen paketler localStorage geçmişine yazılır; Kampanya ekranında aynı konu+açı daha önce üretildiyse uyarı gösterilir; test + build temiz; committed.
-- [ ] Hook kütüphanesini Kampanya ekranında yüzeye çıkar (Faz 2)
-  Done when: seçili sektörün hook formülleri çip olarak gösterilir, tıklayınca konuya şablon/ilham olarak eklenir; build temiz; committed.
+- [x] İçerik Hafızası (tekrarı önleme — Faz 2)  (43713ae)
+- [x] Hook kütüphanesini Kampanya ekranında yüzeye çıkar (Faz 2)  (382b110)
 
 -----
 
