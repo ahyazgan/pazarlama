@@ -8,8 +8,7 @@
 ## Now (çok-marka + portabilite + haftalık plan — teker teker)
 
 - [x] Çok marka desteği (1+ marka, seç/sil, migrasyon)  (74a27e2)
-- [ ] Beyin export / import (JSON portabilite + yedek)
-  Done when: Marka Profili'nden beyni JSON indir + JSON'dan yükle; pure serialize/parse + doğrulama testi; build yeşil; committed.
+- [x] Beyin export / import (JSON portabilite + yedek)  (c24c6fb)
 - [ ] Haftalık içerik planı üreteci (Strateji Engine derinliği)
   Done when: sektör içerik karışımı + sütun + açı rotasyonuyla N günlük plan (konu tohumu + tip + açı + persona) üretir; takvime tek tıkla eklenebilir; pure planner testi; build yeşil; committed.
 
