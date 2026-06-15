@@ -285,6 +285,11 @@ export default function CreatePage() {
               <span className="font-medium">Platform önceliği:</span>{" "}
               {brief.platformPriority.map((p) => PLATFORM_LABELS[p]).join(" › ")}
             </div>
+            {brief.pillar && (
+              <div>
+                <span className="font-medium">İçerik sütunu:</span> {brief.pillar}
+              </div>
+            )}
             {brief.hookSeed && (
               <div>
                 <span className="font-medium">Hook tohumu:</span> {brief.hookSeed}

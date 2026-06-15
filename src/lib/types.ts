@@ -65,6 +65,7 @@ export interface Brand {
   voice: BrandVoice;
   audience: Persona[];
   proof: BrandProof;
+  pillars?: string[]; // icerik sutunlari — markanin sahip oldugu tekrar eden temalar
 }
 
 // --- Sektor Zekasi (sistem verisi) -------------------------------------------

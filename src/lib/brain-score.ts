@@ -110,6 +110,12 @@ export function brainScore(brand: Brand): BrainScore {
       hint: "Personanın itirazları / kullandığı kelimeler / tetikleyicileri ekle.",
     },
     {
+      label: "İçerik sütunları",
+      points: 7,
+      filled: hasList(brand.pillars),
+      hint: "Markanın sahip olduğu 3-5 temayı (içerik sütunu) tanımla.",
+    },
+    {
       label: "Kanıt (gerçek rakam)",
       points: 12,
       filled: hasList(p.numbers),

@@ -4,6 +4,7 @@ import {
   buildStrategyBrief,
   recommendAngle,
   recommendContentType,
+  recommendPillar,
   suggestTopics,
 } from "./strategy";
 import { getSector } from "./sectors";
@@ -22,6 +23,20 @@ describe("recommendContentType", () => {
 
   it("eticaret -> urun (%40)", () => {
     expect(recommendContentType(eticaret).value).toBe("urun");
+  });
+});
+
+describe("recommendPillar", () => {
+  it("konuya token örtüşen sütunu seçer", () => {
+    expect(recommendPillar(HAMMADDEM_SAMPLE, "Saha verimliligi artiyor")).toMatch(/Saha/);
+  });
+  it("örtüşme yoksa ilk sütun", () => {
+    expect(recommendPillar(HAMMADDEM_SAMPLE, "alakasiz konu")).toBe(
+      HAMMADDEM_SAMPLE.pillars![0],
+    );
+  });
+  it("sütun yoksa boş", () => {
+    expect(recommendPillar({ ...HAMMADDEM_SAMPLE, pillars: [] }, "x")).toBe("");
   });
 });
 

@@ -39,6 +39,12 @@ describe("prompt enjeksiyonu — generic'ligi kiran katman", () => {
     expect(p).toMatch(/Mart-Kasim/); // mevsimsellik
   });
 
+  it("icerik sutunlarini enjekte eder", () => {
+    const p = buildUserPrompt(req);
+    expect(p).toMatch(/Icerik sutunlari:/);
+    expect(p).toMatch(/Tedarik guvenligi/);
+  });
+
   it("gorev: konu + aci + 4 platformu icerir", () => {
     const p = buildUserPrompt(req);
     expect(p).toContain("Cimento stogu tazelendi");

@@ -156,6 +156,26 @@ export function suggestTopics(
   return out;
 }
 
+// Konuya en uygun içerik sütununu öner (token örtüşmesi; yoksa ilk sütun).
+export function recommendPillar(brand: Brand, topic: string): string {
+  const pillars = (brand.pillars ?? []).filter((p) => p && p.trim());
+  if (!pillars.length) return "";
+  const t = norm(topic);
+  let best = pillars[0];
+  let bestScore = -1;
+  for (const p of pillars) {
+    const words = norm(p)
+      .split(/\W+/)
+      .filter((w) => w.length > 3);
+    const score = words.filter((w) => t.includes(w)).length;
+    if (score > bestScore) {
+      bestScore = score;
+      best = p;
+    }
+  }
+  return best;
+}
+
 // En çok konuya değen persona (acı/motivasyon kelimeleri konuda geçiyorsa öne al).
 function focusPersona(brand: Brand, topic: string): { index: number; persona: Persona } | null {
   if (!brand.audience.length) return null;
@@ -182,6 +202,7 @@ export interface StrategyBrief {
   personaFocusIndex: number;
   personaFocusName: string;
   hookSeed: string;
+  pillar: string; // konuya en uygun icerik sutunu (varsa)
 }
 
 // Strateji Engine'in zengin çıktısı — boş sayfa sendromunu tam öldürür (Bölüm 3).
@@ -204,6 +225,7 @@ export function buildStrategyBrief(
     personaFocusIndex: focus?.index ?? 0,
     personaFocusName: focus?.persona.name || "hedef kitle",
     hookSeed,
+    pillar: recommendPillar(brand, topic),
   };
 }
 

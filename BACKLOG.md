@@ -7,8 +7,7 @@
 
 ## Now (BEYNİ DAHA DERİN — teker teker)
 
-- [ ] Görsel kimlik (marka rengi + görsel stil)
-  Done when: identity.primaryColor + visualStyle; görsel prompt sabit #E8650A yerine markanın rengini kullanır; demo + prompt güncel; skora katılır; test + build yeşil; committed.
+- [x] Görsel kimlik (marka rengi + görsel stil)  (767d453)
 - [ ] İçerik sütunları (content pillars)
   Done when: brand.pillars; strateji konuya/rotasyona göre sütun önerir, prompt'a "bu sütuna hizmet et" girer; form + skor + test; build yeşil; committed.
 - [ ] Marka hikayesi (origin / neden)

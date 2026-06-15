@@ -204,6 +204,22 @@ export default function BrandPage() {
         </div>
       </section>
 
+      {/* İçerik sütunları */}
+      <section className="card space-y-3">
+        <h2 className="font-semibold">
+          İçerik Sütunları{" "}
+          <span className="text-sm font-normal text-neutral-500">
+            (markanın sahip olduğu 3-5 tema)
+          </span>
+        </h2>
+        <StringList
+          values={brand.pillars ?? [""]}
+          onChange={(pillars) => set({ pillars })}
+          placeholder="or. Tedarik güvenliği"
+        />
+        <p className="hint">Her içerik bir sütuna hizmet eder; marka temalarını sahiplenir.</p>
+      </section>
+
       {/* Katman 2: Ses */}
       <section className="card space-y-4">
         <h2 className="font-semibold">2. Ses</h2>

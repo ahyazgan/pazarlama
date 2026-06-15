@@ -36,6 +36,7 @@ export function emptyBrand(): Brand {
       { name: "", pain: "", motivation: "", objections: "", vocabulary: "", triggers: "" },
     ],
     proof: { numbers: [""], cases: [""], references: [""] },
+    pillars: [""],
   };
 }
 
@@ -104,6 +105,7 @@ export const HAMMADDEM_SAMPLE: Brand = {
     cases: ["Bir konut projesinde 2 günde 400 ton hazir beton tedariki"],
     references: ["500+ muteahhit tarafindan tercih edildi"],
   },
+  pillars: ["Tedarik guvenligi", "Saha verimliligi", "Maliyet ve seffaflik"],
 };
 
 export const CONTENT_TYPE_FALLBACK: ContentType = "deger";
