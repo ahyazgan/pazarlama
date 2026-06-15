@@ -16,6 +16,7 @@ import {
   complianceForPackage,
   disclaimerIssues,
   governanceGrade,
+  governanceReportMarkdown,
   readabilityForPackage,
   voiceFit,
 } from "@/lib/governance";
@@ -269,6 +270,29 @@ export default function OutputPage() {
             }
           >
             JSON indir
+          </button>
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={() =>
+              downloadText(
+                `${slugify(pkg.topic)}-qa.md`,
+                governanceReportMarkdown({
+                  topic: pkg.topic,
+                  brandName: brand?.name ?? "",
+                  grade,
+                  voiceScore: voice?.score ?? 0,
+                  lint: issues.map((it) => `${it.where}: ${it.type} — ${it.term}`),
+                  compliance: compliance.map((c) => `${c.term} — ${c.reason}`),
+                  safety: safety.map((s) => `${s.term} — ${s.reason}`),
+                  access: access.map((a) => `${a.where}: ${a.detail}`),
+                  readability: readability.map((r) => `${r.where}: ${r.detail}`),
+                }),
+                "text/markdown",
+              )
+            }
+          >
+            QA raporu indir
           </button>
           <Link href="/create" className="btn-ghost">
             Yeni kampanya

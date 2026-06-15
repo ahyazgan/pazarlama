@@ -6,6 +6,7 @@ import {
   complianceForText,
   disclaimerIssues,
   governanceGrade,
+  governanceReportMarkdown,
   readabilityForPackage,
   voiceFit,
 } from "./governance";
@@ -104,6 +105,26 @@ describe("governanceGrade", () => {
   });
   it("çok lint → düşük not", () => {
     expect(["C", "D"]).toContain(governanceGrade({ ...base, issues: 6, brain: 40, voiceScore: 50 }).grade);
+  });
+});
+
+describe("governanceReportMarkdown", () => {
+  it("not + bölümleri + temiz işaretini içerir", () => {
+    const md = governanceReportMarkdown({
+      topic: "Stok",
+      brandName: "Hammaddem",
+      grade: { grade: "A", score: 90, blocking: false, label: "Yayına hazır" },
+      voiceScore: 95,
+      lint: [],
+      compliance: ["en ucuz — Markaya özel yasak iddia"],
+      safety: [],
+      access: [],
+      readability: [],
+    });
+    expect(md).toMatch(/# QA \/ Governance Raporu — Stok/);
+    expect(md).toMatch(/Governance notu: \*\*A\*\*/);
+    expect(md).toMatch(/Uyumluluk \(hukuk riski\) \(1\)/);
+    expect(md).toMatch(/temiz ✓/); // boş bölümler
   });
 });
 

@@ -132,6 +132,41 @@ export function governanceGrade(g: GovernanceInput): GovernanceGrade {
   return { grade, score, blocking: false, label };
 }
 
+// --- Dışa aktarılabilir QA raporu -------------------------------------------
+export interface GovernanceReportInput {
+  topic: string;
+  brandName: string;
+  grade: GovernanceGrade;
+  voiceScore: number;
+  lint: string[];
+  compliance: string[];
+  safety: string[];
+  access: string[];
+  readability: string[];
+}
+
+export function governanceReportMarkdown(p: GovernanceReportInput): string {
+  const L: string[] = [];
+  L.push(`# QA / Governance Raporu — ${p.topic}`);
+  L.push(`Marka: ${p.brandName}`);
+  L.push(`Governance notu: **${p.grade.grade}** (${p.grade.score}/100) — ${p.grade.label}`);
+  L.push(`Ses uyumu: %${p.voiceScore}`);
+  if (p.grade.blocking) L.push(`> ⚠ Bloklayıcı uyarı var — yayın öncesi düzeltilmeli.`);
+  L.push("");
+  const section = (title: string, items: string[]) => {
+    L.push(`## ${title} (${items.length})`);
+    if (items.length === 0) L.push("- temiz ✓");
+    else items.forEach((i) => L.push(`- ${i}`));
+    L.push("");
+  };
+  section("Uyumluluk (hukuk riski)", p.compliance);
+  section("Marka güvenliği", p.safety);
+  section("Erişilebilirlik", p.access);
+  section("Okunabilirlik", p.readability);
+  section("Marka/kalite lint", p.lint);
+  return L.join("\n");
+}
+
 // --- Marka güvenliği (brand safety) -----------------------------------------
 export interface SafetyIssue {
   term: string;
