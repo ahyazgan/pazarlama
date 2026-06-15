@@ -8,8 +8,7 @@
 ## Now (teker teker DERİN — work top to bottom)
 
 - [x] Beyin Doluluk Skoru + rehberli iyileştirme  (10b6c12)
-- [ ] Varyant üretimi (A/B) — derin
-  Done when: IG caption + TikTok hook + X çengel için 2-3 varyant (schema + prompt); demo mock'lar; çıktıda varyant seçici; test + build yeşil; committed.
+- [x] Varyant üretimi (A/B) — derin  (faf960c)
 - [ ] Beyin/prompt şeffaflık önizlemesi
   Done when: Kampanya'da "Beyne ne enjekte ediliyor" okunabilir özet paneli; pure özetleyici + test; build yeşil; committed.
 - [ ] Yayın hazırlığı paketi

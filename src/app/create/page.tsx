@@ -14,6 +14,7 @@ import {
 import { savePackageRemote } from "@/lib/persist";
 import { loadFeedback, netScores } from "@/lib/feedback";
 import { brainScore } from "@/lib/brain-score";
+import { brainInjectionSummary } from "@/lib/brain-preview";
 import { getSector } from "@/lib/sectors";
 import {
   assignAnglesToPersonas,
@@ -85,6 +86,14 @@ export default function CreatePage() {
   const feedback = netScores(feedbackStore, brand.sector);
   const brief = buildStrategyBrief(brand, topic, history, feedback);
   const score = brainScore(brand);
+  const injection = brainInjectionSummary({
+    brand,
+    topic,
+    contentType,
+    angle,
+    personaIndex,
+    trend: trend.trim() || undefined,
+  });
   const angleRec = brief.primaryAngle;
   const typeRec = brief.contentType;
   const topicIdeas = suggestTopics(sector, history);
@@ -375,6 +384,24 @@ export default function CreatePage() {
           />
           <p className="hint">Doldurulursa içerik bu güncel olaya bağlanır.</p>
         </div>
+
+        <details className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
+          <summary className="cursor-pointer text-sm font-medium text-neutral-700">
+            Beyne ne enjekte ediliyor? ({injection.filter((i) => i.active).length}/
+            {injection.length} sinyal aktif)
+          </summary>
+          <ul className="mt-2 space-y-1 text-xs">
+            {injection.map((it) => (
+              <li
+                key={it.label}
+                className={it.active ? "text-neutral-700" : "text-neutral-400"}
+              >
+                <span className="font-medium">{it.active ? "✓" : "○"} {it.label}:</span>{" "}
+                {it.value}
+              </li>
+            ))}
+          </ul>
+        </details>
 
         {duplicate && (
           <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
