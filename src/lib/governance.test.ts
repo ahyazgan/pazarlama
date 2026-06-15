@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { complianceForPackage, complianceForText, readabilityForPackage } from "./governance";
+import {
+  complianceForPackage,
+  complianceForText,
+  readabilityForPackage,
+  voiceFit,
+} from "./governance";
+import { HAMMADDEM_SAMPLE } from "./brand-store";
 import type { ContentPackage } from "./types";
 
 function pkg(caption: string): ContentPackage {
@@ -45,5 +51,21 @@ describe("governance — okunabilirlik", () => {
   });
   it("kısa metin temiz", () => {
     expect(readabilityForPackage(pkg("Kısa ve net. İki cümle."))).toEqual([]);
+  });
+});
+
+describe("governance — ses uyumu", () => {
+  it("yasak kelime + imza yok → düşük skor", () => {
+    const v = voiceFit(pkg("Çok ucuz fiyatlarla"), HAMMADDEM_SAMPLE);
+    expect(v.score).toBeLessThan(80);
+    expect(v.notes.some((n) => /Yasak kelime/.test(n))).toBe(true);
+  });
+
+  it("imza + kanıt içeren temiz metin → yüksek skor", () => {
+    const v = voiceFit(
+      pkg("Santiyeye deger katiyoruz. 10.000 ton teslim ettik."),
+      HAMMADDEM_SAMPLE,
+    );
+    expect(v.score).toBeGreaterThanOrEqual(90);
   });
 });

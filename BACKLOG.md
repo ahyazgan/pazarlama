@@ -21,12 +21,9 @@
 
 ## Now (DENETİM/GOVERNANCE DERİNLEŞTİR — hukuk/kalite, sırayla)
 
-- [ ] Sektörel uyumluluk denetimi (riskli/regüle iddialar)
-  Done when: complianceForPackage(pkg, sector) genel + sektörel riskli iddiaları işaretler; Kalite Raporu'nda; test + build; committed.
-- [ ] Okunabilirlik skoru (uzun cümle/duvar metin)
-  Done when: readabilityIssues(text) uzun cümle uyarısı; çıktıda; test + build; committed.
-- [ ] Marka ses-uyum skoru (yasak/imza/ton tek skor)
-  Done when: voiceFit(pkg, brand) 0-100; Kalite Raporu'na; test + build; committed.
+- [x] Sektörel uyumluluk denetimi (governance)  (e9459e9)
+- [x] Okunabilirlik denetimi  (35719f8)
+- [x] Marka ses-uyum skoru (voiceFit)  (commit)
 
 ### Done (kreatif denetim v1):
 - [x] Reklam limit denetimi (platform karakter sınırları)  (1d00374)

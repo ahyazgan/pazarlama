@@ -1,4 +1,4 @@
-import type { ContentPackage, SectorId } from "./types";
+import type { Brand, ContentPackage, SectorId } from "./types";
 
 // ============================================================================
 // Governance / uyumluluk denetimi (ajansın hukuk/kalite gözden geçirmesi).
@@ -44,6 +44,50 @@ function scanText(text: string, sector: SectorId): ComplianceIssue[] {
     if (m) out.push({ term: m[0], reason: r.reason });
   }
   return out;
+}
+
+// --- Marka ses-uyum skoru ---------------------------------------------------
+export interface VoiceFit {
+  score: number; // 0-100
+  notes: string[];
+}
+
+// Yasak kelime ihlali, imza ifade kullanımı, emoji disiplini, kanıt kullanımını
+// tek uyum skorunda topla (deterministik).
+export function voiceFit(pkg: ContentPackage, brand: Brand): VoiceFit {
+  const blob = packageBlob(pkg).toLowerCase();
+  const notes: string[] = [];
+  let score = 100;
+
+  const banned = (brand.voice.bannedWords ?? []).map((w) => w.trim().toLowerCase()).filter(Boolean);
+  const bannedHits = banned.filter((w) => blob.includes(w));
+  if (bannedHits.length) {
+    score -= 25 * bannedHits.length;
+    notes.push(`Yasak kelime kullanılmış: ${bannedHits.join(", ")}`);
+  }
+
+  const sigs = (brand.voice.signaturePhrases ?? []).map((s) => s.trim().toLowerCase()).filter(Boolean);
+  if (sigs.length && !sigs.some((s) => blob.includes(s))) {
+    score -= 15;
+    notes.push("İmza ifade hiç kullanılmamış");
+  }
+
+  const nums = (brand.proof.numbers ?? []).map((n) => (n.match(/[\d.]+/)?.[0] ?? "")).filter((x) => x.length >= 2);
+  if (nums.length && !nums.some((n) => blob.includes(n))) {
+    score -= 10;
+    notes.push("Gerçek kanıt rakamı işlenmemiş");
+  }
+
+  // Ton-emoji uyumu: resmi tonda (≤3) emoji olmamalı.
+  const emojiCount = (packageBlob(pkg).match(/\p{Extended_Pictographic}/gu) ?? []).length;
+  if (brand.voice.tone <= 3 && emojiCount > 0) {
+    score -= 10;
+    notes.push(`Resmi tonda ${emojiCount} emoji (ton sapması)`);
+  }
+
+  score = Math.max(0, Math.min(100, score));
+  if (!notes.length) notes.push("Ses/ton uyumu temiz");
+  return { score, notes };
 }
 
 function packageBlob(pkg: ContentPackage): string {

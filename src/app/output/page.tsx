@@ -10,7 +10,7 @@ import { addToPlan, todayISO } from "@/lib/calendar";
 import { publishChecklist } from "@/lib/publish";
 import { brainScore } from "@/lib/brain-score";
 import { readiness } from "@/lib/readiness";
-import { complianceForPackage, readabilityForPackage } from "@/lib/governance";
+import { complianceForPackage, readabilityForPackage, voiceFit } from "@/lib/governance";
 import { loadBrand } from "@/lib/brand-store";
 import {
   ANGLE_LABELS,
@@ -116,6 +116,7 @@ export default function OutputPage() {
   const brain = brand ? brainScore(brand).score : 0;
   const compliance = pkg && brand ? complianceForPackage(pkg, brand.sector) : [];
   const readability = pkg ? readabilityForPackage(pkg) : [];
+  const voice = pkg && brand ? voiceFit(pkg, brand) : null;
   const ready = readiness(brain, issues.length + compliance.length + readability.length);
 
   // Onerilen (ilk) platformu varsayilan aktif sekme yap.
@@ -302,6 +303,14 @@ export default function OutputPage() {
           </span>
           {readability.length > 0 && (
             <span className="text-neutral-500">{readability.length} okunabilirlik</span>
+          )}
+          {voice && (
+            <span
+              className={voice.score >= 80 ? "text-neutral-500" : "text-amber-700"}
+              title={voice.notes.join(" · ")}
+            >
+              Ses uyumu %{voice.score}
+            </span>
           )}
           {brain < 60 && (
             <Link href="/brand" className="text-xs text-brand-dark underline">
