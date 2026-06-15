@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { loadBrand } from "@/lib/brand-store";
+import {
+  findDuplicate,
+  formatWhen,
+  loadHistory,
+  recordHistory,
+  type HistoryEntry,
+} from "@/lib/history";
 import { getSector } from "@/lib/sectors";
 import {
   ANGLE_HINTS,
@@ -25,10 +32,12 @@ export default function CreatePage() {
   const [personaIndex, setPersonaIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   useEffect(() => {
     const b = loadBrand();
     setBrand(b);
+    setHistory(loadHistory());
     if (b) {
       // Sektorun icerik karisimindan en yuksek payli tipi varsayilan sec.
       const mix = getSector(b.sector).contentMix;
@@ -55,6 +64,7 @@ export default function CreatePage() {
 
   const sector = getSector(brand.sector);
   const mix = sector.contentMix;
+  const duplicate = findDuplicate(history, topic, angle);
 
   const submit = async () => {
     setError(null);
@@ -74,6 +84,7 @@ export default function CreatePage() {
         setError(data.error || "Uretim basarisiz.");
         return;
       }
+      recordHistory({ topic, contentType, angle, personaIndex });
       sessionStorage.setItem("content-os.result", JSON.stringify(data));
       router.push("/output");
     } catch {
@@ -172,6 +183,14 @@ export default function CreatePage() {
             ))}
           </select>
         </div>
+
+        {duplicate && (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            İçerik hafızası: bu konuyu <strong>{ANGLE_LABELS[angle]}</strong> açısıyla{" "}
+            {formatWhen(duplicate.at)} tarihinde zaten ürettin. Tekrarı önlemek için farklı
+            bir açı seçmeyi düşün.
+          </div>
+        )}
 
         {error && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">

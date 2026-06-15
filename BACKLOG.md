@@ -13,10 +13,8 @@
 
 ## Now (work top to bottom, don’t pause between items)
 
-- [ ] Verification chain: ESLint + Vitest kurulumu
-  Done when: `npm run lint` ve `npm test` çalışır + yeşil; tsc + build hâlâ temiz; committed.
-- [ ] Unit testler: prompt enjeksiyonu + sektör zekası
-  Done when: prompt'un marka beyni (yasak kelime, persona acısı, rakam) + sektör (terminoloji, hook) enjekte ettiğini ve içerik karışımı toplamlarını doğrulayan testler yeşil; committed.
+- [x] Verification chain: ESLint + Vitest kurulumu  (ace62e2)
+- [x] Unit testler: prompt enjeksiyonu + sektör zekası  (ace62e2)
 - [ ] İçerik Hafızası (tekrarı önleme — Faz 2)
   Done when: üretilen paketler localStorage geçmişine yazılır; Kampanya ekranında aynı konu+açı daha önce üretildiyse uyarı gösterilir; test + build temiz; committed.
 - [ ] Hook kütüphanesini Kampanya ekranında yüzeye çıkar (Faz 2)
