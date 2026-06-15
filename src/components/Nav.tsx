@@ -12,6 +12,7 @@ const LINKS: [string, string][] = [
   ["/community", "Topluluk"],
   ["/plan", "Plan"],
   ["/calendar", "Takvim"],
+  ["/approvals", "Onaylar"],
   ["/integrations", "Entegrasyonlar"],
 ];
 

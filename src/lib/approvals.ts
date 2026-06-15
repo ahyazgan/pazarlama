@@ -26,3 +26,14 @@ export function recordApproval(a: Omit<Approval, "at">): Approval[] {
   if (typeof window !== "undefined") window.localStorage.setItem(KEY, JSON.stringify(next));
   return next;
 }
+
+export function clearApprovals(): void {
+  if (typeof window !== "undefined") window.localStorage.removeItem(KEY);
+}
+
+// Pure: onay özeti (oran + ortalama not skoru).
+export function approvalSummary(list: Approval[]): { count: number; avgScore: number } {
+  if (!list.length) return { count: 0, avgScore: 0 };
+  const avg = Math.round(list.reduce((s, a) => s + a.score, 0) / list.length);
+  return { count: list.length, avgScore: avg };
+}
