@@ -28,7 +28,8 @@ export type IssueType =
   | "hashtag" // IG hashtag sayisi ideal araligin disinda
   | "thread" // X thread uzunlugu ideal disinda
   | "emoji" // emoji asiriligi
-  | "zayif_hook"; // hook cok kisa/zayif
+  | "zayif_hook" // hook cok kisa/zayif
+  | "supheli_sayi"; // markada/kaynakta olmayan istatistik-benzeri sayi (uydurma riski)
 
 export interface QualityIssue {
   where: string; // platform/alan
@@ -108,9 +109,48 @@ export function lintPackage(
   return issues;
 }
 
+// İstatistik-benzeri sayı tokenları: yüzde veya 3+ haneli sayılar (yıl/küçük sayı değil).
+function statTokens(text: string): string[] {
+  const out: string[] = [];
+  const re = /%\s?\d+|\d[\d.]{2,}\d|\d{3,}/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text))) {
+    const digits = m[0].replace(/\D/g, "");
+    if (digits.length >= 3) out.push(digits); // 3+ hane → muhtemel istatistik
+  }
+  return out;
+}
+
+// Markada/kaynakta dayanağı olmayan istatistik-benzeri sayıları bul (uydurma riski).
+export function unsourcedNumberIssues(
+  pkg: ContentPackage,
+  brand: Brand,
+): QualityIssue[] {
+  const allowed = new Set<string>();
+  const allowedText = [
+    ...brand.proof.numbers,
+    ...(pkg.sources ?? []).flatMap((s) => [s.title, s.note ?? "", s.url]),
+  ].join(" ");
+  for (const t of statTokens(allowedText)) allowed.add(t);
+
+  const issues: QualityIssue[] = [];
+  for (const { where, text } of fields(pkg)) {
+    for (const t of statTokens(text)) {
+      if (!allowed.has(t)) {
+        issues.push({
+          where,
+          type: "supheli_sayi",
+          term: `${t} — markada/kaynakta yok (uydurma riski)`,
+        });
+      }
+    }
+  }
+  return issues;
+}
+
 // Marka-bilincli derin lint: kanit rakami ve imza ifade kullanimini da dener.
 export function lintWithBrand(pkg: ContentPackage, brand: Brand): QualityIssue[] {
-  const issues = lintPackage(pkg, brand.voice.bannedWords);
+  const issues = [...lintPackage(pkg, brand.voice.bannedWords), ...unsourcedNumberIssues(pkg, brand)];
   const blob = fields(pkg)
     .map((f) => f.text)
     .join(" ")

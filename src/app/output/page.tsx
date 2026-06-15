@@ -32,6 +32,7 @@ const ISSUE_LABELS: Record<string, string> = {
   thread: "thread uzunluğu",
   emoji: "emoji fazla",
   zayif_hook: "zayıf hook",
+  supheli_sayi: "şüpheli sayı (kaynaksız)",
 };
 
 // Sektor onceligine gore sirala; eksik kalani varsayilan sirayla tamamla.

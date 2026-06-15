@@ -82,4 +82,15 @@ describe("lintWithBrand", () => {
     const issues = lintWithBrand(pkgWith("imzasız"), HAMMADDEM_SAMPLE);
     expect(issues.some((i) => i.type === "imza_yok")).toBe(true);
   });
+
+  it("markada/kaynakta olmayan istatistik sayısını şüpheli işaretler", () => {
+    const issues = lintWithBrand(pkgWith("Sektör %87 büyüdü, 4500 firma katıldı"), HAMMADDEM_SAMPLE);
+    expect(issues.some((i) => i.type === "supheli_sayi")).toBe(true);
+  });
+
+  it("markanın gerçek rakamı şüpheli sayılmaz", () => {
+    // HAMMADDEM proof: "10.000+ ton teslimat"
+    const issues = lintWithBrand(pkgWith("10.000 ton teslim ettik"), HAMMADDEM_SAMPLE);
+    expect(issues.some((i) => i.type === "supheli_sayi" && i.term.startsWith("10000"))).toBe(false);
+  });
 });

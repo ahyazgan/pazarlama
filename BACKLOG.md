@@ -8,8 +8,7 @@
 ## Now (ARAŞTIRMA katmanı — daha kaliteli/doğrulanabilir bilgi)
 
 - [x] Sektör bilgi korpusunu derinleştir (mevzuat/hata/benchmark)  (c1ca566)
-- [ ] Araştırma brief tipleri + citations şeması (kredensiyelsiz iskelet)
-  Done when: ResearchBrief + Source tipleri; çıktı şemasına sources[]; pure builder/parse; test + build yeşil; committed.
+- [x] Araştırma brief tipleri + citations + grounding enjeksiyonu  (88fe709)
 - [ ] Kalite-lint: atıfsız iddia / şüpheli sayı kuralı
   Done when: metinde marka kanıtında olmayan sayı + kaynaksız iddia işaretlenir; test + build yeşil; committed.
 - [ ] /api/research web_search iskeleti (anahtarsız 503)
