@@ -5,17 +5,18 @@
 
 -----
 
-## Now (BEYNİ ÖĞRET — form değil örnek+konumlandırma ile derinleştir)
+## Now (teker teker DERİN — work top to bottom)
 
-- [x] Altın + negatif örnekler (few-shot voice öğrenme)  (d582cde)
-- [x] Rakip & konumlandırma zekası  (90b155f)
-- [x] Persona derinliği (jobs-to-be-done)  (f230805)
+- [ ] Beyin Doluluk Skoru + rehberli iyileştirme
+  Done when: brainScore(brand) katman-ağırlıklı 0-100 skor + eksik yüksek-getirili alan listesi; Marka Profili'nde canlı çubuk + ipuçları; üretim öncesi düşük-skor uyarısı; birim testler; build yeşil; committed.
+- [ ] Varyant üretimi (A/B) — derin
+  Done when: IG caption + TikTok hook + X çengel için 2-3 varyant (schema + prompt); demo mock'lar; çıktıda varyant seçici; test + build yeşil; committed.
+- [ ] Beyin/prompt şeffaflık önizlemesi
+  Done when: Kampanya'da "Beyne ne enjekte ediliyor" okunabilir özet paneli; pure özetleyici + test; build yeşil; committed.
+- [ ] Yayın hazırlığı paketi
+  Done when: platform başına kopyala checklist + .ics takvim hatırlatıcı dışa aktarımı; pure ics üreteci + test; build yeşil; committed.
 
-### Kalıcı BLOKE (sahtesi yapılmaz):
-- [ ] Sektör network etkisi (cross-brand öğrenme) — çoklu-kullanıcı backend + anonim agregasyon gerekir
-- [ ] Outcome-öğrenmesi (gerçek etkileşim verisi) — yayın metrikleri/API gerekir
-- [ ] Otomatik yayın (IG/TikTok API) — OAuth + prod yan etki (§4)
-- [ ] LLM öz-eleştiri turu — ANTHROPIC_API_KEY gerekir
+### Kalıcı BLOKE: network etkisi (backend) · outcome metrik (API) · otomatik yayın (OAuth) · LLM öz-eleştiri (anahtar)
 
 -----
 

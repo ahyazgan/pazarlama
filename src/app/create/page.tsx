@@ -13,6 +13,7 @@ import {
 } from "@/lib/history";
 import { savePackageRemote } from "@/lib/persist";
 import { loadFeedback, netScores } from "@/lib/feedback";
+import { brainScore } from "@/lib/brain-score";
 import { getSector } from "@/lib/sectors";
 import {
   assignAnglesToPersonas,
@@ -83,6 +84,7 @@ export default function CreatePage() {
   // Strateji Engine — zengin brief (boş sayfa sendromunu öldürür) + öğrenilmiş feedback.
   const feedback = netScores(feedbackStore, brand.sector);
   const brief = buildStrategyBrief(brand, topic, history, feedback);
+  const score = brainScore(brand);
   const angleRec = brief.primaryAngle;
   const typeRec = brief.contentType;
   const topicIdeas = suggestTopics(sector, history);
@@ -184,6 +186,16 @@ export default function CreatePage() {
           <span className="font-medium">{brand.name}</span> · {sector.label}
         </p>
       </div>
+
+      {score.score < 60 && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          Beyin %{score.score} dolu — çıktı daha generic olabilir.{" "}
+          <Link href="/brand" className="font-medium underline">
+            Marka Profili'ni güçlendir
+          </Link>{" "}
+          (öncelik: {score.missing[0]?.label}).
+        </div>
+      )}
 
       <section className="card space-y-5">
         <div>

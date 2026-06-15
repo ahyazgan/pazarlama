@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { StringList } from "@/components/StringList";
+import { BrainMeter } from "@/components/BrainMeter";
+import { brainScore } from "@/lib/brain-score";
 import { SECTOR_OPTIONS, getSector } from "@/lib/sectors";
 import {
   emptyBrand,
@@ -29,6 +31,7 @@ export default function BrandPage() {
   };
 
   const sector = getSector(brand.sector);
+  const score = brainScore(brand);
 
   // Best-effort: Supabase yapilandirilmissa uzak kayit + brand id'yi sakla.
   const persistRemote = async () => {
@@ -65,6 +68,8 @@ export default function BrandPage() {
           Hammaddem ornegiyle doldur
         </button>
       </div>
+
+      <BrainMeter score={score} />
 
       {/* Katman 1: Kimlik */}
       <section className="card space-y-4">
