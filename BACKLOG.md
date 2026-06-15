@@ -8,8 +8,7 @@
 ## Now (work top to bottom, don’t pause between items)
 
 - [x] Birleşik Kalite Raporu (yayına hazır mı?)  (26accc0)
-- [ ] Mobil navigasyon + cila
-  Done when: header mobilde hamburger/drawer; nav taşmıyor; build yeşil; committed.
+- [x] Mobil navigasyon + cila (hamburger drawer)  (f58cb03)
 - [ ] Onboarding akışı (yeni marka rehberi)
   Done when: boş/zayıf beyinde Marka Profili'nde adım adım rehber + ilk-üretim engeli yumuşak uyarı; build yeşil; committed.
 

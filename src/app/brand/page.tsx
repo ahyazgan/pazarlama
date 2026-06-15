@@ -131,6 +131,34 @@ export default function BrandPage() {
         </div>
       )}
 
+      {brands.length === 0 && (
+        <section className="rounded-2xl border border-brand/30 bg-brand-tint/40 p-5">
+          <h2 className="font-semibold text-brand-dark">Hoş geldin — beyni 3 adımda kur</h2>
+          <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm text-neutral-700">
+            <li>
+              <strong>Kimlik + ses:</strong> marka adı, misyon, ton ve özellikle{" "}
+              <em>en iyi gönderilerin</em> (beyin sesi gerçek örnekten öğrenir).
+            </li>
+            <li>
+              <strong>Kitle + konumlandırma:</strong> persona acısı + kelimeleri, rakipten farkın.
+            </li>
+            <li>
+              <strong>Kanıt + sütunlar:</strong> gerçek rakamlar ve sahip olduğun temalar.
+            </li>
+          </ol>
+          <p className="mt-2 text-xs text-neutral-500">
+            Yukarıdaki “Beyin Doluluğu” çubuğu en getirili eksikleri sırayla söyler. Hızlı başla:
+          </p>
+          <button
+            type="button"
+            className="btn-primary mt-2"
+            onClick={() => setBrand(HAMMADDEM_SAMPLE)}
+          >
+            Hammaddem örneğiyle doldur (incele)
+          </button>
+        </section>
+      )}
+
       <BrainMeter score={score} />
 
       {/* Katman 1: Kimlik */}
