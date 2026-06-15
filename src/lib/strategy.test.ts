@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { recommendAngle, recommendContentType, suggestTopics } from "./strategy";
+import {
+  assignAnglesToPersonas,
+  recommendAngle,
+  recommendContentType,
+  suggestTopics,
+} from "./strategy";
 import { getSector } from "./sectors";
 import type { HistoryEntry } from "./history";
 
@@ -32,6 +37,26 @@ describe("suggestTopics", () => {
       { topic: first, angle: "korku", contentType: "deger", personaIndex: 0, at: 1 },
     ]);
     expect(filtered.map((s) => s.toLowerCase())).not.toContain(first.toLowerCase());
+  });
+});
+
+describe("assignAnglesToPersonas", () => {
+  it("ilk açı önerilen açıyla aynı; sonrakiler farklı (çeşitlilik)", () => {
+    const angles = assignAnglesToPersonas(insaat, "Geç teslimat riski", 3);
+    expect(angles[0]).toBe(recommendAngle(insaat, "Geç teslimat riski").value);
+    expect(new Set(angles).size).toBe(3); // hepsi farklı
+  });
+
+  it("5'ten fazla persona olunca açılar döner (sarmalama)", () => {
+    const angles = assignAnglesToPersonas(insaat, "Yeni sevkiyat", 6);
+    expect(angles.length).toBe(6);
+    expect(new Set(angles).size).toBe(5); // 5 evrensel açı, 6. tekrar eder
+  });
+
+  it("deterministik", () => {
+    expect(assignAnglesToPersonas(insaat, "Stok", 4)).toEqual(
+      assignAnglesToPersonas(insaat, "Stok", 4),
+    );
   });
 });
 

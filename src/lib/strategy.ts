@@ -42,6 +42,37 @@ function norm(s: string): string {
   return s.toLowerCase();
 }
 
+// Açı puanlama: konu sinyalleri + sektör varsayılanı + son kullanım rotasyonu.
+function scoreAngles(
+  sector: SectorIntelligence,
+  topic: string,
+  history: HistoryEntry[] = [],
+): Map<Angle, number> {
+  const t = norm(topic);
+  const recent = history.slice(0, 5).map((h) => h.angle);
+  const scores = new Map<Angle, number>();
+  for (const angle of ALL_ANGLES) {
+    let score = 0;
+    for (const kw of ANGLE_SIGNALS[angle]) {
+      if (t.includes(kw)) score += 2;
+    }
+    if (angle === SECTOR_DEFAULT_ANGLE[sector.sector]) score += 1;
+    score -= recent.filter((a) => a === angle).length * 0.5;
+    scores.set(angle, score);
+  }
+  return scores;
+}
+
+// En yüksek skorlu açı (eşitlikte ANGLE_LABELS sırasına göre stabil).
+function topAngle(scores: Map<Angle, number>, exclude: Set<Angle> = new Set()): Angle {
+  let best: Angle | null = null;
+  for (const angle of ALL_ANGLES) {
+    if (exclude.has(angle)) continue;
+    if (best === null || (scores.get(angle) ?? 0) > (scores.get(best) ?? 0)) best = angle;
+  }
+  return best ?? ALL_ANGLES[0];
+}
+
 // En güçlü açıyı öner: konu sinyalleri + sektör varsayılanı + son kullanım rotasyonu.
 export function recommendAngle(
   sector: SectorIntelligence,
@@ -49,24 +80,8 @@ export function recommendAngle(
   history: HistoryEntry[] = [],
 ): Recommendation<Angle> {
   const t = norm(topic);
-  const recent = history.slice(0, 5).map((h) => h.angle);
-
-  const scores = new Map<Angle, number>();
-  for (const angle of ALL_ANGLES) {
-    let score = 0;
-    for (const kw of ANGLE_SIGNALS[angle]) {
-      if (t.includes(kw)) score += 2;
-    }
-    if (angle === SECTOR_DEFAULT_ANGLE[sector.sector]) score += 1; // hafif sektör eğilimi
-    score -= recent.filter((a) => a === angle).length * 0.5; // çeşitlilik (rotasyon)
-    scores.set(angle, score);
-  }
-
-  // En yüksek skor; eşitlikte ANGLE_LABELS sırasına göre stabil.
-  let best: Angle = ALL_ANGLES[0];
-  for (const angle of ALL_ANGLES) {
-    if ((scores.get(angle) ?? 0) > (scores.get(best) ?? 0)) best = angle;
-  }
+  const scores = scoreAngles(sector, topic, history);
+  const best = topAngle(scores);
 
   const hit = ANGLE_SIGNALS[best].some((kw) => t.includes(kw));
   const reason = hit
@@ -91,6 +106,26 @@ export function recommendContentType(
     ? `${sector.label} içerik karışımında en yüksek pay: %${top[1]}.`
     : "Varsayılan içerik tipi.";
   return { value, reason };
+}
+
+// Her persona için FARKLI açı ata (Constitution Katman 3: her persona ayrı açı).
+// Skora göre sırala, sonra her personaya kullanılmamış en güçlü açıyı ver; 5'i aşınca döner.
+export function assignAnglesToPersonas(
+  sector: SectorIntelligence,
+  topic: string,
+  count: number,
+  history: HistoryEntry[] = [],
+): Angle[] {
+  const scores = scoreAngles(sector, topic, history);
+  const out: Angle[] = [];
+  let used = new Set<Angle>();
+  for (let i = 0; i < count; i++) {
+    if (used.size >= ALL_ANGLES.length) used = new Set(); // tüm açılar bittiyse döngüye sar
+    const pick = topAngle(scores, used);
+    out.push(pick);
+    used.add(pick);
+  }
+  return out;
 }
 
 // Konu önerici — sektör hook'larından, son kullanılan konulara benzemeyen taze fikirler.

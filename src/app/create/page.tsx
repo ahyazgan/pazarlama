@@ -13,7 +13,12 @@ import {
 } from "@/lib/history";
 import { savePackageRemote } from "@/lib/persist";
 import { getSector } from "@/lib/sectors";
-import { recommendAngle, recommendContentType, suggestTopics } from "@/lib/strategy";
+import {
+  assignAnglesToPersonas,
+  recommendAngle,
+  recommendContentType,
+  suggestTopics,
+} from "@/lib/strategy";
 import {
   ANGLE_HINTS,
   ANGLE_LABELS,
@@ -82,11 +87,18 @@ export default function CreatePage() {
     setContentType(typeRec.value);
   };
 
-  const generateFor = async (idx: number) => {
+  const generateFor = async (idx: number, angleArg: Angle = angle) => {
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ brand, topic, contentType, angle, personaIndex: idx, demo }),
+      body: JSON.stringify({
+        brand,
+        topic,
+        contentType,
+        angle: angleArg,
+        personaIndex: idx,
+        demo,
+      }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Uretim basarisiz.");
@@ -129,9 +141,11 @@ export default function CreatePage() {
     }
     setLoading(true);
     try {
+      // Her persona için FARKLI açı (Constitution Katman 3).
+      const angles = assignAnglesToPersonas(sector, topic, brand.audience.length, history);
       const results: PersonaPackage[] = [];
       for (let i = 0; i < brand.audience.length; i++) {
-        const pkg = await generateFor(i);
+        const pkg = await generateFor(i, angles[i]);
         results.push({
           personaName: brand.audience[i].name || `Persona ${i + 1}`,
           pkg,
@@ -341,7 +355,7 @@ export default function CreatePage() {
             >
               {loading
                 ? "Uretiliyor…"
-                : `Tum personalar icin ayri uret (${brand.audience.length})`}
+                : `Tum personalar icin ayri aci ile uret (${brand.audience.length})`}
             </button>
           )}
         </div>
