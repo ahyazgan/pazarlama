@@ -7,6 +7,7 @@ const LINKS: [string, string][] = [
   ["/brand", "Marka Profili"],
   ["/create", "Kampanya"],
   ["/ads", "Reklam"],
+  ["/seo", "SEO"],
   ["/plan", "Plan"],
   ["/calendar", "Takvim"],
   ["/integrations", "Entegrasyonlar"],

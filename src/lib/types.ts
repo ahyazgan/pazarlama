@@ -190,6 +190,28 @@ export interface AdsRequest {
   demo?: boolean;
 }
 
+// SEO içerik (blog/uzun-form + meta).
+export interface SeoOutline {
+  h2: string;
+  points: string[];
+}
+
+export interface SeoContent {
+  title: string; // SEO başlığı (~60 karakter)
+  metaDescription: string; // ~155 karakter
+  primaryKeyword: string;
+  keywords: string[]; // ikincil/uzun-kuyruk anahtar kelimeler
+  outline: SeoOutline[]; // H2 + alt maddeler
+  intro: string; // giriş paragrafı
+}
+
+export interface SeoRequest {
+  brand: Brand;
+  topic: string;
+  primaryKeyword?: string;
+  demo?: boolean;
+}
+
 export interface GenerateRequest {
   brand: Brand;
   topic: string;

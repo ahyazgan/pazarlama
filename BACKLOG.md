@@ -21,8 +21,7 @@
 
 ## Now (AJANS KREATİF KATMANI — yazı/kreatif kısmı, sırayla)
 
-- [ ] Reklam metni motoru (paid media creative)
-  Done when: /api/ads + AD_SCHEMA (Meta: primary/headline/description/CTA + Google: headlines/descriptions + hedef-kitle önerisi); demo mock; /ads UI; anahtarsız 503; test + build yeşil; committed.
+- [x] Reklam metni motoru (paid media creative)  (00c53e4)  — gerçek Sonnet ile doğrulandı
 - [ ] SEO içerik motoru (blog/uzun-form + meta)
   Done when: /api/seo + şema (başlık, meta description, H2 outline, anahtar kelimeler, giriş paragrafı); demo; /seo UI; test + build yeşil; committed.
 - [ ] E-posta/funnel metni
