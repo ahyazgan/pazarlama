@@ -21,8 +21,7 @@
 
 ## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 
-- [ ] İçerik kütüphanesi (üretilenleri kaydet/getir)
-  Done when: her üretilen paket localStorage kütüphanesine kaydedilir; /library'de listelenir, açılır, silinir; pure helper + test; build; committed.
+- [x] İçerik kütüphanesi (/library — kaydet/aç/sil)  (77806a9)
 
 ### Done (ürünleşme v1):
 - [x] API rate-limit (IP-bazlı, 20/dk → 429)  (3ecc17a)
