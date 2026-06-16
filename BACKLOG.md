@@ -5,6 +5,19 @@
 
 -----
 
+## Now (AJAN EKİBİ — pazarlama uzman ekibi: üret→eleştir→düzelt)
+
+- [x] Faz 1: orkestratör çekirdeği — evaluatePackage (deterministik editör) + shouldRevise + runAgentTeam (DI generate) + testler  (71acca8)
+- [x] Faz 1: UI — create'te "ekip turu" toggle + output'ta ekip raporu (pipeline + öncesi/sonrası skor)  (ef08e87)
+
+### Next (ajan ekibi derinleşmesi):
+- [ ] Editör ajanını LLM'e yükselt (deterministik yerine /api/critique) — BLOKE: ANTHROPIC_API_KEY
+- [ ] Stratejist + Araştırmacı ajanlarını zincire ekle (research→strateji→copy→editör)
+- [ ] Çok-persona akışında da ekip turu (submitAll)
+- [ ] Düzeltme turu sayısını ayarlanabilir yap (1→N, eşik UI'dan)
+
+-----
+
 ## Now (ARAŞTIRMA katmanı — daha kaliteli/doğrulanabilir bilgi)
 
 - [x] Sektör bilgi korpusunu derinleştir (mevzuat/hata/benchmark)  (c1ca566)
