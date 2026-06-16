@@ -10,7 +10,7 @@
 - [x] /insights performans panosu — takvim metriklerinden açı/içerik-tipi performansı + öneriler  (91a955a)
 
 ### Next (öğrenme derinleşmesi):
-- [ ] Insights önerilerini create ekranında göster (açı seçiminde "geçmişte en iyi" rozeti)
+- [x] Insights önerilerini create ekranında göster — açı seçiminde "geçmişte en iyi %X" rozeti  (b67ab87)
 - [ ] İçerik sütunu (pillar) bazlı performans — CalendarEntry'ye pillar ekle
 - [ ] Zaman serisi: haftalık etkileşim trendi
 
