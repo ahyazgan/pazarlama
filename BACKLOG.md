@@ -5,6 +5,17 @@
 
 -----
 
+## Now (ÇOK-SEKTÖRLÜ SaaS — her sektör gerçekten uzman)
+
+- [x] 4 sektöre (kafe/e-ticaret/hizmet/güzellik) derin bilgi tabanı + tüm-sektör eksiksizlik testi  (9c0c1bc)
+
+### Next (sektör derinleşmesi):
+- [ ] Sektör-özel örnek marka presetleri (her sektör için "hızlı başlangıç")
+- [ ] Yeni sektörler (sağlık/eğitim/emlak) — talep gelince
+- [ ] Sektör knowledge'ını çıktı ekranında "neden bu" olarak göster
+
+-----
+
 ## Now (ÖĞRENME — sistem görünür şekilde akıllanır)
 
 - [x] /insights performans panosu — takvim metriklerinden açı/içerik-tipi performansı + öneriler  (91a955a)
