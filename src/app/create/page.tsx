@@ -34,11 +34,18 @@ import {
   type Brand,
   type ContentPackage,
   type ContentType,
+  type CritiqueResult,
   type GenerateRequest,
   type PersonaPackage,
   type ResearchBrief,
 } from "@/lib/types";
-import { runAgentTeam, type TeamRunResult } from "@/lib/agent-team";
+import {
+  critiqueToEvaluation,
+  evaluatePackage,
+  runAgentTeam,
+  type EditorEvaluation,
+  type TeamRunResult,
+} from "@/lib/agent-team";
 
 const ANGLES = Object.keys(ANGLE_LABELS) as Angle[];
 
@@ -169,6 +176,22 @@ export default function CreatePage() {
     return data as ContentPackage;
   };
 
+  // Editör ajanı: ANTHROPIC_API_KEY varsa LLM eleştirisi (/api/critique),
+  // yoksa (503/ağ hatası) deterministik kalite+governance puanına düşer.
+  const editorEval = async (pkg: ContentPackage, b: Brand): Promise<EditorEvaluation> => {
+    try {
+      const res = await fetch("/api/critique", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand: b, pkg }),
+      });
+      if (res.ok) return critiqueToEvaluation((await res.json()) as CritiqueResult);
+    } catch {
+      // ağ hatası → deterministik
+    }
+    return evaluatePackage(pkg, b);
+  };
+
   // Yan etkiler yalnızca NİHAİ pakette: uzak kayıt + kütüphane (tekrarı önle).
   const persistPkg = (pkg: ContentPackage) => {
     const brandId =
@@ -206,6 +229,7 @@ export default function CreatePage() {
         // Ajan ekibi: üret → editör puanı → gerekirse düzeltme turu.
         const run: TeamRunResult = await runAgentTeam(buildReq(personaIndex, angle), {
           generate: postGenerate,
+          evaluate: editorEval,
           threshold: teamThreshold,
           maxRounds: teamRounds,
           strategist: teamStrategist
@@ -262,6 +286,7 @@ export default function CreatePage() {
           // Persona-başı açı zaten atandı (Katman 3) — global stratejist devreye girmez.
           const run = await runAgentTeam(buildReq(i, angles[i]), {
             generate: postGenerate,
+            evaluate: editorEval,
             threshold: teamThreshold,
             maxRounds: teamRounds,
           });

@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   buildRevisionRequest,
+  critiqueToEvaluation,
   evaluatePackage,
   runAgentTeam,
   shouldRevise,
   type EditorEvaluation,
 } from "./agent-team";
 import { buildDemoPackage } from "./demo";
-import type { Brand, GenerateRequest } from "./types";
+import type { Brand, CritiqueResult, GenerateRequest } from "./types";
 
 const brand: Brand = {
   id: "b1",
@@ -42,6 +43,25 @@ describe("evaluatePackage", () => {
     expect(result.score).toBeLessThanOrEqual(100);
     expect(["A", "B", "C", "D"]).toContain(result.grade);
     expect(Array.isArray(result.issues)).toBe(true);
+  });
+});
+
+describe("critiqueToEvaluation", () => {
+  it("LLM eleştirisini editör değerlendirmesine çevirir", () => {
+    const crit: CritiqueResult = {
+      score: 64,
+      verdict: "orta",
+      issues: [
+        { where: "Instagram", severity: "yuksek", problem: "kanıtsız iddia", fix: "rakam ekle" },
+        { where: "X", severity: "dusuk", problem: "zayıf hook", fix: "soruyla başla" },
+      ],
+    };
+    const ev = critiqueToEvaluation(crit);
+    expect(ev.score).toBe(64);
+    expect(ev.grade).toBe("C");
+    expect(ev.blocking).toBe(true); // "yuksek" severity
+    expect(ev.source).toBe("LLM editör");
+    expect(ev.issues[0]).toContain("kanıtsız iddia");
   });
 });
 
@@ -122,6 +142,18 @@ describe("runAgentTeam", () => {
     });
     expect(res.rounds).toBe(1);
     expect(res.after.score).toBe(50);
+  });
+
+  it("asenkron editör (LLM) değerlendirmesini bekler", async () => {
+    const res = await runAgentTeam(req, {
+      threshold: 80,
+      maxRounds: 1,
+      evaluate: async () => ev({ score: 95, source: "LLM editör" }),
+      generate: async (r) => buildDemoPackage(r),
+    });
+    expect(res.after.score).toBe(95);
+    expect(res.revised).toBe(false);
+    expect(res.steps[1].note).toContain("LLM editör");
   });
 
   it("stratejist ajanı isteği rafine eder, ilk adım olur ve açıyı üretime taşır", async () => {

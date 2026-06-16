@@ -1,4 +1,4 @@
-import type { Brand, ContentPackage, GenerateRequest } from "./types";
+import type { Brand, ContentPackage, CritiqueResult, GenerateRequest } from "./types";
 import { brainScore } from "./brain-score";
 import { lintWithBrand } from "./quality";
 import {
@@ -56,6 +56,22 @@ export interface EditorEvaluation {
   grade: "A" | "B" | "C" | "D";
   blocking: boolean; // hukuk/marka riski — koşulsuz düzeltme gerek
   issues: string[]; // insan-okur editör notları
+  source?: string; // hangi editör beyni: "deterministik" | "LLM editör"
+}
+
+function gradeFromScore(score: number): EditorEvaluation["grade"] {
+  return score >= 85 ? "A" : score >= 70 ? "B" : score >= 50 ? "C" : "D";
+}
+
+// LLM eleştiri sonucunu editör değerlendirmesine çevir (anahtar varsa kullanılır).
+export function critiqueToEvaluation(crit: CritiqueResult): EditorEvaluation {
+  return {
+    score: crit.score,
+    grade: gradeFromScore(crit.score),
+    blocking: crit.issues.some((i) => i.severity === "yuksek"),
+    issues: crit.issues.map((i) => `${i.where}: ${i.problem} → ${i.fix}`),
+    source: "LLM editör",
+  };
 }
 
 // Deterministik editör beyni: quality + governance katmanını birleştirip
@@ -91,7 +107,13 @@ export function evaluatePackage(pkg: ContentPackage, brand: Brand): EditorEvalua
     ...(voice.score < 70 ? voice.notes.map((n) => `Ses: ${n}`) : []),
   ];
 
-  return { score: grade.score, grade: grade.grade, blocking: grade.blocking, issues };
+  return {
+    score: grade.score,
+    grade: grade.grade,
+    blocking: grade.blocking,
+    issues,
+    source: "deterministik",
+  };
 }
 
 // Eşik altı veya bloklayıcı ise düzeltme turu gerekir.
@@ -128,7 +150,8 @@ export interface TeamRunResult {
 
 export interface TeamDeps {
   generate: (r: GenerateRequest) => Promise<ContentPackage>;
-  evaluate?: (pkg: ContentPackage, brand: Brand) => EditorEvaluation;
+  // Editör beyni: senkron (deterministik) ya da asenkron (LLM eleştirisi) olabilir.
+  evaluate?: (pkg: ContentPackage, brand: Brand) => EditorEvaluation | Promise<EditorEvaluation>;
   // Stratejist ajanı: üretimden önce isteği rafine eder (örn. en uygun açı).
   strategist?: (r: GenerateRequest) => { req: GenerateRequest; note: string };
   threshold?: number;
@@ -157,7 +180,7 @@ export async function runAgentTeam(
   }
 
   const draft = await deps.generate(workReq);
-  const before = evaluate(draft, workReq.brand);
+  const before = await evaluate(draft, workReq.brand);
   let best = draft;
   let bestEval = before;
 
@@ -167,9 +190,11 @@ export async function runAgentTeam(
       role: "editor",
       label: "Kıdemli Editör",
       score: before.score,
-      note: before.issues.length
-        ? `${before.issues.length} sorun: ${before.issues.slice(0, 2).join("; ")}`
-        : "Sorun bulunmadı",
+      note: `${before.source ? `[${before.source}] ` : ""}${
+        before.issues.length
+          ? `${before.issues.length} sorun: ${before.issues.slice(0, 2).join("; ")}`
+          : "Sorun bulunmadı"
+      }`,
     },
   );
 
@@ -177,7 +202,7 @@ export async function runAgentTeam(
   while (shouldRevise(bestEval, threshold) && rounds < maxRounds) {
     rounds++;
     const candidate = await deps.generate(buildRevisionRequest(workReq, bestEval));
-    const candEval = evaluate(candidate, workReq.brand);
+    const candEval = await evaluate(candidate, workReq.brand);
     const improved = candEval.score > bestEval.score;
     steps.push({
       role: "reviser",
