@@ -10,11 +10,15 @@
 - [x] Faz 1: orkestratör çekirdeği — evaluatePackage (deterministik editör) + shouldRevise + runAgentTeam (DI generate) + testler  (71acca8)
 - [x] Faz 1: UI — create'te "ekip turu" toggle + output'ta ekip raporu (pipeline + öncesi/sonrası skor)  (ef08e87)
 
+### Done (ajan ekibi derinleşmesi v2):
+- [x] Çok-turlu düzeltme — eşiğe/tur sınırına dek döngü, en iyiyi koru, ilerleme yoksa dur (eşik+tur UI)  (4b3c946)
+- [x] Stratejist ajanı — zincirin başında konuya en uygun açıyı seçer (recommendAngle)  (e8183bc)
+- [x] Çok-persona ekip turu (submitAll) + persona-başı ekip raporu  (c26f093)
+
 ### Next (ajan ekibi derinleşmesi):
 - [ ] Editör ajanını LLM'e yükselt (deterministik yerine /api/critique) — BLOKE: ANTHROPIC_API_KEY
-- [ ] Stratejist + Araştırmacı ajanlarını zincire ekle (research→strateji→copy→editör)
-- [ ] Çok-persona akışında da ekip turu (submitAll)
-- [ ] Düzeltme turu sayısını ayarlanabilir yap (1→N, eşik UI'dan)
+- [ ] Araştırmacı ajanını zincire ekle (research→strateji→copy→editör) — BLOKE: web_search anahtarı
+- [ ] Düzeltme notlarını platform-bazlı hedefle (hangi platform zayıfsa orayı düzelt)
 
 -----
 
