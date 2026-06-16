@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { QuickStart } from "@/components/QuickStart";
 
 export default function HomePage() {
   return (
@@ -17,14 +18,19 @@ export default function HomePage() {
           prompt'a enjekte eder. Cikti: Instagram, TikTok, LinkedIn ve X icin tam paket —
           metin + video script + gorsel prompt.
         </p>
-        <div className="flex flex-wrap gap-3 pt-2">
-          <Link href="/brand" className="btn-primary">
-            1. Marka Profili olustur
+        <div className="flex flex-wrap items-start gap-3 pt-2">
+          <QuickStart />
+          <Link href="/brand" className="btn-ghost">
+            Kendi markanı oluştur
           </Link>
           <Link href="/create" className="btn-ghost">
-            2. Kampanya olustur
+            Kampanya oluştur
           </Link>
         </div>
+        <p className="text-xs text-neutral-500">
+          Hızlı başlangıç örnek bir markayı (Hammaddem) yükler ve ajan ekibini demo modda
+          çalıştırır — anahtar gerekmez.
+        </p>
       </section>
 
       <section className="grid gap-4 sm:grid-cols-3">
