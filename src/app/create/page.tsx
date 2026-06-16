@@ -33,9 +33,11 @@ import {
   type Brand,
   type ContentPackage,
   type ContentType,
+  type GenerateRequest,
   type PersonaPackage,
   type ResearchBrief,
 } from "@/lib/types";
+import { runAgentTeam, type TeamRunResult } from "@/lib/agent-team";
 
 const ANGLES = Object.keys(ANGLE_LABELS) as Angle[];
 
@@ -52,6 +54,7 @@ export default function CreatePage() {
   const [feedbackStore, setFeedbackStore] = useState<ReturnType<typeof loadFeedback>>({});
   const [plan, setPlan] = useState<ReturnType<typeof loadPlan>>([]);
   const [demo, setDemo] = useState(false);
+  const [team, setTeam] = useState(false);
   const [trend, setTrend] = useState("");
   const [research, setResearch] = useState<ResearchBrief | null>(null);
   const [researching, setResearching] = useState(false);
@@ -150,31 +153,39 @@ export default function CreatePage() {
     }
   };
 
-  const generateFor = async (idx: number, angleArg: Angle = angle) => {
+  // Saf üretim çağrısı (yan etki yok) — ajan ekibi turunda birden çok kez çağrılır.
+  const postGenerate = async (req: GenerateRequest): Promise<ContentPackage> => {
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        brand,
-        topic,
-        contentType,
-        angle: angleArg,
-        personaIndex: idx,
-        demo,
-        trend: trend.trim() || undefined,
-        research: research ?? undefined,
-      }),
+      body: JSON.stringify({ ...req, demo }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Uretim basarisiz.");
-    const pkg = data as ContentPackage;
-    // Best-effort uzak kayit (env + brand_id varsa); yoksa sessizce atlar.
+    return data as ContentPackage;
+  };
+
+  // Yan etkiler yalnızca NİHAİ pakette: uzak kayıt + kütüphane (tekrarı önle).
+  const persistPkg = (pkg: ContentPackage) => {
     const brandId =
-      typeof window !== "undefined"
-        ? window.localStorage.getItem("content-os.brand_id")
-        : null;
+      typeof window !== "undefined" ? window.localStorage.getItem("content-os.brand_id") : null;
     void savePackageRemote(brandId, pkg);
-    if (brand) saveToLibrary(pkg, brand.name, brand.sector); // içerik kütüphanesine kalıcı kaydet
+    if (brand) saveToLibrary(pkg, brand.name, brand.sector);
+  };
+
+  const buildReq = (idx: number, angleArg: Angle): GenerateRequest => ({
+    brand: brand as Brand,
+    topic,
+    contentType,
+    angle: angleArg,
+    personaIndex: idx,
+    trend: trend.trim() || undefined,
+    research: research ?? undefined,
+  });
+
+  const generateFor = async (idx: number, angleArg: Angle = angle) => {
+    const pkg = await postGenerate(buildReq(idx, angleArg));
+    persistPkg(pkg);
     return pkg;
   };
 
@@ -186,7 +197,19 @@ export default function CreatePage() {
     }
     setLoading(true);
     try {
-      const pkg = await generateFor(personaIndex);
+      let pkg: ContentPackage;
+      if (team && brand) {
+        // Ajan ekibi: üret → editör puanı → gerekirse düzeltme turu.
+        const run: TeamRunResult = await runAgentTeam(buildReq(personaIndex, angle), {
+          generate: postGenerate,
+        });
+        pkg = run.final;
+        persistPkg(pkg);
+        sessionStorage.setItem("content-os.team-run", JSON.stringify(run));
+      } else {
+        pkg = await generateFor(personaIndex);
+        sessionStorage.removeItem("content-os.team-run");
+      }
       recordHistory({ topic, contentType, angle, personaIndex });
       sessionStorage.removeItem("content-os.results");
       sessionStorage.setItem("content-os.result", JSON.stringify(pkg));
@@ -225,6 +248,7 @@ export default function CreatePage() {
       }
       recordHistory({ topic, contentType, angle, personaIndex });
       sessionStorage.removeItem("content-os.result");
+      sessionStorage.removeItem("content-os.team-run");
       sessionStorage.setItem("content-os.results", JSON.stringify(results));
       router.push("/output");
     } catch (e) {
@@ -517,6 +541,19 @@ export default function CreatePage() {
             onChange={(e) => setDemo(e.target.checked)}
           />
           Demo modu (API anahtarı olmadan şablon önizleme)
+        </label>
+
+        <label className="flex items-start gap-2 text-sm text-neutral-700">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-4 w-4 accent-brand"
+            checked={team}
+            onChange={(e) => setTeam(e.target.checked)}
+          />
+          <span>
+            🤝 Ajan ekibi turu — <strong>üret → kıdemli editör puanlar → gerekirse düzeltir</strong>
+            . Tek persona için çalışır; çıktıda ekip raporu gösterilir.
+          </span>
         </label>
 
         <div className="flex flex-wrap gap-3">

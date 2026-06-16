@@ -22,6 +22,7 @@ import {
 } from "@/lib/governance";
 import { recordApproval, ROLE_LABEL, type ApproverRole } from "@/lib/approvals";
 import { loadBrand } from "@/lib/brand-store";
+import { AGENT_TEAM, type TeamRunResult } from "@/lib/agent-team";
 import {
   ANGLE_LABELS,
   CONTENT_TYPE_LABELS,
@@ -101,8 +102,11 @@ export default function OutputPage() {
   const [personaIdx, setPersonaIdx] = useState(0);
   const [tab, setTab] = useState<PlatformId>("instagram");
   const [voted, setVoted] = useState<null | 1 | -1>(null);
+  const [teamRun, setTeamRun] = useState<TeamRunResult | null>(null);
 
   useEffect(() => {
+    const run = sessionStorage.getItem("content-os.team-run");
+    if (run) setTeamRun(JSON.parse(run) as TeamRunResult);
     const multi = sessionStorage.getItem("content-os.results");
     if (multi) {
       setPersonas(JSON.parse(multi) as PersonaPackage[]);
@@ -232,6 +236,34 @@ export default function OutputPage() {
 
   return (
     <div className="space-y-6">
+      {teamRun && !personas && (
+        <div className="rounded-xl border border-brand/30 bg-brand-tint/30 p-4">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-sm font-semibold text-brand-dark">🤝 Ajan ekibi turu</span>
+            <span className="text-xs text-neutral-600">
+              {teamRun.revised
+                ? `Editör puanı: ${teamRun.before.score} → ${teamRun.after.score} (düzeltildi)`
+                : `Editör puanı: ${teamRun.after.score} — düzeltme gerekmedi`}
+            </span>
+          </div>
+          <ol className="space-y-1">
+            {teamRun.steps.map((s, i) => {
+              const role = AGENT_TEAM.find((r) => r.id === s.role);
+              return (
+                <li key={i} className="flex gap-2 text-sm text-neutral-700">
+                  <span className="font-medium">{role?.label ?? s.label}:</span>
+                  <span>
+                    {s.note}
+                    {typeof s.score === "number" && (
+                      <span className="ml-1 text-neutral-500">[{s.score}/100]</span>
+                    )}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      )}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">{pkg.topic}</h1>
