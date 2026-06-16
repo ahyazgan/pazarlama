@@ -17,9 +17,10 @@
 
 - [x] Editör ajanı otomatik yükselir — anahtar varsa LLM eleştirisi (/api/critique), yoksa deterministik  (1e19dbf)
 
+- [x] Platform-bazlı düzeltme hedefleme — en zayıf platformu bul, düzeltmeyi oraya yönelt  (21139d3)
+
 ### Next (ajan ekibi derinleşmesi):
 - [ ] Araştırmacı ajanını zincire ekle (research→strateji→copy→editör) — BLOKE: web_search anahtarı
-- [ ] Düzeltme notlarını platform-bazlı hedefle (hangi platform zayıfsa orayı düzelt)
 - [ ] Anahtar gelince LLM editörü uçtan uca doğrula (Haiku ile)
 
 -----
