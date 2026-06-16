@@ -67,7 +67,7 @@
 - [ ] Trend Enjeksiyonu (web search) — BLOKE: web search altyapısı
 - [ ] Feedback Loop (gerçek performans verisi) — BLOKE
 - [ ] Otomatik yayın (IG Graph / TikTok API) — BLOKE: OAuth
-- [ ] İçerik takvimi (drag-drop) — DÜŞÜK ÖNCELİK (constitution: manuel yeterli)
+- [x] İçerik takvimi (drag-drop) — kartı gün başlığına sürükle → reschedule  (3cf37b2)
 
 -----
 
