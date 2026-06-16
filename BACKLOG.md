@@ -11,7 +11,7 @@
 
 ### Next (onboarding/UX):
 - [ ] Boş-durum rehberi: marka yoksa /create ve modüllerde "önce marka yükle" yönlendirmesi
-- [ ] Çıktı ekranında "kendi markanla yeniden üret" kısa yolu
+- [x] Çıktı ekranında demo→"kendi markanı oluştur" dönüşüm CTA'sı
 - [ ] Mobil gezinme (drawer)
 
 -----

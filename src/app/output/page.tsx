@@ -274,6 +274,17 @@ export default function OutputPage() {
           </ol>
         </div>
       )}
+      {pkg.demo && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+          <span className="text-sm text-amber-900">
+            Bu örnek bir demo. Aynı makineyi <strong>kendi markanla</strong> çalıştır — çıktı sana
+            özel gelir.
+          </span>
+          <Link href="/brand" className="btn-primary">
+            Kendi markanı oluştur
+          </Link>
+        </div>
+      )}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">{pkg.topic}</h1>
