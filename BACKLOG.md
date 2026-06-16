@@ -15,10 +15,12 @@
 - [x] Stratejist ajanı — zincirin başında konuya en uygun açıyı seçer (recommendAngle)  (e8183bc)
 - [x] Çok-persona ekip turu (submitAll) + persona-başı ekip raporu  (c26f093)
 
+- [x] Editör ajanı otomatik yükselir — anahtar varsa LLM eleştirisi (/api/critique), yoksa deterministik  (1e19dbf)
+
 ### Next (ajan ekibi derinleşmesi):
-- [ ] Editör ajanını LLM'e yükselt (deterministik yerine /api/critique) — BLOKE: ANTHROPIC_API_KEY
 - [ ] Araştırmacı ajanını zincire ekle (research→strateji→copy→editör) — BLOKE: web_search anahtarı
 - [ ] Düzeltme notlarını platform-bazlı hedefle (hangi platform zayıfsa orayı düzelt)
+- [ ] Anahtar gelince LLM editörü uçtan uca doğrula (Haiku ile)
 
 -----
 
