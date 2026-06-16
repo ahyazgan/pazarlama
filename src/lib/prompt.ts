@@ -188,6 +188,11 @@ export function buildUserPrompt(req: GenerateRequest): string {
   if (req.research) {
     lines.push(researchContextBlock(req.research));
   }
+  if (req.revisionNotes && req.revisionNotes.trim()) {
+    lines.push("");
+    lines.push(`[DUZELTME TURU — kidemli editor notu] ${req.revisionNotes.trim()}`);
+    lines.push("Bu sorunlari gider; marka sesine, kanita ve hedefe daha sadik bir paket yeniden uret.");
+  }
   lines.push("");
   lines.push(
     "Yukaridaki marka beyni + sektor zekasina gore bu gorev icin TAM paketi (4 platform + variants) JSON semasina uygun uret.",

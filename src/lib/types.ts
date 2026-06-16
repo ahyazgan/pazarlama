@@ -266,6 +266,7 @@ export interface GenerateRequest {
   demo?: boolean; // true ise API anahtari olmadan sablon (demo) cikti uretilir
   trend?: string; // opsiyonel guncel trend/haber — icerik buna baglanir (Trend Enjeksiyonu)
   research?: ResearchBrief; // opsiyonel araştırma bulguları (grounding)
+  revisionNotes?: string; // ajan ekibi: editör notları — düzeltme turunda enjekte edilir
 }
 
 export interface ContentPackage {
