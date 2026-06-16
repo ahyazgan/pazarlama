@@ -16,6 +16,7 @@ import { savePackageRemote } from "@/lib/persist";
 import { saveToLibrary } from "@/lib/library";
 import { loadFeedback, mergeAngleScores, metricsAngleScores, netScores } from "@/lib/feedback";
 import { loadPlan } from "@/lib/calendar";
+import { computeInsights } from "@/lib/insights";
 import { brainScore } from "@/lib/brain-score";
 import { brainInjectionSummary } from "@/lib/brain-preview";
 import { getSector } from "@/lib/sectors";
@@ -116,6 +117,7 @@ export default function CreatePage() {
   );
   const brief = buildStrategyBrief(brand, topic, history, feedback);
   const insights = angleInsights(feedback);
+  const perf = computeInsights(plan); // gerçek metrik bazlı performans (öğrenme döngüsü)
   const score = brainScore(brand);
   const injection = brainInjectionSummary({
     brand,
@@ -485,6 +487,14 @@ export default function CreatePage() {
                     {a === angleRec.value && (
                       <span className="ml-1 text-brand" title="Önerilen">
                         ★
+                      </span>
+                    )}
+                    {perf.publishedCount > 0 && perf.bestAngle?.key === a && (
+                      <span
+                        className="ml-1 rounded-full bg-green-100 px-1.5 py-0.5 text-[10px] font-semibold text-green-700"
+                        title="Gerçek metriklerde en yüksek etkileşim"
+                      >
+                        geçmişte en iyi %{(perf.bestAngle.avgRate * 100).toFixed(0)}
                       </span>
                     )}
                   </div>
