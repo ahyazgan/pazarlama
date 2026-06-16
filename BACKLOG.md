@@ -9,10 +9,10 @@
 
 - [x] Anasayfa hızlı başlangıç — tek tıkla örnek marka + ajan ekibi demo turu → çıktı (anahtarsız)  (d4f4e89)
 
-### Next (onboarding/UX):
-- [ ] Boş-durum rehberi: marka yoksa /create ve modüllerde "önce marka yükle" yönlendirmesi
-- [x] Çıktı ekranında demo→"kendi markanı oluştur" dönüşüm CTA'sı
-- [ ] Mobil gezinme (drawer)
+### Done (onboarding/UX):
+- [x] Boş-durum rehberi: ortak NeedBrand bileşeni — 6 sayfada tek tıkla örnek marka yükle / kendi markanı oluştur  (9ee3af8)
+- [x] Çıktı ekranında demo→"kendi markanı oluştur" dönüşüm CTA'sı  (6335b9f)
+- [x] Mobil gezinme — hamburger + panel zaten vardı; aktif-link vurgusu + backdrop eklendi  (9ee3af8)
 
 -----
 
