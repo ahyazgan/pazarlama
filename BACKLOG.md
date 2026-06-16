@@ -5,6 +5,17 @@
 
 -----
 
+## Now (ÜRÜNLEŞME / ONBOARDING — değeri tek akışta kanıtla)
+
+- [x] Anasayfa hızlı başlangıç — tek tıkla örnek marka + ajan ekibi demo turu → çıktı (anahtarsız)  (d4f4e89)
+
+### Next (onboarding/UX):
+- [ ] Boş-durum rehberi: marka yoksa /create ve modüllerde "önce marka yükle" yönlendirmesi
+- [ ] Çıktı ekranında "kendi markanla yeniden üret" kısa yolu
+- [ ] Mobil gezinme (drawer)
+
+-----
+
 ## Now (AJAN EKİBİ — pazarlama uzman ekibi: üret→eleştir→düzelt)
 
 - [x] Faz 1: orkestratör çekirdeği — evaluatePackage (deterministik editör) + shouldRevise + runAgentTeam (DI generate) + testler  (71acca8)
