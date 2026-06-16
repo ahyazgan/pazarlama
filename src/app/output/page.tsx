@@ -7,6 +7,7 @@ import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/l
 import { lintPackage, lintWithBrand } from "@/lib/quality";
 import { recordFeedback } from "@/lib/feedback";
 import { addToPlan, todayISO } from "@/lib/calendar";
+import { recommendPillar } from "@/lib/strategy";
 import { publishChecklist } from "@/lib/publish";
 import { brainScore } from "@/lib/brain-score";
 import { readiness } from "@/lib/readiness";
@@ -224,6 +225,7 @@ export default function OutputPage() {
       angle: pkg.angle,
       sector: brand.sector,
       date: planDate,
+      pillar: recommendPillar(brand, pkg.topic) || undefined,
     });
     setPlanned(true);
   };

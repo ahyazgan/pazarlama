@@ -53,4 +53,25 @@ describe("computeInsights", () => {
     ]);
     expect(r.byContentType[0].key).toBe("deger");
   });
+
+  it("pillar'ı olan girişleri içerik sütununa göre gruplar", () => {
+    const r = computeInsights([
+      e({ pillar: "Tedarik güvenliği", reach: 1000, engagement: 150 }),
+      e({ pillar: "Maliyet", reach: 1000, engagement: 30 }),
+      e({ pillar: undefined, reach: 1000, engagement: 200 }), // pillar yok → sayılmaz
+    ]);
+    expect(r.byPillar.map((p) => p.key)).toEqual(["Tedarik güvenliği", "Maliyet"]);
+    expect(r.byPillar[0].count).toBe(1);
+  });
+
+  it("haftalık trendi kronolojik üretir (Pazartesi başlangıçlı)", () => {
+    const r = computeInsights([
+      e({ date: "2026-06-09", reach: 1000, engagement: 100 }), // Salı → hafta 2026-06-08
+      e({ date: "2026-06-10", reach: 1000, engagement: 200 }), // aynı hafta
+      e({ date: "2026-06-16", reach: 1000, engagement: 50 }), // sonraki hafta 2026-06-15
+    ]);
+    expect(r.weeklyTrend.map((w) => w.week)).toEqual(["2026-06-08", "2026-06-15"]);
+    expect(r.weeklyTrend[0].count).toBe(2);
+    expect(r.weeklyTrend[1].count).toBe(1);
+  });
 });

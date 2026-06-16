@@ -18,6 +18,7 @@ export interface CalendarEntry {
   sector: SectorId;
   date: string; // YYYY-MM-DD
   status: PlanStatus;
+  pillar?: string; // içerik sütunu (markanın temel teması) — performans kırılımı için
   reach?: number; // gerçek erişim (yayınlandıktan sonra elle girilir)
   engagement?: number; // gerçek etkileşim
 }

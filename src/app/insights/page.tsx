@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { loadPlan } from "@/lib/calendar";
-import { computeInsights, type Insights, type RatePerf } from "@/lib/insights";
+import { computeInsights, type Insights, type RatePerf, type WeekPoint } from "@/lib/insights";
 
 const pct = (r: number) => `%${(r * 100).toFixed(1)}`;
 
@@ -23,6 +23,25 @@ function PerfBars<K extends string>({ rows }: { rows: RatePerf<K>[] }) {
           <span className="w-24 shrink-0 text-right text-neutral-600">
             {pct(r.avgRate)} · {r.count} gönderi
           </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TrendChart({ points }: { points: WeekPoint[] }) {
+  const max = Math.max(...points.map((p) => p.avgRate), 0.0001);
+  return (
+    <div className="flex items-end gap-2" style={{ height: 140 }}>
+      {points.map((p) => (
+        <div key={p.week} className="flex flex-1 flex-col items-center justify-end gap-1">
+          <span className="text-[10px] text-neutral-500">{pct(p.avgRate)}</span>
+          <div
+            className="w-full rounded-t bg-brand"
+            style={{ height: `${Math.max((p.avgRate / max) * 100, 3)}%` }}
+            title={`${p.week} · ${p.count} gönderi · ${pct(p.avgRate)}`}
+          />
+          <span className="text-[10px] text-neutral-500">{p.week.slice(5)}</span>
         </div>
       ))}
     </div>
@@ -88,6 +107,20 @@ export default function InsightsPage() {
         <section className="card space-y-3">
           <h2 className="font-semibold">İçerik tipine göre performans</h2>
           <PerfBars rows={data.byContentType} />
+        </section>
+      )}
+
+      {data.byPillar.length > 0 && (
+        <section className="card space-y-3">
+          <h2 className="font-semibold">İçerik sütununa göre performans</h2>
+          <PerfBars rows={data.byPillar} />
+        </section>
+      )}
+
+      {data.weeklyTrend.length > 1 && (
+        <section className="card space-y-3">
+          <h2 className="font-semibold">Haftalık etkileşim trendi</h2>
+          <TrendChart points={data.weeklyTrend} />
         </section>
       )}
 
