@@ -1,4 +1,11 @@
-import type { Brand, ContentPackage, CritiqueResult, GenerateRequest } from "./types";
+import type {
+  Brand,
+  ContentPackage,
+  CritiqueResult,
+  GenerateRequest,
+  PlatformId,
+} from "./types";
+import { PLATFORM_LABELS } from "./types";
 import { brainScore } from "./brain-score";
 import { lintWithBrand } from "./quality";
 import {
@@ -121,14 +128,63 @@ export function shouldRevise(ev: EditorEvaluation, threshold = 80): boolean {
   return ev.blocking || ev.score < threshold;
 }
 
+// Platform anahtar kelimeleri etiketlerden türetilir (örn. "TikTok / Reels" → tiktok, reels).
+const PLATFORM_KEYWORDS = Object.fromEntries(
+  (Object.keys(PLATFORM_LABELS) as PlatformId[]).map((id) => [
+    id,
+    PLATFORM_LABELS[id].toLowerCase().split(/[^a-z0-9]+/).filter(Boolean),
+  ]),
+) as Record<PlatformId, string[]>;
+
+// Bir editör notunun (örn. "Instagram: ...") hangi platformu işaret ettiğini bul.
+function platformOf(issue: string): PlatformId | null {
+  const prefix = (issue.split(":")[0] ?? "").toLowerCase();
+  const tokens = prefix.split(/[^a-zçğıiöşü0-9]+/).filter(Boolean);
+  for (const id of Object.keys(PLATFORM_KEYWORDS) as PlatformId[]) {
+    if (PLATFORM_KEYWORDS[id].some((kw) => tokens.includes(kw))) return id;
+  }
+  return null;
+}
+
+// Editör notlarını platforma göre say (hangi platform daha sorunlu?).
+export function platformIssueCounts(issues: string[]): Record<PlatformId, number> {
+  const counts = { instagram: 0, tiktok: 0, linkedin: 0, x: 0 } as Record<PlatformId, number>;
+  for (const issue of issues) {
+    const p = platformOf(issue);
+    if (p) counts[p]++;
+  }
+  return counts;
+}
+
+// En çok sorunu olan platform (yoksa null). Düzeltme turunu oraya yöneltmek için.
+export function weakestPlatform(issues: string[]): PlatformId | null {
+  const counts = platformIssueCounts(issues);
+  let best: PlatformId | null = null;
+  let max = 0;
+  for (const id of Object.keys(counts) as PlatformId[]) {
+    if (counts[id] > max) {
+      max = counts[id];
+      best = id;
+    }
+  }
+  return best;
+}
+
 // Editör notlarını üretime enjekte edilecek revizyon talimatına çevir (saf).
+// En zayıf platform tespit edilirse düzeltmeyi oraya hedefler.
 export function buildRevisionRequest(req: GenerateRequest, ev: EditorEvaluation): GenerateRequest {
   const notes = ev.issues.slice(0, 8).join("; ");
+  const weak = weakestPlatform(ev.issues);
+  const focus = weak
+    ? ` Özellikle ${PLATFORM_LABELS[weak]} platformu en zayıf — düzeltmede oraya öncelik ver.`
+    : "";
   return {
     ...req,
-    revisionNotes: notes
-      ? `Önceki taslakta editör şu sorunları buldu: ${notes}.`
-      : "Önceki taslak marka sesine yeterince yakın değildi; daha keskin ve kanıta dayalı yaz.",
+    revisionNotes:
+      (notes
+        ? `Önceki taslakta editör şu sorunları buldu: ${notes}.`
+        : "Önceki taslak marka sesine yeterince yakın değildi; daha keskin ve kanıta dayalı yaz.") +
+      focus,
   };
 }
 
@@ -184,6 +240,7 @@ export async function runAgentTeam(
   let best = draft;
   let bestEval = before;
 
+  const weakBefore = weakestPlatform(before.issues);
   steps.push(
     { role: "copywriter", label: "Copywriter", note: "Taslak üretildi" },
     {
@@ -194,7 +251,7 @@ export async function runAgentTeam(
         before.issues.length
           ? `${before.issues.length} sorun: ${before.issues.slice(0, 2).join("; ")}`
           : "Sorun bulunmadı"
-      }`,
+      }${weakBefore ? ` · en zayıf: ${PLATFORM_LABELS[weakBefore]}` : ""}`,
     },
   );
 

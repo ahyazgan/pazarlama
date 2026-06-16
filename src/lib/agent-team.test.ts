@@ -3,8 +3,10 @@ import {
   buildRevisionRequest,
   critiqueToEvaluation,
   evaluatePackage,
+  platformIssueCounts,
   runAgentTeam,
   shouldRevise,
+  weakestPlatform,
   type EditorEvaluation,
 } from "./agent-team";
 import { buildDemoPackage } from "./demo";
@@ -82,6 +84,34 @@ describe("buildRevisionRequest", () => {
     expect(r.revisionNotes).toContain("ton sapması");
     expect(r.revisionNotes).toContain("garanti iddiası");
     expect(r.topic).toBe(req.topic);
+  });
+
+  it("en zayıf platforma düzeltme odağı ekler", () => {
+    const r = buildRevisionRequest(
+      req,
+      ev({ issues: ["Instagram: zayıf hook", "Instagram: kanıt yok", "X: uzun"] }),
+    );
+    expect(r.revisionNotes).toContain("Instagram platformu en zayıf");
+  });
+});
+
+describe("platform hedefleme", () => {
+  it("platformIssueCounts önekleri doğru sayar, 'X'i yanlış eşleştirmez", () => {
+    const counts = platformIssueCounts([
+      "Instagram: a",
+      "Instagram caption: b",
+      "X: c",
+      "Genel: kanıt rakamı yok", // platform değil
+      "Ses: ton", // platform değil
+    ]);
+    expect(counts.instagram).toBe(2);
+    expect(counts.x).toBe(1);
+    expect(counts.tiktok).toBe(0);
+  });
+
+  it("weakestPlatform en çok sorunlu platformu döndürür, yoksa null", () => {
+    expect(weakestPlatform(["TikTok: a", "TikTok: b", "LinkedIn: c"])).toBe("tiktok");
+    expect(weakestPlatform(["Genel: x", "Ses: y"])).toBeNull();
   });
 });
 
