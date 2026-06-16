@@ -59,6 +59,16 @@ describe("sector_intelligence seed", () => {
     expect(k!.benchmarks.length).toBeGreaterThanOrEqual(1);
   });
 
+  it("TUM sektorler derin bilgi tabani icerir (cok-sektorlu SaaS invaryanti)", () => {
+    for (const id of Object.keys(SECTORS) as SectorId[]) {
+      const k = SECTORS[id].knowledge;
+      expect(k, `${id} knowledge`).toBeTruthy();
+      expect(k!.regulations.length, `${id} regulations`).toBeGreaterThanOrEqual(3);
+      expect(k!.commonMistakes.length, `${id} commonMistakes`).toBeGreaterThanOrEqual(3);
+      expect(k!.benchmarks.length, `${id} benchmarks`).toBeGreaterThanOrEqual(1);
+    }
+  });
+
   it("her sektorde varsayilan disclaimer var", () => {
     for (const id of Object.keys(SECTORS) as SectorId[]) {
       expect(SECTORS[id].defaultDisclaimers.length).toBeGreaterThanOrEqual(1);

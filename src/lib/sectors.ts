@@ -90,6 +90,24 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
     angleAffinity: ["egitici", "sosyal_kanit", "kazanc", "karsitlik", "korku"],
     defaultDisclaimers: ["Gorseller temsilidir", "Fiyatlar subeye gore degisebilir"],
+    knowledge: {
+      regulations: [
+        "Gida isletmesi kayit/onay belgesi (Tarim ve Orman Bakanligi)",
+        "HACCP / ISO 22000 gida guvenligi ve hijyen egitimi zorunlulugu",
+        "Menude alerjen bilgisi (14 temel alerjen) ve icerik seffafligi",
+        "Fiyat etiketleme ve yaniltici sunum yasagi (tuketici mevzuati)",
+      ],
+      commonMistakes: [
+        "Menude alerjen/icerik bilgisini eksik birakmak",
+        "Gorselle gercek sunumun uyusmamasi (yaniltici reklam)",
+        "Yogun saat operasyonunu 'hizli servis' sozuyle tutturamamak",
+        "Saglik/zayiflama gibi temelsiz iddialarla urun pazarlamak",
+      ],
+      benchmarks: [
+        "Yemek/atmosfer gorseli agirlikli icerik etkilesimi belirgin artirir",
+        "Kullanici icerigi (UGC) ve yorumlar rezervasyon donusumunu yukseltir",
+      ],
+    },
   },
 
   eticaret: {
@@ -123,6 +141,24 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
     angleAffinity: ["kazanc", "korku", "sosyal_kanit", "karsitlik", "egitici"],
     defaultDisclaimers: ["Stoklarla sinirlidir", "Kampanya kosullari gecerlidir"],
+    knowledge: {
+      regulations: [
+        "Mesafeli Satis Sozlesmesi ve 14 gun cayma hakki",
+        "On bilgilendirme + fiyat/kargo/iade seffafligi (e-ticaret mevzuati)",
+        "Indirimde son 30 gunun en dusuk fiyatini gosterme kurali",
+        "KVKK + IYS: musteri verisi ve ticari ileti izni; ETBIS kaydi",
+      ],
+      commonMistakes: [
+        "Indirimde sahte 'eski fiyat' gostermek (yaniltici)",
+        "Stok/teslim suresini tutturamayip iade ve sikayet dogurmak",
+        "Izinsiz SMS/e-posta ile spam (IYS ihlali)",
+        "Urun gorseliyle gelen urunun uyusmamasi",
+      ],
+      benchmarks: [
+        "Aciliyet (stok/sure) + sosyal kanit (yorum/puan) donusumu artirir",
+        "Ucretsiz kargo esigi sepet ortalamasini yukseltir",
+      ],
+    },
   },
 
   hizmet: {
@@ -156,6 +192,24 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     platformEmphasis: ["linkedin", "instagram", "x", "tiktok"],
     angleAffinity: ["egitici", "korku", "kazanc", "sosyal_kanit", "karsitlik"],
     defaultDisclaimers: ["Sonuclar kisiye/projeye gore degisir"],
+    knowledge: {
+      regulations: [
+        "Hizmet sozlesmesi: kapsam, teslim suresi, sorumluluk sinirlari",
+        "Garanti edilemez sonuclari kesin vaat etmeme (haksiz rekabet)",
+        "KVKK: musteri verisi isleme ve gizlilik yukumlulugu",
+        "Fatura/serbest meslek makbuzu ve vergi yukumlulugu",
+      ],
+      commonMistakes: [
+        "Garanti edilemez sonuclari kesin vaat etmek",
+        "Kapsami netlestirmeden is almak (scope creep)",
+        "Vaka calismalarini olculebilir sonuc olmadan anlatmak",
+        "Referans/veri paylasiminda musteri izni almamak",
+      ],
+      benchmarks: [
+        "Somut rakam/vaka iceren icerik guven ve donusum saglar",
+        "LinkedIn'de otorite icerigi nitelikli lead getirir",
+      ],
+    },
   },
 
   guzellik: {
@@ -189,6 +243,24 @@ export const SECTORS: Record<SectorId, SectorIntelligence> = {
     platformEmphasis: ["instagram", "tiktok", "x", "linkedin"],
     angleAffinity: ["egitici", "korku", "sosyal_kanit", "kazanc", "karsitlik"],
     defaultDisclaimers: ["Kozmetik urundur; tibbi tedavi amacli degildir", "Sonuclar kisiden kisiye degisir"],
+    knowledge: {
+      regulations: [
+        "Kozmetik Yonetmeligi (Saglik Bakanligi / EU 1223/2009 uyumu)",
+        "Tibbi tedavi/iyilestirme iddiasi yasagi (kozmetik ilac degildir)",
+        "Icerik (INCI) listesi ve zorunlu uyari ibareleri",
+        "Reklam Kurulu: temelsiz '%X etki/kanitlandi' iddialarina ceza",
+      ],
+      commonMistakes: [
+        "'Tedavi eder/iyilestirir' gibi tibbi iddialar kullanmak",
+        "Oncesi/sonrasi ile garanti sonuc vaat etmek",
+        "Alerjen/uyari bilgisini atlamak",
+        "Dermatolojik kanit olmadan '%X kanitlandi' demek",
+      ],
+      benchmarks: [
+        "Egitici rutin icerigi (adim adim) kaydetme oranini artirir",
+        "Izinli gercek kullanici donusum gorselleri guven saglar",
+      ],
+    },
   },
 };
 
