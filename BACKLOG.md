@@ -19,11 +19,15 @@
 > research→generate (bulgu içeriğe + kaynak çıktıya). Constitution §11/6 ✓
 > Güvenlik: anahtar yalnızca git-ignore'lı .env.local'da; test sonrası revoke öneril(d)i.
 
-## Now (ÜRÜNLEŞME — API güvenliği + auth + kalıcılık)
+## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 
+- [ ] İçerik kütüphanesi (üretilenleri kaydet/getir)
+  Done when: her üretilen paket localStorage kütüphanesine kaydedilir; /library'de listelenir, açılır, silinir; pure helper + test; build; committed.
+
+### Done (ürünleşme v1):
 - [x] API rate-limit (IP-bazlı, 20/dk → 429)  (3ecc17a)
-- [x] Supabase Auth iskeleti (/login + useSession, no-op without creds)  (c16cdb8)
-- [x] Auth-aware kalıcılık (user_id/RLS + loadBrandsRemote)  (c16cdb8)
+- [x] Supabase Auth iskeleti (/login + useSession)  (c16cdb8)
+- [x] Auth-aware kalıcılık (user_id/RLS)  (c16cdb8)
 
 ### Done (governance derinliği v1-v4):
 - [x] Compliance/okunabilirlik/voiceFit/safety/erişilebilirlik + A-D not + sign-off + /approvals + marka-kuralları + sektör disclaimer + çoklu-onaycı + QA rapor

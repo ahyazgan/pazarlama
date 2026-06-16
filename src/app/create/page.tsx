@@ -12,6 +12,7 @@ import {
   type HistoryEntry,
 } from "@/lib/history";
 import { savePackageRemote } from "@/lib/persist";
+import { saveToLibrary } from "@/lib/library";
 import { loadFeedback, mergeAngleScores, metricsAngleScores, netScores } from "@/lib/feedback";
 import { loadPlan } from "@/lib/calendar";
 import { brainScore } from "@/lib/brain-score";
@@ -173,6 +174,7 @@ export default function CreatePage() {
         ? window.localStorage.getItem("content-os.brand_id")
         : null;
     void savePackageRemote(brandId, pkg);
+    if (brand) saveToLibrary(pkg, brand.name, brand.sector); // içerik kütüphanesine kalıcı kaydet
     return pkg;
   };
 
