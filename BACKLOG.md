@@ -5,6 +5,17 @@
 
 -----
 
+## Now (ÖĞRENME — sistem görünür şekilde akıllanır)
+
+- [x] /insights performans panosu — takvim metriklerinden açı/içerik-tipi performansı + öneriler  (91a955a)
+
+### Next (öğrenme derinleşmesi):
+- [ ] Insights önerilerini create ekranında göster (açı seçiminde "geçmişte en iyi" rozeti)
+- [ ] İçerik sütunu (pillar) bazlı performans — CalendarEntry'ye pillar ekle
+- [ ] Zaman serisi: haftalık etkileşim trendi
+
+-----
+
 ## Now (ÜRÜNLEŞME / ONBOARDING — değeri tek akışta kanıtla)
 
 - [x] Anasayfa hızlı başlangıç — tek tıkla örnek marka + ajan ekibi demo turu → çıktı (anahtarsız)  (d4f4e89)
