@@ -30,6 +30,11 @@ export interface AgentRole {
 
 export const AGENT_TEAM: AgentRole[] = [
   {
+    id: "strategist",
+    label: "Stratejist",
+    job: "Konuya en uygun açıyı seçer (sektör sinyali + geçmiş + geri bildirim)",
+  },
+  {
     id: "copywriter",
     label: "Copywriter",
     job: "Marka beyni + sektör zekasıyla içerik paketini üretir",
@@ -124,6 +129,8 @@ export interface TeamRunResult {
 export interface TeamDeps {
   generate: (r: GenerateRequest) => Promise<ContentPackage>;
   evaluate?: (pkg: ContentPackage, brand: Brand) => EditorEvaluation;
+  // Stratejist ajanı: üretimden önce isteği rafine eder (örn. en uygun açı).
+  strategist?: (r: GenerateRequest) => { req: GenerateRequest; note: string };
   threshold?: number;
   maxRounds?: number; // en fazla kaç düzeltme turu (varsayılan 1)
 }
@@ -139,12 +146,22 @@ export async function runAgentTeam(
   const maxRounds = Math.max(0, deps.maxRounds ?? 1);
   const evaluate = deps.evaluate ?? evaluatePackage;
 
-  const draft = await deps.generate(req);
-  const before = evaluate(draft, req.brand);
+  const steps: TeamStep[] = [];
+
+  // Stratejist: üretimden önce isteği rafine et (açı seçimi vb.).
+  let workReq = req;
+  if (deps.strategist) {
+    const plan = deps.strategist(req);
+    workReq = plan.req;
+    steps.push({ role: "strategist", label: "Stratejist", note: plan.note });
+  }
+
+  const draft = await deps.generate(workReq);
+  const before = evaluate(draft, workReq.brand);
   let best = draft;
   let bestEval = before;
 
-  const steps: TeamStep[] = [
+  steps.push(
     { role: "copywriter", label: "Copywriter", note: "Taslak üretildi" },
     {
       role: "editor",
@@ -154,13 +171,13 @@ export async function runAgentTeam(
         ? `${before.issues.length} sorun: ${before.issues.slice(0, 2).join("; ")}`
         : "Sorun bulunmadı",
     },
-  ];
+  );
 
   let rounds = 0;
   while (shouldRevise(bestEval, threshold) && rounds < maxRounds) {
     rounds++;
-    const candidate = await deps.generate(buildRevisionRequest(req, bestEval));
-    const candEval = evaluate(candidate, req.brand);
+    const candidate = await deps.generate(buildRevisionRequest(workReq, bestEval));
+    const candEval = evaluate(candidate, workReq.brand);
     const improved = candEval.score > bestEval.score;
     steps.push({
       role: "reviser",

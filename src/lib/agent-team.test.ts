@@ -124,6 +124,23 @@ describe("runAgentTeam", () => {
     expect(res.after.score).toBe(50);
   });
 
+  it("stratejist ajanı isteği rafine eder, ilk adım olur ve açıyı üretime taşır", async () => {
+    let seenAngle: string | null = null;
+    const res = await runAgentTeam(req, {
+      threshold: 0,
+      strategist: (r) => ({
+        req: { ...r, angle: "korku" },
+        note: "Açı seçildi: Korku",
+      }),
+      generate: async (r) => {
+        seenAngle = r.angle;
+        return buildDemoPackage(r);
+      },
+    });
+    expect(res.steps[0].role).toBe("strategist");
+    expect(seenAngle).toBe("korku");
+  });
+
   it("eşiğe ulaşmasa da maxRounds'u aşmaz, en iyiyi döndürür", async () => {
     const res = await runAgentTeam(req, {
       threshold: 90,

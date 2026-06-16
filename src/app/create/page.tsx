@@ -22,6 +22,7 @@ import {
   angleInsights,
   assignAnglesToPersonas,
   buildStrategyBrief,
+  recommendAngle,
   suggestTopics,
 } from "@/lib/strategy";
 import {
@@ -57,6 +58,7 @@ export default function CreatePage() {
   const [team, setTeam] = useState(false);
   const [teamThreshold, setTeamThreshold] = useState(80);
   const [teamRounds, setTeamRounds] = useState(2);
+  const [teamStrategist, setTeamStrategist] = useState(true);
   const [trend, setTrend] = useState("");
   const [research, setResearch] = useState<ResearchBrief | null>(null);
   const [researching, setResearching] = useState(false);
@@ -206,6 +208,15 @@ export default function CreatePage() {
           generate: postGenerate,
           threshold: teamThreshold,
           maxRounds: teamRounds,
+          strategist: teamStrategist
+            ? (r) => {
+                const rec = recommendAngle(sector, topic, history, feedback);
+                return {
+                  req: { ...r, angle: rec.value },
+                  note: `Açı: ${ANGLE_LABELS[rec.value]} — ${rec.reason}`,
+                };
+              }
+            : undefined,
         });
         pkg = run.final;
         persistPkg(pkg);
@@ -587,6 +598,15 @@ export default function CreatePage() {
                   setTeamRounds(Math.max(0, Math.min(4, Number(e.target.value) || 0)))
                 }
               />
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="h-4 w-4 accent-brand"
+                checked={teamStrategist}
+                onChange={(e) => setTeamStrategist(e.target.checked)}
+              />
+              Stratejist açıyı otomatik seçsin
             </label>
             <span className="text-xs text-neutral-500">
               Puan hedefe ulaşana ya da tur dolana dek düzeltir; ilerleme durursa erken durur.
