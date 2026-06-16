@@ -92,5 +92,46 @@ describe("runAgentTeam", () => {
     expect(calls).toBe(1);
     expect(res.revised).toBe(false);
     expect(res.steps).toHaveLength(2);
+    expect(res.rounds).toBe(0);
+  });
+
+  // Scripted evaluate ile çok-turlu davranışı deterministik test et.
+  const scriptedEval = (scores: number[]) => {
+    let i = 0;
+    return () => ev({ score: scores[Math.min(i++, scores.length - 1)] });
+  };
+
+  it("eşiğe ulaşana kadar birden çok tur döner, en iyiyi tutar", async () => {
+    const res = await runAgentTeam(req, {
+      threshold: 80,
+      maxRounds: 3,
+      evaluate: scriptedEval([50, 60, 90]), // taslak 50 → 60 → 90
+      generate: async (r) => buildDemoPackage(r),
+    });
+    expect(res.rounds).toBe(2);
+    expect(res.after.score).toBe(90);
+    expect(res.steps.map((s) => s.role)).toEqual(["copywriter", "editor", "reviser", "reviser"]);
+  });
+
+  it("ilerleme yoksa erken durur", async () => {
+    const res = await runAgentTeam(req, {
+      threshold: 80,
+      maxRounds: 5,
+      evaluate: scriptedEval([50, 50]), // iyileşme yok
+      generate: async (r) => buildDemoPackage(r),
+    });
+    expect(res.rounds).toBe(1);
+    expect(res.after.score).toBe(50);
+  });
+
+  it("eşiğe ulaşmasa da maxRounds'u aşmaz, en iyiyi döndürür", async () => {
+    const res = await runAgentTeam(req, {
+      threshold: 90,
+      maxRounds: 2,
+      evaluate: scriptedEval([50, 55, 60, 65]),
+      generate: async (r) => buildDemoPackage(r),
+    });
+    expect(res.rounds).toBe(2);
+    expect(res.after.score).toBe(60); // 50→55→60, tur sınırı
   });
 });

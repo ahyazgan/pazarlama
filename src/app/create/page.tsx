@@ -55,6 +55,8 @@ export default function CreatePage() {
   const [plan, setPlan] = useState<ReturnType<typeof loadPlan>>([]);
   const [demo, setDemo] = useState(false);
   const [team, setTeam] = useState(false);
+  const [teamThreshold, setTeamThreshold] = useState(80);
+  const [teamRounds, setTeamRounds] = useState(2);
   const [trend, setTrend] = useState("");
   const [research, setResearch] = useState<ResearchBrief | null>(null);
   const [researching, setResearching] = useState(false);
@@ -202,6 +204,8 @@ export default function CreatePage() {
         // Ajan ekibi: üret → editör puanı → gerekirse düzeltme turu.
         const run: TeamRunResult = await runAgentTeam(buildReq(personaIndex, angle), {
           generate: postGenerate,
+          threshold: teamThreshold,
+          maxRounds: teamRounds,
         });
         pkg = run.final;
         persistPkg(pkg);
@@ -555,6 +559,40 @@ export default function CreatePage() {
             . Tek persona için çalışır; çıktıda ekip raporu gösterilir.
           </span>
         </label>
+
+        {team && (
+          <div className="flex flex-wrap items-center gap-4 rounded-lg border border-brand/20 bg-brand-tint/20 px-3 py-2 text-sm text-neutral-700">
+            <label className="flex items-center gap-2">
+              Hedef editör puanı
+              <input
+                type="number"
+                min={0}
+                max={100}
+                className="input w-20 py-1"
+                value={teamThreshold}
+                onChange={(e) =>
+                  setTeamThreshold(Math.max(0, Math.min(100, Number(e.target.value) || 0)))
+                }
+              />
+            </label>
+            <label className="flex items-center gap-2">
+              En fazla düzeltme turu
+              <input
+                type="number"
+                min={0}
+                max={4}
+                className="input w-16 py-1"
+                value={teamRounds}
+                onChange={(e) =>
+                  setTeamRounds(Math.max(0, Math.min(4, Number(e.target.value) || 0)))
+                }
+              />
+            </label>
+            <span className="text-xs text-neutral-500">
+              Puan hedefe ulaşana ya da tur dolana dek düzeltir; ilerleme durursa erken durur.
+            </span>
+          </div>
+        )}
 
         <div className="flex flex-wrap gap-3">
           <button type="button" className="btn-primary" onClick={submit} disabled={loading}>

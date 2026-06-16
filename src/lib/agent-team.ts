@@ -118,19 +118,32 @@ export interface TeamRunResult {
   before: EditorEvaluation;
   after: EditorEvaluation;
   revised: boolean;
+  rounds: number;
 }
 
-// Orkestratör: üret → editör puanı → (gerekirse) tek düzeltme turu.
-// `generate` enjekte edilir (UI'da /api/generate, testte sahte). Düzeltme
-// sonrası daha iyi olan paket korunur (regresyona karşı güvence).
+export interface TeamDeps {
+  generate: (r: GenerateRequest) => Promise<ContentPackage>;
+  evaluate?: (pkg: ContentPackage, brand: Brand) => EditorEvaluation;
+  threshold?: number;
+  maxRounds?: number; // en fazla kaç düzeltme turu (varsayılan 1)
+}
+
+// Orkestratör: üret → editör puanı → eşik aşılana / tur dolana kadar düzelt.
+// Her tur en iyi paketi korur; ilerleme yoksa erken durur (maliyet/ısraf koruması).
+// `generate` ve `evaluate` enjekte edilir → orkestrasyon mantığı saf + test edilebilir.
 export async function runAgentTeam(
   req: GenerateRequest,
-  deps: { generate: (r: GenerateRequest) => Promise<ContentPackage>; threshold?: number },
+  deps: TeamDeps,
 ): Promise<TeamRunResult> {
   const threshold = deps.threshold ?? 80;
+  const maxRounds = Math.max(0, deps.maxRounds ?? 1);
+  const evaluate = deps.evaluate ?? evaluatePackage;
 
   const draft = await deps.generate(req);
-  const before = evaluatePackage(draft, req.brand);
+  const before = evaluate(draft, req.brand);
+  let best = draft;
+  let bestEval = before;
+
   const steps: TeamStep[] = [
     { role: "copywriter", label: "Copywriter", note: "Taslak üretildi" },
     {
@@ -143,21 +156,24 @@ export async function runAgentTeam(
     },
   ];
 
-  if (!shouldRevise(before, threshold)) {
-    return { steps, final: draft, before, after: before, revised: false };
+  let rounds = 0;
+  while (shouldRevise(bestEval, threshold) && rounds < maxRounds) {
+    rounds++;
+    const candidate = await deps.generate(buildRevisionRequest(req, bestEval));
+    const candEval = evaluate(candidate, req.brand);
+    const improved = candEval.score > bestEval.score;
+    steps.push({
+      role: "reviser",
+      label: "Düzeltmen",
+      score: candEval.score,
+      note: `Tur ${rounds}: ${bestEval.score} → ${candEval.score}${
+        improved ? "" : " (iyileşme yok, durduruldu)"
+      }`,
+    });
+    if (!improved) break; // ilerleme yok — tekrar denemek israf
+    best = candidate;
+    bestEval = candEval;
   }
 
-  const revised = await deps.generate(buildRevisionRequest(req, before));
-  const after = evaluatePackage(revised, req.brand);
-  const final = after.score >= before.score ? revised : draft;
-  steps.push({
-    role: "reviser",
-    label: "Düzeltmen",
-    score: after.score,
-    note: `Yeniden yazıldı (${before.score} → ${after.score})${
-      after.score < before.score ? " — taslak daha iyiydi, korundu" : ""
-    }`,
-  });
-
-  return { steps, final, before, after: evaluatePackage(final, req.brand), revised: true };
+  return { steps, final: best, before, after: bestEval, revised: rounds > 0, rounds };
 }

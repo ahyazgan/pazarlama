@@ -242,7 +242,7 @@ export default function OutputPage() {
             <span className="text-sm font-semibold text-brand-dark">🤝 Ajan ekibi turu</span>
             <span className="text-xs text-neutral-600">
               {teamRun.revised
-                ? `Editör puanı: ${teamRun.before.score} → ${teamRun.after.score} (düzeltildi)`
+                ? `Editör puanı: ${teamRun.before.score} → ${teamRun.after.score} (${teamRun.rounds} düzeltme turu)`
                 : `Editör puanı: ${teamRun.after.score} — düzeltme gerekmedi`}
             </span>
           </div>
