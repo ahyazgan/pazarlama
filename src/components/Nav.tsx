@@ -14,6 +14,7 @@ const LINKS: [string, string][] = [
   ["/plan", "Plan"],
   ["/library", "Kütüphane"],
   ["/calendar", "Takvim"],
+  ["/insights", "Performans"],
   ["/approvals", "Onaylar"],
   ["/integrations", "Entegrasyonlar"],
   ["/login", "Hesap"],
