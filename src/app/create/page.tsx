@@ -227,6 +227,7 @@ export default function CreatePage() {
       }
       recordHistory({ topic, contentType, angle, personaIndex });
       sessionStorage.removeItem("content-os.results");
+      sessionStorage.removeItem("content-os.team-runs");
       sessionStorage.setItem("content-os.result", JSON.stringify(pkg));
       router.push("/output");
     } catch (e) {
@@ -254,8 +255,22 @@ export default function CreatePage() {
         feedback,
       );
       const results: PersonaPackage[] = [];
+      const teamRuns: TeamRunResult[] = [];
       for (let i = 0; i < brand.audience.length; i++) {
-        const pkg = await generateFor(i, angles[i]);
+        let pkg: ContentPackage;
+        if (team) {
+          // Persona-başı açı zaten atandı (Katman 3) — global stratejist devreye girmez.
+          const run = await runAgentTeam(buildReq(i, angles[i]), {
+            generate: postGenerate,
+            threshold: teamThreshold,
+            maxRounds: teamRounds,
+          });
+          pkg = run.final;
+          persistPkg(pkg);
+          teamRuns.push(run);
+        } else {
+          pkg = await generateFor(i, angles[i]);
+        }
         results.push({
           personaName: brand.audience[i].name || `Persona ${i + 1}`,
           pkg,
@@ -264,6 +279,8 @@ export default function CreatePage() {
       recordHistory({ topic, contentType, angle, personaIndex });
       sessionStorage.removeItem("content-os.result");
       sessionStorage.removeItem("content-os.team-run");
+      if (team) sessionStorage.setItem("content-os.team-runs", JSON.stringify(teamRuns));
+      else sessionStorage.removeItem("content-os.team-runs");
       sessionStorage.setItem("content-os.results", JSON.stringify(results));
       router.push("/output");
     } catch (e) {

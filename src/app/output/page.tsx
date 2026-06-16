@@ -103,10 +103,13 @@ export default function OutputPage() {
   const [tab, setTab] = useState<PlatformId>("instagram");
   const [voted, setVoted] = useState<null | 1 | -1>(null);
   const [teamRun, setTeamRun] = useState<TeamRunResult | null>(null);
+  const [teamRuns, setTeamRuns] = useState<TeamRunResult[] | null>(null);
 
   useEffect(() => {
     const run = sessionStorage.getItem("content-os.team-run");
     if (run) setTeamRun(JSON.parse(run) as TeamRunResult);
+    const runs = sessionStorage.getItem("content-os.team-runs");
+    if (runs) setTeamRuns(JSON.parse(runs) as TeamRunResult[]);
     const multi = sessionStorage.getItem("content-os.results");
     if (multi) {
       setPersonas(JSON.parse(multi) as PersonaPackage[]);
@@ -119,6 +122,11 @@ export default function OutputPage() {
   const pkg: ContentPackage | null = personas
     ? (personas[personaIdx]?.pkg ?? null)
     : single;
+
+  // Aktif paketin ekip turu raporu (tekil veya persona-başı).
+  const activeRun: TeamRunResult | null = personas
+    ? (teamRuns?.[personaIdx] ?? null)
+    : teamRun;
 
   const tabs = orderTabs(pkg?.platformEmphasis);
   const brand = loadBrand();
@@ -236,18 +244,20 @@ export default function OutputPage() {
 
   return (
     <div className="space-y-6">
-      {teamRun && !personas && (
+      {activeRun && (
         <div className="rounded-xl border border-brand/30 bg-brand-tint/30 p-4">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-sm font-semibold text-brand-dark">🤝 Ajan ekibi turu</span>
+            <span className="text-sm font-semibold text-brand-dark">
+              🤝 Ajan ekibi turu{personas ? " (bu persona)" : ""}
+            </span>
             <span className="text-xs text-neutral-600">
-              {teamRun.revised
-                ? `Editör puanı: ${teamRun.before.score} → ${teamRun.after.score} (${teamRun.rounds} düzeltme turu)`
-                : `Editör puanı: ${teamRun.after.score} — düzeltme gerekmedi`}
+              {activeRun.revised
+                ? `Editör puanı: ${activeRun.before.score} → ${activeRun.after.score} (${activeRun.rounds} düzeltme turu)`
+                : `Editör puanı: ${activeRun.after.score} — düzeltme gerekmedi`}
             </span>
           </div>
           <ol className="space-y-1">
-            {teamRun.steps.map((s, i) => {
+            {activeRun.steps.map((s, i) => {
               const role = AGENT_TEAM.find((r) => r.id === s.role);
               return (
                 <li key={i} className="flex gap-2 text-sm text-neutral-700">
