@@ -70,6 +70,13 @@ export function removeFromPlan(id: string): CalendarEntry[] {
   return next;
 }
 
+// Drag-drop: bir girdiyi başka bir tarihe taşı (yeniden planla).
+export function reschedule(id: string, date: string): CalendarEntry[] {
+  const next = loadPlan().map((e) => (e.id === id ? { ...e, date } : e));
+  persist(next);
+  return next;
+}
+
 export interface DateGroup {
   date: string;
   items: CalendarEntry[];

@@ -1,5 +1,11 @@
-import { describe, expect, it } from "vitest";
-import { groupByDate, type CalendarEntry } from "./calendar";
+import { beforeEach, describe, expect, it } from "vitest";
+import {
+  addToPlan,
+  groupByDate,
+  loadPlan,
+  reschedule,
+  type CalendarEntry,
+} from "./calendar";
 
 const e = (id: string, date: string): CalendarEntry => ({
   id,
@@ -20,5 +26,35 @@ describe("groupByDate", () => {
 
   it("boş liste boş döner", () => {
     expect(groupByDate([])).toEqual([]);
+  });
+});
+
+describe("reschedule", () => {
+  beforeEach(() => {
+    const store = new Map<string, string>();
+    (globalThis as { window?: unknown }).window = {
+      localStorage: {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => void store.set(k, v),
+        clear: () => store.clear(),
+      },
+    };
+  });
+
+  const draft = (date: string) =>
+    ({ topic: "t", contentType: "deger", angle: "korku", sector: "insaat", date }) as const;
+
+  it("girdiyi yeni tarihe taşır", () => {
+    addToPlan(draft("2026-06-10"));
+    const id = loadPlan()[0].id;
+    const moved = reschedule(id, "2026-06-25");
+    expect(moved[0].date).toBe("2026-06-25");
+    expect(loadPlan()[0].date).toBe("2026-06-25");
+  });
+
+  it("eşleşmeyen id'de liste değişmez", () => {
+    addToPlan(draft("2026-06-10"));
+    const before = loadPlan();
+    expect(reschedule("yok", "2026-06-25")).toEqual(before);
   });
 });

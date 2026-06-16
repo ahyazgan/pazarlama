@@ -6,6 +6,7 @@ import {
   groupByDate,
   loadPlan,
   removeFromPlan,
+  reschedule,
   setMetrics,
   setStatus,
   type CalendarEntry,
@@ -60,6 +61,8 @@ function MetricsRow({
 
 export default function CalendarPage() {
   const [entries, setEntries] = useState<CalendarEntry[]>([]);
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [overDate, setOverDate] = useState<string | null>(null);
 
   useEffect(() => {
     setEntries(loadPlan());
@@ -73,6 +76,15 @@ export default function CalendarPage() {
   const saveMetrics = (id: string, reach: number, engagement: number) =>
     setEntries(setMetrics(id, reach, engagement));
 
+  const dropOnDate = (date: string) => {
+    if (dragId) {
+      const cur = entries.find((e) => e.id === dragId);
+      if (cur && cur.date !== date) setEntries(reschedule(dragId, date));
+    }
+    setDragId(null);
+    setOverDate(null);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -80,6 +92,7 @@ export default function CalendarPage() {
           <h1 className="text-2xl font-bold">İçerik Takvimi</h1>
           <p className="text-sm text-neutral-600">
             Planlanan içerik paketleri. Yayın manuel (MVP) — yayınladıkça işaretle.
+            Kartı başka bir gün başlığına sürükleyerek yeniden planla.
           </p>
         </div>
         <div className="flex gap-2">
@@ -111,11 +124,35 @@ export default function CalendarPage() {
         </div>
       ) : (
         groups.map((g) => (
-          <section key={g.date} className="card space-y-3">
+          <section
+            key={g.date}
+            onDragOver={(ev) => {
+              if (dragId) {
+                ev.preventDefault();
+                setOverDate(g.date);
+              }
+            }}
+            onDragLeave={() => setOverDate((d) => (d === g.date ? null : d))}
+            onDrop={() => dropOnDate(g.date)}
+            className={`card space-y-3 transition-colors ${
+              overDate === g.date ? "ring-2 ring-orange-400" : ""
+            }`}
+          >
             <h2 className="font-semibold">{g.date}</h2>
             <div className="space-y-2">
               {g.items.map((e) => (
-                <div key={e.id} className="rounded-xl border border-neutral-200 p-3">
+                <div
+                  key={e.id}
+                  draggable
+                  onDragStart={() => setDragId(e.id)}
+                  onDragEnd={() => {
+                    setDragId(null);
+                    setOverDate(null);
+                  }}
+                  className={`cursor-grab rounded-xl border border-neutral-200 p-3 active:cursor-grabbing ${
+                    dragId === e.id ? "opacity-50" : ""
+                  }`}
+                >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <div className="font-medium">{e.topic}</div>
