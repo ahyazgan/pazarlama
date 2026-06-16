@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { NeedBrand } from "@/components/NeedBrand";
 import { CopyButton } from "@/components/CopyButton";
 import { lintAds } from "@/lib/ads";
 import { loadBrand } from "@/lib/brand-store";
@@ -67,14 +67,7 @@ export default function AdsPage() {
   };
 
   if (brand === null) {
-    return (
-      <div className="card space-y-3 text-center">
-        <h1 className="text-xl font-bold">Önce marka profili gerekli</h1>
-        <Link href="/brand" className="btn-primary mx-auto w-fit">
-          Marka Profili'ne git
-        </Link>
-      </div>
-    );
+    return <NeedBrand onLoaded={setBrand} />;
   }
 
   return (

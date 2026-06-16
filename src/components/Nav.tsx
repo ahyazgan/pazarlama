@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const LINKS: [string, string][] = [
   ["/brand", "Marka Profili"],
@@ -20,12 +21,22 @@ const LINKS: [string, string][] = [
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+
   return (
     <>
       {/* Masaüstü */}
       <nav className="hidden items-center gap-1 text-sm md:flex">
         {LINKS.map(([href, label]) => (
-          <Link key={href} href={href} className="rounded-md px-3 py-1.5 hover:bg-neutral-100">
+          <Link
+            key={href}
+            href={href}
+            aria-current={isActive(href) ? "page" : undefined}
+            className={`rounded-md px-3 py-1.5 hover:bg-neutral-100 ${
+              isActive(href) ? "bg-brand-tint font-semibold text-brand-dark" : ""
+            }`}
+          >
             {label}
           </Link>
         ))}
@@ -46,22 +57,33 @@ export function Nav() {
         </div>
       </button>
 
-      {/* Mobil açılır panel */}
+      {/* Mobil açılır panel + dışına tıklayınca kapanan arka plan */}
       {open && (
-        <div className="absolute left-0 right-0 top-full z-20 border-b border-neutral-200 bg-white shadow-sm md:hidden">
-          <nav className="mx-auto flex max-w-5xl flex-col px-4 py-2 text-sm">
-            {LINKS.map(([href, label]) => (
-              <Link
-                key={href}
-                href={href}
-                className="rounded-md px-3 py-2 hover:bg-neutral-100"
-                onClick={() => setOpen(false)}
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
-        </div>
+        <>
+          <button
+            type="button"
+            aria-label="Menüyü kapat"
+            className="fixed inset-0 z-10 cursor-default bg-black/20 md:hidden"
+            onClick={() => setOpen(false)}
+          />
+          <div className="absolute left-0 right-0 top-full z-20 border-b border-neutral-200 bg-white shadow-sm md:hidden">
+            <nav className="mx-auto flex max-w-5xl flex-col px-4 py-2 text-sm">
+              {LINKS.map(([href, label]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={isActive(href) ? "page" : undefined}
+                  className={`rounded-md px-3 py-2 hover:bg-neutral-100 ${
+                    isActive(href) ? "bg-brand-tint font-semibold text-brand-dark" : ""
+                  }`}
+                  onClick={() => setOpen(false)}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </>
       )}
     </>
   );

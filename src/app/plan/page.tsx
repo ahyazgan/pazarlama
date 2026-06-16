@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { NeedBrand } from "@/components/NeedBrand";
 import { loadBrand } from "@/lib/brand-store";
 import { addToPlan } from "@/lib/calendar";
 import { weeklyPlan, type PlanItem } from "@/lib/weekly-plan";
@@ -39,14 +39,7 @@ export default function PlanPage() {
   const addAll = () => items.forEach((it, i) => addOne(it, i));
 
   if (brand === null) {
-    return (
-      <div className="card space-y-3 text-center">
-        <h1 className="text-xl font-bold">Önce marka profili gerekli</h1>
-        <Link href="/brand" className="btn-primary mx-auto w-fit">
-          Marka Profili'ne git
-        </Link>
-      </div>
-    );
+    return <NeedBrand onLoaded={setBrand} />;
   }
 
   return (

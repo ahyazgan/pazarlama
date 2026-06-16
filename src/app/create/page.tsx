@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { loadBrand } from "@/lib/brand-store";
+import { NeedBrand } from "@/components/NeedBrand";
 import {
   findDuplicate,
   formatWhen,
@@ -95,15 +96,10 @@ export default function CreatePage() {
 
   if (brand === null) {
     return (
-      <div className="card space-y-3 text-center">
-        <h1 className="text-xl font-bold">Once marka profili gerekli</h1>
-        <p className="text-sm text-neutral-600">
-          Icerik uretmek icin once Marka Beyni'ni doldurmalisin.
-        </p>
-        <Link href="/brand" className="btn-primary mx-auto w-fit">
-          Marka Profili'ne git
-        </Link>
-      </div>
+      <NeedBrand
+        message="İçerik üretmek için önce Marka Beyni gerekli — örnek markayla hemen dene."
+        onLoaded={setBrand}
+      />
     );
   }
 
