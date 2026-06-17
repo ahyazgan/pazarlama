@@ -38,7 +38,7 @@ export interface QualityIssue {
 }
 
 // Paketteki tüm metin alanlarını etiketleriyle düzleştir.
-function fields(pkg: ContentPackage): { where: string; text: string }[] {
+export function fields(pkg: ContentPackage): { where: string; text: string }[] {
   const o = pkg.outputs;
   return [
     { where: "Instagram/caption", text: o.instagram.caption },

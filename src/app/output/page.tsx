@@ -24,6 +24,7 @@ import {
 import { recordApproval, ROLE_LABEL, type ApproverRole } from "@/lib/approvals";
 import { loadBrand } from "@/lib/brand-store";
 import { AGENT_TEAM, type TeamRunResult } from "@/lib/agent-team";
+import { buildRationale } from "@/lib/rationale";
 import {
   ANGLE_LABELS,
   CONTENT_TYPE_LABELS,
@@ -354,6 +355,33 @@ export default function OutputPage() {
           </Link>
         </div>
       </div>
+
+      {brand && (
+        <details className="card group">
+          <summary className="flex cursor-pointer items-center justify-between font-semibold">
+            <span>Neden bu içerik? — sektör zekası + marka beyni izi</span>
+            <span className="text-xs text-neutral-400 group-open:hidden">göster</span>
+          </summary>
+          <div className="mt-3 space-y-3">
+            {buildRationale(pkg, brand).sections.map((sec) => (
+              <div key={sec.title}>
+                <div
+                  className={`text-sm font-semibold ${
+                    sec.tone === "warn" ? "text-amber-700" : "text-neutral-800"
+                  }`}
+                >
+                  {sec.title}
+                </div>
+                <ul className="mt-1 list-disc space-y-0.5 pl-5 text-sm text-neutral-600">
+                  {sec.items.map((it, i) => (
+                    <li key={i}>{it}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </details>
+      )}
 
       {personas && personas.length > 1 && (
         <div className="rounded-xl border border-neutral-200 bg-white p-3">
