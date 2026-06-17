@@ -9,12 +9,12 @@ import { SECTOR_OPTIONS, getSector } from "@/lib/sectors";
 import {
   deleteBrand,
   emptyBrand,
-  HAMMADDEM_SAMPLE,
   loadBrand,
   loadBrands,
   saveBrandLocal,
   setActiveBrand,
 } from "@/lib/brand-store";
+import { BRAND_PRESETS } from "@/lib/presets";
 import { saveBrandRemote } from "@/lib/persist";
 import { serializeBrand, parseBrand } from "@/lib/brand-io";
 import { downloadText, slugify } from "@/lib/export";
@@ -92,13 +92,24 @@ export default function BrandPage() {
             Marka Beyni — bir kez doldur, sistem her uretimde kullanir.
           </p>
         </div>
-        <button
-          type="button"
-          className="btn-ghost"
-          onClick={() => setBrand(HAMMADDEM_SAMPLE)}
+        <select
+          className="input w-auto py-1"
+          value=""
+          onChange={(e) => {
+            const p = BRAND_PRESETS.find((x) => x.id === e.target.value);
+            if (p) setBrand({ ...p.brand });
+          }}
+          aria-label="Örnek marka yükle"
         >
-          Hammaddem ornegiyle doldur
-        </button>
+          <option value="" disabled>
+            Örnek marka yükle…
+          </option>
+          {BRAND_PRESETS.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       {brands.length > 0 && (
@@ -149,13 +160,27 @@ export default function BrandPage() {
           <p className="mt-2 text-xs text-neutral-500">
             Yukarıdaki “Beyin Doluluğu” çubuğu en getirili eksikleri sırayla söyler. Hızlı başla:
           </p>
-          <button
-            type="button"
-            className="btn-primary mt-2"
-            onClick={() => setBrand(HAMMADDEM_SAMPLE)}
-          >
-            Hammaddem örneğiyle doldur (incele)
-          </button>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span className="text-sm text-neutral-600">Sektöründen bir örnekle başla:</span>
+            <select
+              className="input w-auto py-1"
+              value=""
+              onChange={(e) => {
+                const p = BRAND_PRESETS.find((x) => x.id === e.target.value);
+                if (p) setBrand({ ...p.brand });
+              }}
+              aria-label="Sektör örneği yükle"
+            >
+              <option value="" disabled>
+                Örnek marka seç…
+              </option>
+              {BRAND_PRESETS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </section>
       )}
 
