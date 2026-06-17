@@ -9,10 +9,12 @@
 
 - [x] 4 sektöre (kafe/e-ticaret/hizmet/güzellik) derin bilgi tabanı + tüm-sektör eksiksizlik testi  (9c0c1bc)
 
-### Next (sektör derinleşmesi):
+### Done (sektör derinleşmesi):
 - [x] Sektör-özel örnek marka presetleri (5 sektör) + marka sayfasında preset seçici  (a1670d5)
+- [x] "Neden bu içerik?" kanıt-temelli gerekçe paneli (terim/imza/kanıt/yasak/mevzuat/benchmark)  (e1aa43f)
+
+### Next (sektör derinleşmesi):
 - [ ] Yeni sektörler (sağlık/eğitim/emlak) — talep gelince
-- [ ] Sektör knowledge'ını çıktı ekranında "neden bu" olarak göster
 
 -----
 
