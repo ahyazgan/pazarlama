@@ -19,6 +19,7 @@ export interface BrandSummary {
   score: number;
   level: BrainScore["level"];
   topMissing: string | null; // en yüksek getirili eksik alan (varsa)
+  topMissingHint: string | null; // o alanı nasıl doldururum
 }
 
 export interface PackageSummary {
@@ -53,6 +54,7 @@ export function buildDashboard(brands: Brand[], library: LibraryItem[]): Dashboa
       score: s.score,
       level: s.level,
       topMissing: s.missing[0]?.label ?? null,
+      topMissingHint: s.missing[0]?.hint ?? null,
     };
   });
 

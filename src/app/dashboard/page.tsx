@@ -6,7 +6,14 @@ import { loadBrands } from "@/lib/brand-store";
 import { loadLibrary } from "@/lib/library";
 import { LEVEL_LABEL } from "@/lib/brain-score";
 import { buildDashboard, type DashboardData } from "@/lib/dashboard";
+import { buildActions, type ActionItem } from "@/lib/actions";
 import { getSector } from "@/lib/sectors";
+
+const ACTION_STYLE: Record<ActionItem["severity"], string> = {
+  yuksek: "border-l-red-400",
+  orta: "border-l-amber-400",
+  dusuk: "border-l-neutral-300",
+};
 
 const READY_STYLE: Record<string, string> = {
   hazir: "bg-green-100 text-green-700",
@@ -31,6 +38,7 @@ export default function DashboardPage() {
   if (!data) return null;
 
   const empty = data.brandCount === 0 && data.packageCount === 0;
+  const actions = buildActions(data);
 
   return (
     <div className="space-y-6">
@@ -41,15 +49,36 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {empty ? (
-        <div className="card text-sm text-neutral-600">
-          Henüz marka veya kayıtlı paket yok.{" "}
-          <Link href="/onboarding" className="text-brand underline">
-            Hızlı kurulumla başla
-          </Link>
-          .
-        </div>
-      ) : (
+      {/* Sıradaki en iyi aksiyon */}
+      <section className="space-y-2">
+        <h2 className="text-lg font-semibold">Sıradaki en iyi aksiyon</h2>
+        {actions.length === 0 ? (
+          <div className="card text-sm text-green-700">
+            🎉 Her şey hazır — düzeltilecek bir şey yok.
+          </div>
+        ) : (
+          <ul className="space-y-2">
+            {actions.map((a) => (
+              <li key={a.id}>
+                <Link
+                  href={a.href}
+                  className={`flex items-center justify-between rounded-lg border border-neutral-200 border-l-4 bg-white px-4 py-3 transition hover:bg-neutral-50 ${ACTION_STYLE[a.severity]}`}
+                >
+                  <div>
+                    <div className="text-sm font-medium">{a.title}</div>
+                    {a.detail && (
+                      <div className="text-xs text-neutral-500">{a.detail}</div>
+                    )}
+                  </div>
+                  <span className="text-neutral-400">→</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {empty ? null : (
         <>
           {/* Özet kartları */}
           <div className="grid gap-4 sm:grid-cols-3">
