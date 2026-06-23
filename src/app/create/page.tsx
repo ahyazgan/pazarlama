@@ -71,6 +71,9 @@ export default function CreatePage() {
         .sort((a, c) => c[1] - a[1])[0];
       if (top) setContentType(top[0]);
     }
+    // Onboarding'den önerilen ilk konu ile ön-doldurma (?topic=...).
+    const seeded = new URLSearchParams(window.location.search).get("topic");
+    if (seeded) setTopic(seeded);
   }, []);
 
   // Konu değişince araştırma bayatlar → temizle.

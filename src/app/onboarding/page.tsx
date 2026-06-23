@@ -6,7 +6,8 @@ import Link from "next/link";
 import { StringList } from "@/components/StringList";
 import { BrainMeter } from "@/components/BrainMeter";
 import { brainScore } from "@/lib/brain-score";
-import { SECTOR_OPTIONS } from "@/lib/sectors";
+import { SECTOR_OPTIONS, getSector } from "@/lib/sectors";
+import { suggestTopics } from "@/lib/strategy";
 import {
   emptyBrand,
   HAMMADDEM_SAMPLE,
@@ -48,9 +49,12 @@ export default function OnboardingPage() {
   const score = brainScore(brand);
   const isLast = step === WIZARD_STEPS.length - 1;
 
+  // Sektöre göre hazır ilk kampanya konusu — boş /create ekranını öldürür.
+  const firstTopic = suggestTopics(getSector(brand.sector), [], 1)[0] ?? "";
+
   const finish = () => {
     saveBrandLocal(brand);
-    router.push("/create");
+    router.push(firstTopic ? `/create?topic=${encodeURIComponent(firstTopic)}` : "/create");
   };
 
   return (
@@ -261,6 +265,15 @@ export default function OnboardingPage() {
 
         <aside className="space-y-3">
           <BrainMeter score={score} />
+          {isLast && firstTopic && (
+            <div className="rounded-xl border border-brand/30 bg-brand-tint/40 p-4 text-sm">
+              <span className="font-medium text-brand-dark">İlk kampanya hazır:</span>
+              <p className="mt-1 text-neutral-700">“{firstTopic}”</p>
+              <p className="mt-1 text-xs text-neutral-500">
+                Bitirince bu konuyla kampanya ekranı açılır.
+              </p>
+            </div>
+          )}
           <div className="rounded-xl border border-neutral-200 bg-white p-4 text-sm text-neutral-600">
             <p>
               Buradaki alanlar minimum başlangıç. Bitirdikten sonra{" "}
