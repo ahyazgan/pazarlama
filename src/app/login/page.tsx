@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signIn, signUp, signOut, useSession } from "@/lib/auth";
+import { SettingsTabs } from "@/components/SettingsTabs";
 
 export default function LoginPage() {
   const { user, loading, configured } = useSession();
@@ -20,7 +21,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mx-auto max-w-md space-y-6">
+    <div className="space-y-6">
+      <SettingsTabs />
+      <div className="mx-auto max-w-md space-y-6">
       <h1 className="text-2xl font-bold">Hesap</h1>
 
       {!configured && (
@@ -82,6 +85,7 @@ export default function LoginPage() {
           {msg && <p className="text-sm text-neutral-600">{msg}</p>}
         </div>
       )}
+      </div>
     </div>
   );
 }

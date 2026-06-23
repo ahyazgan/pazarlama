@@ -9,6 +9,7 @@ import {
   ROLE_LABEL,
   type Approval,
 } from "@/lib/approvals";
+import { SettingsTabs } from "@/components/SettingsTabs";
 
 function fmt(at: number): string {
   try {
@@ -26,6 +27,7 @@ export default function ApprovalsPage() {
 
   return (
     <div className="space-y-6">
+      <SettingsTabs />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Onay / Denetim İzi</h1>

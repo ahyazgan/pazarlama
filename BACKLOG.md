@@ -48,6 +48,10 @@
       ana sayfa net 3 adım + tek CTA + araç ızgarası (özellik kaybı yok)
 - [x] Kanal üreteçleri birleştirme: ortak ChannelTabs şeridi (Reklam/SEO/E-posta/
       Topluluk tek araç gibi); Nav'da 4 giriş → 1 "Kanal içerikleri"
+- [x] Planlama birleştirme: PlanningTabs (Plan öner + Takvim tek yüzey);
+      yinelenen takvim-içi üreteç kaldırıldı; Nav "Planlama" tek giriş
+- [x] Ana sayfa → marka kuruluysa panele yönlendir (ilk gelen pazarlamayı görür)
+- [x] Ayarlar gruplama: SettingsTabs (Hesap/Entegrasyonlar/Onaylar); Nav "Ayarlar"
 
 ## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 

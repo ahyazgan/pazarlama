@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { loadBrand } from "@/lib/brand-store";
+import { PlanningTabs } from "@/components/PlanningTabs";
 import { addToPlan } from "@/lib/calendar";
 import { weeklyPlan, type PlanItem } from "@/lib/weekly-plan";
 import { ANGLE_LABELS, CONTENT_TYPE_LABELS, type Brand } from "@/lib/types";
@@ -51,6 +52,7 @@ export default function PlanPage() {
 
   return (
     <div className="space-y-6">
+      <PlanningTabs />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold">Haftalık İçerik Planı</h1>

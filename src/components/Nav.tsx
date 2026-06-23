@@ -6,13 +6,13 @@ import { usePathname } from "next/navigation";
 
 type Link2 = [string, string];
 
-// Çekirdek yolculuk — her zaman görünür (Marka → Kampanya → İçerik).
+// Çekirdek yolculuk — her zaman görünür (Marka → Kampanya → İçerik → Planlama).
 const PRIMARY: Link2[] = [
   ["/dashboard", "Panel"],
   ["/brand", "Marka"],
   ["/create", "Kampanya"],
   ["/library", "Kütüphane"],
-  ["/calendar", "Takvim"],
+  ["/calendar", "Planlama"],
 ];
 
 // İkincil araçlar — "Daha fazla" altında gruplu (kalabalık etmesin).
@@ -22,24 +22,19 @@ const MORE: { title: string; links: Link2[] }[] = [
     links: [["/ads", "Reklam · SEO · E-posta · Topluluk"]],
   },
   {
-    title: "İş akışı",
+    title: "Ayarlar",
     links: [
-      ["/plan", "Plan"],
-      ["/approvals", "Onaylar"],
-    ],
-  },
-  {
-    title: "Sistem",
-    links: [
-      ["/onboarding", "Kurulum"],
-      ["/integrations", "Entegrasyonlar"],
       ["/login", "Hesap"],
+      ["/integrations", "Entegrasyonlar"],
+      ["/approvals", "Onaylar"],
+      ["/onboarding", "Kurulum sihirbazı"],
     ],
   },
 ];
 
-// "Kanal içerikleri" tek link ama dört rotayı kapsar (sekme şeridiyle gezilir).
+// Tek linkin kapsadığı sekme rotaları (sekme şeridiyle gezilir).
 const CHANNEL_PATHS = ["/ads", "/seo", "/email", "/community"];
+const PLANNING_PATHS = ["/plan", "/calendar"];
 const MORE_PATHS = [...MORE.flatMap((g) => g.links.map(([href]) => href)), ...CHANNEL_PATHS];
 
 export function Nav() {
@@ -49,8 +44,10 @@ export function Nav() {
   const moreRef = useRef<HTMLDivElement>(null);
 
   const isActive = (href: string) => {
-    // /ads linki dört kanal rotasının hepsinde aktif say.
+    // /ads linki dört kanal rotasının, /calendar linki iki planlama rotasının
+    // hepsinde aktif say (sekme şeridiyle gezilen tek-link gruplar).
     if (href === "/ads") return CHANNEL_PATHS.some((p) => pathname.startsWith(p));
+    if (href === "/calendar") return PLANNING_PATHS.some((p) => pathname.startsWith(p));
     return pathname === href || (href !== "/" && pathname.startsWith(href));
   };
   const moreActive = MORE_PATHS.some(isActive);

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SettingsTabs } from "@/components/SettingsTabs";
 
 // Dürüst entegrasyon iskeleti. Constitution §5: MVP'de manuel yayın yeterli.
 // Otomatik yayın gerçek OAuth + platform API + prod yan etki ister (CLAUDE.md §4) —
@@ -14,6 +15,7 @@ const PLATFORMS = [
 export default function IntegrationsPage() {
   return (
     <div className="space-y-6">
+      <SettingsTabs />
       <div>
         <h1 className="text-2xl font-bold">Yayın Entegrasyonları</h1>
         <p className="text-sm text-neutral-600">

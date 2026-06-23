@@ -1,4 +1,9 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { loadBrand } from "@/lib/brand-store";
 
 const STEPS = [
   {
@@ -32,6 +37,18 @@ const TOOLS: { t: string; d: string; href: string }[] = [
 ];
 
 export default function HomePage() {
+  const router = useRouter();
+  const [checked, setChecked] = useState(false);
+
+  // Marka kuruluysa pazarlama sayfasını atla, doğrudan panele götür.
+  useEffect(() => {
+    if (loadBrand()) router.replace("/dashboard");
+    else setChecked(true);
+  }, [router]);
+
+  // Yönlendirme kararı verilene kadar boş (kurulu kullanıcıda anlık çakılma olmasın).
+  if (!checked) return null;
+
   return (
     <div className="space-y-12">
       <section className="space-y-4">
