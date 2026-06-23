@@ -44,6 +44,8 @@
 - [x] Çok-dilli çıktı: gerçek üretimde dil seçimi (prompt [DIL] enjeksiyonu)
 - [x] Otomatik haftalık plan önerici (şablon + feedback ağırlıklı → /calendar tek tık)
 - [x] Kütüphane arama/filtre (metin + sektör + açı; filtreli CSV export)
+- [x] Sadeleştirme: Nav 14 düz link → 5 çekirdek + "Daha fazla" gruplu menü;
+      ana sayfa net 3 adım + tek CTA + araç ızgarası (özellik kaybı yok)
 
 ## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 
