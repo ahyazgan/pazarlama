@@ -13,8 +13,10 @@
 
 - [x] Kampanya üretiminde ajan ekibi turu seçeneği — her gönderi üret→eleştir→düzelt  (04ed8cd)
 
+- [x] Kampanya teslim paketine QA/governance özeti — ortalama kalite + gönderi başı editör notu  (bac0418)
+
 ### Next (kampanya derinleşmesi):
-- [ ] Kampanya teslim paketine QA/governance özeti ekle
+- [ ] Kampanya üretim ilerlemesinde canlı editör skoru göster
 
 -----
 
