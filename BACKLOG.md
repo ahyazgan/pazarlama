@@ -5,6 +5,16 @@
 
 -----
 
+## Now (KAMPANYA — tek gönderiden koordineli seriye)
+
+- [x] Plan → gerçek kampanya üretici: tek tıkla N koordineli gönderi üret + kütüphane/takvim + birlikte göster  (1afde1d)
+
+### Next (kampanya derinleşmesi):
+- [ ] Kampanya üretiminde ajan ekibi turu seçeneği (her gönderi üret→eleştir→düzelt)
+- [ ] Kampanya teslim paketi (tek dosyada tüm gönderiler + QA + takvim)
+
+-----
+
 ## Now (ÇOK-SEKTÖRLÜ SaaS — her sektör gerçekten uzman)
 
 - [x] 4 sektöre (kafe/e-ticaret/hizmet/güzellik) derin bilgi tabanı + tüm-sektör eksiksizlik testi  (9c0c1bc)
