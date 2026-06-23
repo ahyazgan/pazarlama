@@ -9,9 +9,10 @@
 
 - [x] Plan → gerçek kampanya üretici: tek tıkla N koordineli gönderi üret + kütüphane/takvim + birlikte göster  (1afde1d)
 
+- [x] Kampanya teslim paketi — tüm gönderiler tek markdown dosyada + çıktıda indir  (a8efdfa)
+
 ### Next (kampanya derinleşmesi):
 - [ ] Kampanya üretiminde ajan ekibi turu seçeneği (her gönderi üret→eleştir→düzelt)
-- [ ] Kampanya teslim paketi (tek dosyada tüm gönderiler + QA + takvim)
 
 -----
 
