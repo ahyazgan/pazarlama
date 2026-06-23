@@ -34,6 +34,10 @@
   Done when: typecheck/lint/test/build yeşil · ilk kullanıcı ana sayfadan yönlenir
 - [x] Yayın-hazırlık paneli (/dashboard — marka skoru + paket readiness özeti)
   Done when: deterministik birleştirme + test · Nav linki · build route'ta
+- [x] Dashboard "sıradaki en iyi aksiyon" önceliklendirme paneli (actions.ts)
+- [x] Onboarding → sektöre özel ilk kampanya önerisi (/create?topic= ön-doldurma)
+- [x] Demo çıktı kalitesi: açıya özel çerçeve + CTA/persona/vaka/disclaimer enjeksiyonu
+- [x] Cila: Nav lg-eşiği + aria-current aktif link · plan boş-durum ekranı
 
 ## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 

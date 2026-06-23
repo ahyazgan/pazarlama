@@ -114,6 +114,13 @@ export default function PlanPage() {
           </p>
         </>
       )}
+
+      {items.length === 0 && (
+        <div className="card text-sm text-neutral-600">
+          Henüz plan yok. Gün sayısını seç ve <span className="font-medium">“Plan üret”</span>e
+          bas — sütun + açı rotasyonuyla haftalık tohumlar gelir.
+        </div>
+      )}
     </div>
   );
 }
