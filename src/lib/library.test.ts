@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addItem, type LibraryItem } from "./library";
+import { addItem, filterLibrary, type LibraryItem } from "./library";
 import type { ContentPackage } from "./types";
 
 const pkg = (topic: string, angle: ContentPackage["angle"]): ContentPackage => ({
@@ -46,5 +46,37 @@ describe("library addItem", () => {
     let list: LibraryItem[] = [];
     for (let i = 0; i < 5; i++) list = addItem(list, item(String(i), `T${i}`, "korku"), 3);
     expect(list).toHaveLength(3);
+  });
+});
+
+describe("library filterLibrary", () => {
+  const list: LibraryItem[] = [
+    item("1", "Çimento stoğu", "korku"),
+    item("2", "Beton fiyatı", "kazanc"),
+    { ...item("3", "Kahve menüsü", "kazanc"), brandName: "Köşe Kafe", sector: "kafe" },
+  ];
+
+  it("boş filtre hepsini döner", () => {
+    expect(filterLibrary(list, {})).toHaveLength(3);
+  });
+
+  it("metin konu ve markada arar (case-insensitive)", () => {
+    expect(filterLibrary(list, { text: "beton" }).map((i) => i.id)).toEqual(["2"]);
+    expect(filterLibrary(list, { text: "köşe" }).map((i) => i.id)).toEqual(["3"]);
+  });
+
+  it("sektör süzer", () => {
+    expect(filterLibrary(list, { sector: "kafe" }).map((i) => i.id)).toEqual(["3"]);
+    expect(filterLibrary(list, { sector: "all" })).toHaveLength(3);
+  });
+
+  it("açı süzer", () => {
+    expect(filterLibrary(list, { angle: "kazanc" }).map((i) => i.id)).toEqual(["2", "3"]);
+  });
+
+  it("filtreleri kesiştirir (AND)", () => {
+    expect(filterLibrary(list, { angle: "kazanc", sector: "insaat" }).map((i) => i.id)).toEqual([
+      "2",
+    ]);
   });
 });

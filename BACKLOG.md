@@ -43,6 +43,7 @@
 - [x] Analytics: UTM izlenebilir bağlantı üreteci (/output, platform başına)
 - [x] Çok-dilli çıktı: gerçek üretimde dil seçimi (prompt [DIL] enjeksiyonu)
 - [x] Otomatik haftalık plan önerici (şablon + feedback ağırlıklı → /calendar tek tık)
+- [x] Kütüphane arama/filtre (metin + sektör + açı; filtreli CSV export)
 
 ## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 

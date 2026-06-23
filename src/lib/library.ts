@@ -1,6 +1,6 @@
 "use client";
 
-import type { ContentPackage, SectorId } from "./types";
+import type { Angle, ContentPackage, ContentType, SectorId } from "./types";
 
 // ============================================================================
 // İçerik Kütüphanesi — üretilen paketleri kalıcı sakla (localStorage), tekrar aç.
@@ -52,6 +52,28 @@ export function saveToLibrary(pkg: ContentPackage, brandName: string, sector: Se
     at: Date.now(),
   };
   window.localStorage.setItem(KEY, JSON.stringify(addItem(loadLibrary(), item)));
+}
+
+// --- Arama / filtre (kütüphane büyüdükçe) ------------------------------------
+
+export interface LibraryFilter {
+  text?: string; // konu veya marka adında ara
+  sector?: SectorId | "all";
+  contentType?: ContentType | "all";
+  angle?: Angle | "all";
+}
+
+// Pure: metin (konu+marka) + sektör/tip/açı kesişimiyle süzer. Boş filtre = hepsi.
+export function filterLibrary(items: LibraryItem[], f: LibraryFilter): LibraryItem[] {
+  const q = f.text?.trim().toLowerCase() ?? "";
+  return items.filter((it) => {
+    if (q && !`${it.topic} ${it.brandName}`.toLowerCase().includes(q)) return false;
+    if (f.sector && f.sector !== "all" && it.sector !== f.sector) return false;
+    if (f.contentType && f.contentType !== "all" && it.pkg.contentType !== f.contentType)
+      return false;
+    if (f.angle && f.angle !== "all" && it.pkg.angle !== f.angle) return false;
+    return true;
+  });
 }
 
 export function removeFromLibrary(id: string): LibraryItem[] {
