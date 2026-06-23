@@ -1,4 +1,4 @@
-import type { ContentPackage } from "./types";
+import type { ContentPackage, PersonaPackage } from "./types";
 import { ANGLE_LABELS, CONTENT_TYPE_LABELS, PLATFORM_LABELS } from "./types";
 
 // ============================================================================
@@ -42,6 +42,28 @@ export function packageToMarkdown(pkg: ContentPackage): string {
   o.x.thread.forEach((t, i) => L.push(`${i + 1}/ ${t}`));
   L.push("");
 
+  return L.join("\n");
+}
+
+// Kampanya teslim paketi: tüm gönderiler tek dosyada (sosyal medya yöneticisine hazır).
+export function campaignToMarkdown(items: PersonaPackage[], brandName: string): string {
+  const L: string[] = [];
+  L.push(`# ${brandName} — Kampanya Teslim Paketi`);
+  L.push(`*${items.length} gönderi · içerik takvimi sırasıyla*`);
+  L.push("");
+  L.push("## İçindekiler");
+  items.forEach((it, i) => L.push(`${i + 1}. ${it.personaName} — ${it.pkg.topic}`));
+  L.push("");
+  L.push("---");
+  L.push("");
+  items.forEach((it, i) => {
+    L.push(`# ${i + 1}. ${it.personaName}`);
+    L.push("");
+    L.push(packageToMarkdown(it.pkg));
+    L.push("");
+    L.push("---");
+    L.push("");
+  });
   return L.join("\n");
 }
 

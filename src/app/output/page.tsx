@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
-import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/lib/export";
+import {
+  campaignToMarkdown,
+  captionLengthHint,
+  downloadText,
+  packageToMarkdown,
+  slugify,
+} from "@/lib/export";
 import { lintPackage, lintWithBrand } from "@/lib/quality";
 import { recordFeedback } from "@/lib/feedback";
 import { addToPlan, todayISO } from "@/lib/calendar";
@@ -350,6 +356,21 @@ export default function OutputPage() {
           >
             QA raporu indir
           </button>
+          {personas && personas.length > 1 && (
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={() =>
+                downloadText(
+                  `${slugify(brand?.name ?? "kampanya")}-kampanya.md`,
+                  campaignToMarkdown(personas, brand?.name ?? ""),
+                  "text/markdown",
+                )
+              }
+            >
+              Kampanya paketi indir
+            </button>
+          )}
           <Link href="/create" className="btn-ghost">
             Yeni kampanya
           </Link>

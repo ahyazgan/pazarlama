@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { captionLengthHint, packageToMarkdown, slugify } from "./export";
-import type { ContentPackage } from "./types";
+import { campaignToMarkdown, captionLengthHint, packageToMarkdown, slugify } from "./export";
+import type { ContentPackage, PersonaPackage } from "./types";
 
 const pkg: ContentPackage = {
   topic: "Çimento stoğu tazelendi",
@@ -68,6 +68,26 @@ describe("packageToMarkdown", () => {
   it("x thread'ini numaralandirir", () => {
     expect(md).toMatch(/1\/ X1/);
     expect(md).toMatch(/3\/ X3/);
+  });
+});
+
+describe("campaignToMarkdown", () => {
+  const items: PersonaPackage[] = [
+    { personaName: "2026-06-10 · Tedarik", pkg: { ...pkg, topic: "Gönderi A" } },
+    { personaName: "2026-06-11 · Maliyet", pkg: { ...pkg, topic: "Gönderi B" } },
+  ];
+  const md = campaignToMarkdown(items, "Hammaddem");
+
+  it("marka başlığı + içindekiler + her gönderiyi içerir", () => {
+    expect(md).toMatch(/^# Hammaddem — Kampanya Teslim Paketi/m);
+    expect(md).toContain("## İçindekiler");
+    expect(md).toContain("2026-06-10 · Tedarik");
+    expect(md).toContain("Gönderi A");
+    expect(md).toContain("Gönderi B");
+  });
+
+  it("her gönderinin tam paketini gömer (4 platform x N)", () => {
+    expect((md.match(/## Instagram/g) ?? []).length).toBe(2);
   });
 });
 
