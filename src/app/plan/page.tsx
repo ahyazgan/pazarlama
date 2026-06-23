@@ -1,17 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { NeedBrand } from "@/components/NeedBrand";
 import { loadBrand } from "@/lib/brand-store";
 import { addToPlan } from "@/lib/calendar";
+import { saveToLibrary } from "@/lib/library";
 import { weeklyPlan, type PlanItem } from "@/lib/weekly-plan";
-import { ANGLE_LABELS, CONTENT_TYPE_LABELS, type Brand } from "@/lib/types";
+import {
+  ANGLE_LABELS,
+  CONTENT_TYPE_LABELS,
+  type Brand,
+  type ContentPackage,
+  type GenerateRequest,
+  type PersonaPackage,
+} from "@/lib/types";
 
 export default function PlanPage() {
+  const router = useRouter();
   const [brand, setBrand] = useState<Brand | null>(null);
   const [count, setCount] = useState(5);
   const [items, setItems] = useState<PlanItem[]>([]);
   const [added, setAdded] = useState<Record<number, boolean>>({});
+  const [building, setBuilding] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setBrand(loadBrand());
@@ -32,11 +45,62 @@ export default function PlanPage() {
       angle: it.angle,
       sector: brand.sector,
       date: it.date,
+      pillar: it.pillar || undefined,
     });
     setAdded((a) => ({ ...a, [i]: true }));
   };
 
   const addAll = () => items.forEach((it, i) => addOne(it, i));
+
+  // Tüm kampanyayı üret: her plan maddesi için gerçek paket (demo modda, anahtarsız),
+  // kütüphaneye + takvime kaydet, hepsini birlikte çıktıda göster.
+  const buildCampaign = async () => {
+    if (!brand || !items.length) return;
+    setBuilding(true);
+    setError(null);
+    setProgress(0);
+    try {
+      const results: PersonaPackage[] = [];
+      for (let i = 0; i < items.length; i++) {
+        const it = items[i];
+        const req: GenerateRequest = {
+          brand,
+          topic: it.topicSeed,
+          contentType: it.contentType,
+          angle: it.angle,
+          personaIndex: 0,
+          demo: true,
+        };
+        const res = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(req),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Üretim başarısız.");
+        const pkg = data as ContentPackage;
+        saveToLibrary(pkg, brand.name, brand.sector);
+        addToPlan({
+          topic: it.topicSeed,
+          contentType: it.contentType,
+          angle: it.angle,
+          sector: brand.sector,
+          date: it.date,
+          pillar: it.pillar || undefined,
+        });
+        results.push({ personaName: `${it.date} · ${it.pillar || it.topicSeed}`, pkg });
+        setProgress(i + 1);
+      }
+      sessionStorage.removeItem("content-os.result");
+      sessionStorage.removeItem("content-os.team-run");
+      sessionStorage.removeItem("content-os.team-runs");
+      sessionStorage.setItem("content-os.results", JSON.stringify(results));
+      router.push("/output");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Kampanya üretilemedi.");
+      setBuilding(false);
+    }
+  };
 
   if (brand === null) {
     return <NeedBrand onLoaded={setBrand} />;
@@ -71,11 +135,21 @@ export default function PlanPage() {
 
       {items.length > 0 && (
         <>
-          <div className="flex justify-end">
-            <button type="button" className="btn-ghost" onClick={addAll}>
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            {error && <span className="mr-auto text-sm text-red-600">{error}</span>}
+            <button type="button" className="btn-ghost" onClick={addAll} disabled={building}>
               Tümünü takvime ekle
             </button>
+            <button type="button" className="btn-primary" onClick={buildCampaign} disabled={building}>
+              {building
+                ? `Üretiliyor… ${progress}/${items.length}`
+                : `Tüm kampanyayı üret (${items.length} gönderi)`}
+            </button>
           </div>
+          <p className="text-xs text-neutral-500">
+            “Tüm kampanyayı üret” her maddeyi gerçek paket olarak üretir (demo modda, anahtarsız),
+            kütüphaneye ve takvime kaydeder, hepsini birlikte çıktı ekranında gösterir.
+          </p>
           <div className="space-y-2">
             {items.map((it, i) => (
               <div
