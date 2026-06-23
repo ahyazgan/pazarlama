@@ -51,4 +51,28 @@ describe("demo (anahtarsiz) cikti ureteci", () => {
     expect(v!.tiktokHooks.length).toBeGreaterThanOrEqual(2);
     expect(v!.xOpeners.length).toBeGreaterThanOrEqual(2);
   });
+
+  it("marka CTA hedefini TikTok/X CTA olarak kullanir", () => {
+    // Hammaddem ctaGoal: "Teklif al / WhatsApp'tan tedarik sorusu sor"
+    expect(pkg.outputs.tiktok.cta).toContain("Teklif al");
+    expect(pkg.outputs.x.thread.join(" ")).toContain("Teklif al");
+  });
+
+  it("zorunlu disclaimer'i caption ve linkedin govdesine ekler", () => {
+    // Hammaddem requiredDisclaimers: ["Fiyatlara KDV dahil degildir"]
+    expect(pkg.outputs.instagram.caption).toContain("KDV");
+    expect(pkg.outputs.linkedin.body).toContain("KDV");
+  });
+
+  it("vaka kanitini ve farklilasmayi enjekte eder", () => {
+    const li = pkg.outputs.linkedin.body;
+    expect(li).toContain("400 ton"); // proof.cases[0]
+    expect(li.toLowerCase()).toContain("ayıran"); // differentiation çerçevesi
+  });
+
+  it("aci farkli olunca cikti gorunur sekilde degisir", () => {
+    const korku = buildDemoPackage({ ...req, angle: "korku" }).outputs.instagram.caption;
+    const kazanc = buildDemoPackage({ ...req, angle: "kazanc" }).outputs.instagram.caption;
+    expect(korku).not.toBe(kazanc); // açıya özel çerçeve farkı
+  });
 });
