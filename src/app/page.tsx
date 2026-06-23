@@ -18,11 +18,14 @@ export default function HomePage() {
           metin + video script + gorsel prompt.
         </p>
         <div className="flex flex-wrap gap-3 pt-2">
-          <Link href="/brand" className="btn-primary">
-            1. Marka Profili olustur
+          <Link href="/onboarding" className="btn-primary">
+            Hizli kurulum (5 adim)
+          </Link>
+          <Link href="/brand" className="btn-ghost">
+            Marka Profili
           </Link>
           <Link href="/create" className="btn-ghost">
-            2. Kampanya olustur
+            Kampanya olustur
           </Link>
         </div>
       </section>

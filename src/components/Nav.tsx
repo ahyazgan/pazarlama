@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 
 const LINKS: [string, string][] = [
+  ["/onboarding", "Kurulum"],
+  ["/dashboard", "Panel"],
   ["/brand", "Marka Profili"],
   ["/create", "Kampanya"],
   ["/ads", "Reklam"],

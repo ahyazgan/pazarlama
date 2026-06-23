@@ -26,6 +26,15 @@
 > research→generate (bulgu içeriğe + kaynak çıktıya). Constitution §11/6 ✓
 > Güvenlik: anahtar yalnızca git-ignore'lı .env.local'da; test sonrası revoke öneril(d)i.
 
+## Now (ÜRÜNLEŞME — UX derinliği)
+
+- [x] Çok markalı yönetim (brand-store + marka seçici/kaydet/sil)  (önceden mevcut)
+- [x] Marka beyni içe/dışa aktarma (brand-io JSON export/import)  (önceden mevcut)
+- [x] Onboarding sihirbazı (/onboarding — 5 adım, canlı beyin skoru, örnekle başla)
+  Done when: typecheck/lint/test/build yeşil · ilk kullanıcı ana sayfadan yönlenir
+- [x] Yayın-hazırlık paneli (/dashboard — marka skoru + paket readiness özeti)
+  Done when: deterministik birleştirme + test · Nav linki · build route'ta
+
 ## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 
 - [x] İçerik kütüphanesi (/library — kaydet/aç/sil)  (77806a9)
