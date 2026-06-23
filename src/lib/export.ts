@@ -1,5 +1,6 @@
-import type { ContentPackage, PersonaPackage } from "./types";
+import type { Brand, ContentPackage, PersonaPackage } from "./types";
 import { ANGLE_LABELS, CONTENT_TYPE_LABELS, PLATFORM_LABELS } from "./types";
+import { evaluatePackage } from "./agent-team";
 
 // ============================================================================
 // Cikti disa aktarma — paketi tek dosya (JSON + markdown) olarak.
@@ -46,18 +47,39 @@ export function packageToMarkdown(pkg: ContentPackage): string {
 }
 
 // Kampanya teslim paketi: tüm gönderiler tek dosyada (sosyal medya yöneticisine hazır).
-export function campaignToMarkdown(items: PersonaPackage[], brandName: string): string {
+// brand verilirse her gönderiye + kampanyaya QA/governance özeti (editör puanı) eklenir.
+export function campaignToMarkdown(
+  items: PersonaPackage[],
+  brandName: string,
+  brand?: Brand,
+): string {
   const L: string[] = [];
+  const evals = brand ? items.map((it) => evaluatePackage(it.pkg, brand)) : null;
+
   L.push(`# ${brandName} — Kampanya Teslim Paketi`);
   L.push(`*${items.length} gönderi · içerik takvimi sırasıyla*`);
+  if (evals) {
+    const avg = Math.round(evals.reduce((s, e) => s + e.score, 0) / evals.length);
+    L.push(`*Ortalama kalite (editör): ${avg}/100*`);
+  }
   L.push("");
   L.push("## İçindekiler");
-  items.forEach((it, i) => L.push(`${i + 1}. ${it.personaName} — ${it.pkg.topic}`));
+  items.forEach((it, i) => {
+    const qa = evals ? ` — QA ${evals[i].grade} (${evals[i].score}/100)` : "";
+    L.push(`${i + 1}. ${it.personaName} — ${it.pkg.topic}${qa}`);
+  });
   L.push("");
   L.push("---");
   L.push("");
   items.forEach((it, i) => {
     L.push(`# ${i + 1}. ${it.personaName}`);
+    if (evals) {
+      const e = evals[i];
+      L.push(
+        `> **QA:** ${e.grade} (${e.score}/100)` +
+          (e.issues.length ? ` · ${e.issues.length} not: ${e.issues.slice(0, 3).join("; ")}` : " · sorun yok"),
+      );
+    }
     L.push("");
     L.push(packageToMarkdown(it.pkg));
     L.push("");

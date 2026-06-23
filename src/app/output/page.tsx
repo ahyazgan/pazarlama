@@ -363,7 +363,7 @@ export default function OutputPage() {
               onClick={() =>
                 downloadText(
                   `${slugify(brand?.name ?? "kampanya")}-kampanya.md`,
-                  campaignToMarkdown(personas, brand?.name ?? ""),
+                  campaignToMarkdown(personas, brand?.name ?? "", brand ?? undefined),
                   "text/markdown",
                 )
               }

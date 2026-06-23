@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { campaignToMarkdown, captionLengthHint, packageToMarkdown, slugify } from "./export";
+import { HAMMADDEM_SAMPLE } from "./brand-store";
 import type { ContentPackage, PersonaPackage } from "./types";
 
 const pkg: ContentPackage = {
@@ -88,6 +89,12 @@ describe("campaignToMarkdown", () => {
 
   it("her gönderinin tam paketini gömer (4 platform x N)", () => {
     expect((md.match(/## Instagram/g) ?? []).length).toBe(2);
+  });
+
+  it("brand verilince QA/governance özeti ekler", () => {
+    const withQa = campaignToMarkdown(items, "Hammaddem", HAMMADDEM_SAMPLE);
+    expect(withQa).toMatch(/Ortalama kalite \(editör\): \d+\/100/);
+    expect(withQa).toMatch(/\*\*QA:\*\* [A-D] \(\d+\/100\)/);
   });
 });
 
