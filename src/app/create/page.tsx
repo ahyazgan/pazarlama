@@ -18,6 +18,7 @@ import { loadPlan } from "@/lib/calendar";
 import { brainScore } from "@/lib/brain-score";
 import { brainInjectionSummary } from "@/lib/brain-preview";
 import { getSector } from "@/lib/sectors";
+import { templatesFor, type CampaignTemplate } from "@/lib/templates";
 import {
   angleInsights,
   assignAnglesToPersonas,
@@ -52,6 +53,7 @@ export default function CreatePage() {
   const [feedbackStore, setFeedbackStore] = useState<ReturnType<typeof loadFeedback>>({});
   const [plan, setPlan] = useState<ReturnType<typeof loadPlan>>([]);
   const [demo, setDemo] = useState(false);
+  const [language, setLanguage] = useState("Türkçe");
   const [trend, setTrend] = useState("");
   const [research, setResearch] = useState<ResearchBrief | null>(null);
   const [researching, setResearching] = useState(false);
@@ -129,6 +131,13 @@ export default function CreatePage() {
     setPersonaIndex(brief.personaFocusIndex);
   };
 
+  // Hazır şablon: konu + içerik tipi + açıyı birlikte kurar.
+  const applyTemplate = (tpl: CampaignTemplate) => {
+    setTopic(tpl.topic);
+    setContentType(tpl.contentType);
+    setAngle(tpl.angle);
+  };
+
   const runResearch = async () => {
     if (!brand || !topic.trim()) {
       setResearchErr("Önce konu gir.");
@@ -166,6 +175,7 @@ export default function CreatePage() {
         demo,
         trend: trend.trim() || undefined,
         research: research ?? undefined,
+        language: language !== "Türkçe" ? language : undefined,
       }),
     });
     const data = await res.json();
@@ -275,6 +285,24 @@ export default function CreatePage() {
             onChange={(e) => setTopic(e.target.value)}
             placeholder="or. Cimento stogu tazelendi"
           />
+          {!topic.trim() && (
+            <div className="mt-2">
+              <p className="hint mb-1">Hazır kampanya şablonu (konu + tip + açıyı birlikte kurar):</p>
+              <div className="flex flex-wrap gap-2">
+                {templatesFor(brand.sector).map((tpl, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => applyTemplate(tpl)}
+                    title={`${CONTENT_TYPE_LABELS[tpl.contentType]} · ${ANGLE_LABELS[tpl.angle]} açısı`}
+                    className="chip border-brand/40 bg-brand-tint/40 text-left text-brand-dark hover:bg-brand-tint"
+                  >
+                    {tpl.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           {!topic.trim() && topicIdeas.length > 0 && (
             <div className="mt-2">
               <p className="hint mb-1">Konu fikri (boş sayfa mı? başla):</p>
@@ -448,6 +476,27 @@ export default function CreatePage() {
             placeholder="or. Yeni deprem yönetmeliği yürürlüğe girdi"
           />
           <p className="hint">Doldurulursa içerik bu güncel olaya bağlanır.</p>
+        </div>
+
+        <div>
+          <label className="label">
+            Çıktı dili{" "}
+            <span className="font-normal text-neutral-400">(gerçek üretimde geçerli)</span>
+          </label>
+          <select
+            className="input w-auto"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+          >
+            {["Türkçe", "English", "Deutsch", "Français", "Español", "العربية"].map((l) => (
+              <option key={l} value={l}>
+                {l}
+              </option>
+            ))}
+          </select>
+          {language !== "Türkçe" && (
+            <p className="hint">Çıktı {language} dilinde üretilir (demo modunda Türkçe kalır).</p>
+          )}
         </div>
 
         <div className="rounded-xl border border-neutral-200 bg-white p-3">

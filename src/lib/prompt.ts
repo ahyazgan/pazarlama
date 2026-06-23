@@ -188,6 +188,12 @@ export function buildUserPrompt(req: GenerateRequest): string {
   if (req.research) {
     lines.push(researchContextBlock(req.research));
   }
+  const lang = req.language?.trim();
+  if (lang && !/^t[üu]rk/i.test(lang)) {
+    lines.push(
+      `[DIL] Tum ciktiyi ${lang} dilinde yaz (hashtag'ler ve marka adi haric). Marka sesini ve tonunu bu dilde koru.`,
+    );
+  }
   lines.push("");
   lines.push(
     "Yukaridaki marka beyni + sektor zekasina gore bu gorev icin TAM paketi (4 platform + variants) JSON semasina uygun uret.",

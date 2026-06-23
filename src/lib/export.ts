@@ -1,4 +1,5 @@
 import type { ContentPackage } from "./types";
+import type { LibraryItem } from "./library";
 import { ANGLE_LABELS, CONTENT_TYPE_LABELS, PLATFORM_LABELS } from "./types";
 
 // ============================================================================
@@ -76,6 +77,55 @@ export function slugify(s: string): string {
       .replace(/\s+/g, "-")
       .slice(0, 50) || "icerik-paketi"
   );
+}
+
+// --- CSV dışa aktarma (tablo / e-tablo) --------------------------------------
+
+// Tek alanı CSV-güvenli kaçışla sarmala (tırnak, virgül, satır sonu).
+function csvCell(value: string): string {
+  const v = value ?? "";
+  if (/[",\n\r]/.test(v)) return `"${v.replace(/"/g, '""')}"`;
+  return v;
+}
+
+export function csvRow(cells: string[]): string {
+  return cells.map(csvCell).join(",");
+}
+
+const LIBRARY_CSV_HEADER = [
+  "Tarih",
+  "Marka",
+  "Sektör",
+  "Konu",
+  "İçerik Tipi",
+  "Açı",
+  "IG Caption",
+  "TikTok Hook",
+  "LinkedIn Hook",
+  "X Thread",
+];
+
+// Kütüphaneyi e-tablo dostu CSV'ye çevir (saf; Excel/Sheets'te açılır).
+export function libraryToCsv(items: LibraryItem[]): string {
+  const rows = [csvRow(LIBRARY_CSV_HEADER)];
+  for (const it of items) {
+    const o = it.pkg.outputs;
+    rows.push(
+      csvRow([
+        new Date(it.at).toISOString().slice(0, 10),
+        it.brandName,
+        it.sector,
+        it.topic,
+        CONTENT_TYPE_LABELS[it.pkg.contentType],
+        ANGLE_LABELS[it.pkg.angle],
+        o.instagram.caption,
+        o.tiktok.hook,
+        o.linkedin.hookLine,
+        o.x.thread.join(" | "),
+      ]),
+    );
+  }
+  return rows.join("\n");
 }
 
 // Client-only: metni dosya olarak indir.

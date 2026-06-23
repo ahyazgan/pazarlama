@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { captionLengthHint, packageToMarkdown, slugify } from "./export";
+import { captionLengthHint, csvRow, libraryToCsv, packageToMarkdown, slugify } from "./export";
 import type { ContentPackage } from "./types";
+import type { LibraryItem } from "./library";
 
 const pkg: ContentPackage = {
   topic: "Çimento stoğu tazelendi",
@@ -91,5 +92,36 @@ describe("slugify", () => {
   });
   it("bos girdi icin varsayilan", () => {
     expect(slugify("  ")).toBe("icerik-paketi");
+  });
+});
+
+describe("CSV dışa aktarma", () => {
+  it("csvRow virgül/tırnak/satır sonu içeren hücreyi kaçışlar", () => {
+    expect(csvRow(["a,b", 'di"şe', "satır\nsonu", "düz"])).toBe(
+      '"a,b","di""şe","satır\nsonu",düz',
+    );
+  });
+
+  it("libraryToCsv başlık + satır üretir, alanları doğru sıralar", () => {
+    const item: LibraryItem = {
+      id: "lib-1",
+      topic: "Konu, virgüllü",
+      brandName: "Hammaddem",
+      sector: "insaat",
+      pkg,
+      at: Date.UTC(2026, 0, 15),
+    };
+    const csv = libraryToCsv([item]);
+    const lines = csv.split("\n");
+    expect(lines[0]).toContain("Tarih");
+    expect(lines[0]).toContain("X Thread");
+    expect(lines[1]).toContain("2026-01-15");
+    expect(lines[1]).toContain("Hammaddem");
+    expect(lines[1]).toContain('"Konu, virgüllü"'); // virgül kaçışlandı
+    expect(lines[1]).toContain("X1 | X2 | X3"); // thread birleştirildi
+  });
+
+  it("boş kütüphane sadece başlık satırı verir", () => {
+    expect(libraryToCsv([]).split("\n")).toHaveLength(1);
   });
 });

@@ -124,6 +124,17 @@ describe("user prompt — yalnizca DEGISEN gorev", () => {
     expect(buildUserPrompt({ ...req, trend: "Deprem yonetmeligi guncellendi" })).toMatch(/TREND/);
     expect(usr()).not.toMatch(/TREND/);
   });
+
+  it("Turkce disi dil verilince DIL talimati enjekte eder", () => {
+    const p = buildUserPrompt({ ...req, language: "English" });
+    expect(p).toMatch(/\[DIL\]/);
+    expect(p).toContain("English");
+  });
+
+  it("Turkce (varsayilan) icin DIL talimati eklemez", () => {
+    expect(buildUserPrompt({ ...req, language: "Türkçe" })).not.toMatch(/\[DIL\]/);
+    expect(usr()).not.toMatch(/\[DIL\]/);
+  });
 });
 
 describe("yardimcilar", () => {

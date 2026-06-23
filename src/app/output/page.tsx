@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
 import { captionLengthHint, downloadText, packageToMarkdown, slugify } from "@/lib/export";
+import { campaignSlug, platformLinks } from "@/lib/utm";
 import { lintPackage, lintWithBrand } from "@/lib/quality";
 import { recordFeedback } from "@/lib/feedback";
 import { addToPlan, todayISO } from "@/lib/calendar";
@@ -714,6 +715,51 @@ export default function OutputPage() {
           ))}
         </ul>
       </details>
+
+      {pkg && (
+        <UtmSection campaign={campaignSlug(brand?.name ?? "", pkg.topic)} />
+      )}
     </div>
+  );
+}
+
+// İzlenebilir bağlantı üreteci — hedef URL'i UTM'li platform linklerine çevirir.
+function UtmSection({ campaign }: { campaign: string }) {
+  const [base, setBase] = useState("");
+  const links = base.trim() ? platformLinks(base, campaign) : [];
+  return (
+    <details className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
+      <summary className="cursor-pointer text-sm font-medium text-neutral-700">
+        İzlenebilir bağlantı (UTM) — hangi platform dönüştürdü?
+      </summary>
+      <div className="mt-3 space-y-3">
+        <div>
+          <label className="label">Hedef bağlantı (ürün/site/kampanya sayfası)</label>
+          <input
+            className="input"
+            value={base}
+            onChange={(e) => setBase(e.target.value)}
+            placeholder="https://siten.com/teklif"
+          />
+          <p className="hint mt-1">Kampanya etiketi: {campaign}</p>
+        </div>
+        {links.length > 0 && (
+          <div className="space-y-2">
+            {links.map((l) => (
+              <div
+                key={l.platform}
+                className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-white p-2"
+              >
+                <span className="w-20 shrink-0 text-xs font-medium text-neutral-500">
+                  {l.label}
+                </span>
+                <code className="flex-1 truncate text-xs text-neutral-700">{l.url}</code>
+                <CopyButton text={l.url} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </details>
   );
 }

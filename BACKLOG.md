@@ -38,6 +38,10 @@
 - [x] Onboarding → sektöre özel ilk kampanya önerisi (/create?topic= ön-doldurma)
 - [x] Demo çıktı kalitesi: açıya özel çerçeve + CTA/persona/vaka/disclaimer enjeksiyonu
 - [x] Cila: Nav lg-eşiği + aria-current aktif link · plan boş-durum ekranı
+- [x] CSV export (/library — e-tablo dostu, kaçışlı)
+- [x] İçerik şablonları kütüphanesi (sektöre özel kampanya başlatıcılar → /create)
+- [x] Analytics: UTM izlenebilir bağlantı üreteci (/output, platform başına)
+- [x] Çok-dilli çıktı: gerçek üretimde dil seçimi (prompt [DIL] enjeksiyonu)
 
 ## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 

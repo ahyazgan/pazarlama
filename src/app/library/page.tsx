@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { loadLibrary, removeFromLibrary, type LibraryItem } from "@/lib/library";
 import { ANGLE_LABELS, CONTENT_TYPE_LABELS } from "@/lib/types";
+import { downloadText, libraryToCsv } from "@/lib/export";
 
 function fmt(at: number): string {
   try {
@@ -28,11 +29,24 @@ export default function LibraryPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">İçerik Kütüphanesi</h1>
-        <p className="text-sm text-neutral-600">
-          Üretilen tüm paketler ({items.length}) — aç, kopyala, denetle.
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">İçerik Kütüphanesi</h1>
+          <p className="text-sm text-neutral-600">
+            Üretilen tüm paketler ({items.length}) — aç, kopyala, denetle.
+          </p>
+        </div>
+        {items.length > 0 && (
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={() =>
+              downloadText("icerik-kutuphanesi.csv", libraryToCsv(items), "text/csv")
+            }
+          >
+            CSV indir
+          </button>
+        )}
       </div>
 
       {items.length === 0 ? (
