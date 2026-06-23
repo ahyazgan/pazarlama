@@ -11,8 +11,10 @@
 
 - [x] Kampanya teslim paketi — tüm gönderiler tek markdown dosyada + çıktıda indir  (a8efdfa)
 
+- [x] Kampanya üretiminde ajan ekibi turu seçeneği — her gönderi üret→eleştir→düzelt  (04ed8cd)
+
 ### Next (kampanya derinleşmesi):
-- [ ] Kampanya üretiminde ajan ekibi turu seçeneği (her gönderi üret→eleştir→düzelt)
+- [ ] Kampanya teslim paketine QA/governance özeti ekle
 
 -----
 
