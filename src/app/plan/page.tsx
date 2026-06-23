@@ -6,6 +6,7 @@ import { NeedBrand } from "@/components/NeedBrand";
 import { loadBrand } from "@/lib/brand-store";
 import { addToPlan } from "@/lib/calendar";
 import { saveToLibrary } from "@/lib/library";
+import { evaluatePackage, runAgentTeam, type TeamRunResult } from "@/lib/agent-team";
 import { weeklyPlan, type PlanItem } from "@/lib/weekly-plan";
 import {
   ANGLE_LABELS,
@@ -25,6 +26,7 @@ export default function PlanPage() {
   const [building, setBuilding] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [useTeam, setUseTeam] = useState(false);
 
   useEffect(() => {
     setBrand(loadBrand());
@@ -54,6 +56,17 @@ export default function PlanPage() {
 
   // Tüm kampanyayı üret: her plan maddesi için gerçek paket (demo modda, anahtarsız),
   // kütüphaneye + takvime kaydet, hepsini birlikte çıktıda göster.
+  const postGenerate = async (req: GenerateRequest): Promise<ContentPackage> => {
+    const res = await fetch("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...req, demo: true }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Üretim başarısız.");
+    return data as ContentPackage;
+  };
+
   const buildCampaign = async () => {
     if (!brand || !items.length) return;
     setBuilding(true);
@@ -61,6 +74,7 @@ export default function PlanPage() {
     setProgress(0);
     try {
       const results: PersonaPackage[] = [];
+      const teamRuns: TeamRunResult[] = [];
       for (let i = 0; i < items.length; i++) {
         const it = items[i];
         const req: GenerateRequest = {
@@ -71,14 +85,20 @@ export default function PlanPage() {
           personaIndex: 0,
           demo: true,
         };
-        const res = await fetch("/api/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(req),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Üretim başarısız.");
-        const pkg = data as ContentPackage;
+        let pkg: ContentPackage;
+        if (useTeam) {
+          // Her gönderi ajan ekibinden geçer: üret → editör puanı → düzelt.
+          const run = await runAgentTeam(req, {
+            generate: postGenerate,
+            evaluate: evaluatePackage,
+            threshold: 80,
+            maxRounds: 2,
+          });
+          pkg = run.final;
+          teamRuns.push(run);
+        } else {
+          pkg = await postGenerate(req);
+        }
         saveToLibrary(pkg, brand.name, brand.sector);
         addToPlan({
           topic: it.topicSeed,
@@ -93,8 +113,9 @@ export default function PlanPage() {
       }
       sessionStorage.removeItem("content-os.result");
       sessionStorage.removeItem("content-os.team-run");
-      sessionStorage.removeItem("content-os.team-runs");
       sessionStorage.setItem("content-os.results", JSON.stringify(results));
+      if (useTeam) sessionStorage.setItem("content-os.team-runs", JSON.stringify(teamRuns));
+      else sessionStorage.removeItem("content-os.team-runs");
       router.push("/output");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Kampanya üretilemedi.");
@@ -137,6 +158,16 @@ export default function PlanPage() {
         <>
           <div className="flex flex-wrap items-center justify-end gap-2">
             {error && <span className="mr-auto text-sm text-red-600">{error}</span>}
+            <label className="flex items-center gap-2 text-sm text-neutral-700">
+              <input
+                type="checkbox"
+                className="h-4 w-4 accent-brand"
+                checked={useTeam}
+                onChange={(e) => setUseTeam(e.target.checked)}
+                disabled={building}
+              />
+              🤝 Ajan ekibi turu (her gönderi üret→eleştir→düzelt)
+            </label>
             <button type="button" className="btn-ghost" onClick={addAll} disabled={building}>
               Tümünü takvime ekle
             </button>
