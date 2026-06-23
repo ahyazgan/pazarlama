@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { ChannelTabs } from "@/components/ChannelTabs";
 import { lintAds } from "@/lib/ads";
 import { loadBrand } from "@/lib/brand-store";
 import type { AdCopy, AdObjective, Brand } from "@/lib/types";
@@ -79,6 +80,7 @@ export default function AdsPage() {
 
   return (
     <div className="space-y-6">
+      <ChannelTabs />
       <div>
         <h1 className="text-2xl font-bold">Reklam Metni (Paid Media)</h1>
         <p className="text-sm text-neutral-600">

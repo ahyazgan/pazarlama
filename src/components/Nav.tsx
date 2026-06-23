@@ -19,12 +19,7 @@ const PRIMARY: Link2[] = [
 const MORE: { title: string; links: Link2[] }[] = [
   {
     title: "Kanal içerikleri",
-    links: [
-      ["/ads", "Reklam"],
-      ["/seo", "SEO"],
-      ["/email", "E-posta"],
-      ["/community", "Topluluk"],
-    ],
+    links: [["/ads", "Reklam · SEO · E-posta · Topluluk"]],
   },
   {
     title: "İş akışı",
@@ -43,7 +38,9 @@ const MORE: { title: string; links: Link2[] }[] = [
   },
 ];
 
-const MORE_PATHS = MORE.flatMap((g) => g.links.map(([href]) => href));
+// "Kanal içerikleri" tek link ama dört rotayı kapsar (sekme şeridiyle gezilir).
+const CHANNEL_PATHS = ["/ads", "/seo", "/email", "/community"];
+const MORE_PATHS = [...MORE.flatMap((g) => g.links.map(([href]) => href)), ...CHANNEL_PATHS];
 
 export function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -51,8 +48,11 @@ export function Nav() {
   const pathname = usePathname();
   const moreRef = useRef<HTMLDivElement>(null);
 
-  const isActive = (href: string) =>
-    pathname === href || (href !== "/" && pathname.startsWith(href));
+  const isActive = (href: string) => {
+    // /ads linki dört kanal rotasının hepsinde aktif say.
+    if (href === "/ads") return CHANNEL_PATHS.some((p) => pathname.startsWith(p));
+    return pathname === href || (href !== "/" && pathname.startsWith(href));
+  };
   const moreActive = MORE_PATHS.some(isActive);
 
   // Dışarı tıklayınca "Daha fazla" menüsünü kapat.

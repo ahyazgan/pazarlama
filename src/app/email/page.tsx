@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { ChannelTabs } from "@/components/ChannelTabs";
 import { lintEmail } from "@/lib/email";
 import { loadBrand } from "@/lib/brand-store";
 import type { Brand, EmailKit, SequenceType } from "@/lib/types";
@@ -62,6 +63,7 @@ export default function EmailPage() {
 
   return (
     <div className="space-y-6">
+      <ChannelTabs />
       <div>
         <h1 className="text-2xl font-bold">E-posta / Funnel</h1>
         <p className="text-sm text-neutral-600">{brand.name} — e-posta dizisi + landing kopyası.</p>

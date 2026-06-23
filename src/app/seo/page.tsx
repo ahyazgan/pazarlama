@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { ChannelTabs } from "@/components/ChannelTabs";
 import { auditSeo } from "@/lib/seo";
 import { loadBrand } from "@/lib/brand-store";
 import type { Brand, SeoContent } from "@/lib/types";
@@ -55,6 +56,7 @@ export default function SeoPage() {
 
   return (
     <div className="space-y-6">
+      <ChannelTabs />
       <div>
         <h1 className="text-2xl font-bold">SEO İçerik</h1>
         <p className="text-sm text-neutral-600">{brand.name} — blog iskeleti + meta + anahtar kelimeler.</p>

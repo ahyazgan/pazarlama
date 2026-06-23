@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { ChannelTabs } from "@/components/ChannelTabs";
 import { triageComment } from "@/lib/community";
 import { loadBrand } from "@/lib/brand-store";
 import type { Brand, ReplyDrafts } from "@/lib/types";
@@ -61,6 +62,7 @@ export default function CommunityPage() {
 
   return (
     <div className="space-y-6">
+      <ChannelTabs />
       <div>
         <h1 className="text-2xl font-bold">Topluluk Yönetimi</h1>
         <p className="text-sm text-neutral-600">{brand.name} — yorum/DM yanıt taslakları (marka sesiyle).</p>

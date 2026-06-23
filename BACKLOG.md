@@ -46,6 +46,8 @@
 - [x] Kütüphane arama/filtre (metin + sektör + açı; filtreli CSV export)
 - [x] Sadeleştirme: Nav 14 düz link → 5 çekirdek + "Daha fazla" gruplu menü;
       ana sayfa net 3 adım + tek CTA + araç ızgarası (özellik kaybı yok)
+- [x] Kanal üreteçleri birleştirme: ortak ChannelTabs şeridi (Reklam/SEO/E-posta/
+      Topluluk tek araç gibi); Nav'da 4 giriş → 1 "Kanal içerikleri"
 
 ## Now (ÜRÜNLEŞME — içerik kütüphanesi)
 
