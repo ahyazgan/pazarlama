@@ -3,16 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
+  addToPlan,
   groupByDate,
   loadPlan,
   removeFromPlan,
   setMetrics,
   setStatus,
+  todayISO,
   type CalendarEntry,
 } from "@/lib/calendar";
-import { ANGLE_LABELS, CONTENT_TYPE_LABELS } from "@/lib/types";
+import { ANGLE_LABELS, CONTENT_TYPE_LABELS, type Brand } from "@/lib/types";
 import { buildICS } from "@/lib/publish";
 import { downloadText } from "@/lib/export";
+import { loadBrand } from "@/lib/brand-store";
+import { loadFeedback, netScores } from "@/lib/feedback";
+import { suggestWeeklyPlan } from "@/lib/plan-suggest";
 
 function MetricsRow({
   entry,
@@ -60,12 +65,32 @@ function MetricsRow({
 
 export default function CalendarPage() {
   const [entries, setEntries] = useState<CalendarEntry[]>([]);
+  const [brand, setBrand] = useState<Brand | null>(null);
 
   useEffect(() => {
     setEntries(loadPlan());
+    setBrand(loadBrand());
   }, []);
 
   const groups = groupByDate(entries);
+
+  // Boş haftayı şablon + feedback ağırlıklı açılarla tek tıkla doldur.
+  const suggestWeek = () => {
+    if (!brand) return;
+    const scores = netScores(loadFeedback(), brand.sector);
+    const plan = suggestWeeklyPlan({ sector: brand.sector, startDate: todayISO(), angleScores: scores });
+    let next = entries;
+    for (const s of plan) {
+      next = addToPlan({
+        topic: s.topic,
+        contentType: s.contentType,
+        angle: s.angle,
+        sector: brand.sector,
+        date: s.date,
+      });
+    }
+    setEntries(next);
+  };
 
   const toggle = (e: CalendarEntry) =>
     setEntries(setStatus(e.id, e.status === "planlandi" ? "yayinlandi" : "planlandi"));
@@ -83,6 +108,16 @@ export default function CalendarPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          {brand && (
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={suggestWeek}
+              title="Sektör şablonları + geçmiş performansa göre haftalık plan önerir"
+            >
+              Haftalık plan öner
+            </button>
+          )}
           {entries.length > 0 && (
             <button
               type="button"
@@ -103,11 +138,19 @@ export default function CalendarPage() {
       {groups.length === 0 ? (
         <div className="card space-y-3 text-center">
           <p className="text-sm text-neutral-600">
-            Henüz planlanan içerik yok. Bir paket üret, çıktı ekranından “Takvime ekle”.
+            Henüz planlanan içerik yok. Bir paket üret, çıktı ekranından “Takvime ekle” —
+            ya da haftalık planı otomatik doldur.
           </p>
-          <Link href="/create" className="btn-primary mx-auto w-fit">
-            Kampanya Oluştur
-          </Link>
+          <div className="flex flex-wrap justify-center gap-2">
+            {brand && (
+              <button type="button" className="btn-primary" onClick={suggestWeek}>
+                Haftalık plan öner
+              </button>
+            )}
+            <Link href="/create" className="btn-ghost">
+              Kampanya Oluştur
+            </Link>
+          </div>
         </div>
       ) : (
         groups.map((g) => (
